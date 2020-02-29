@@ -1,0 +1,13 @@
+.vs
+bin
+obj
+GameData/**/*.dll
+GameData/**/LICENSE*
+GameData/**/NOTICE
+GameData/**/README.md
+GameData/**/CHANGE_LOG.md
+GameData/**/CHANGES.md
+GameData/INSTALL.md
+GameData/**/*.version
+Source/*/Properties/Version.cs
+Source/*/*.user
