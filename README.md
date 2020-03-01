@@ -1,6 +1,8 @@
 # KSP-Recall
 
-TBD
+Recall for KSP blunders, screw ups and borks.
+
+Aims to fix Stock misbehavious the most seamlessly as possible.
 
 
 ## In a Hurry
@@ -23,7 +25,21 @@ TBD
 
 ## Description
 
-TBD
+Tired of constantly updating your Add'Ons each time a new KSP release fsck up something?
+
+Restless while waiting your favorite Add'On to be updated so you can play without invoking devils on dark and incompreensible rituals?
+
+So this Add'On is for you.
+
+By installing this thingy, unsolved bugs and mishaops from KSP Development Team will be fixed or at least workarounded, saving Add'On Authors from the hassle to handle them themselves.
+
+It aims to need minimal coupling with existent code, as well to be selectively injected on the broken parts in order to prevent *unholly intercations with third-party modules* that decide to fix things their own way.
+
+Currently, the following fixes are available once installed:
+
+* TweakScale:
+	+ KSP 1.9.x resets resources to prefab while cloning parts [#96](https://github.com/net-lisias-ksp/TweakScale/issues/96)
+* More to come! 
 
 
 ## Installation
