@@ -8,7 +8,7 @@ Aims to fix Stock misbehavious the most seamlessly as possible.
 ## In a Hurry
 
 * [Latest Release](https://github.com/net-lisias-ksp/KSP-Recall/releases)
-    + [Binaries](https://github.com/net-lisias-ksp/KSP-Recall/tree/Archive)
+	+ [Binaries](https://github.com/net-lisias-ksp/KSP-Recall/tree/Archive)
 * [Source](https://github.com/net-lisias-ksp/KSP-Recall)
 * [Issue Tracker](https://github.com/net-lisias-ksp/KSP-Recall/issues)
 * Documentation	
