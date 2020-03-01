@@ -1,9 +1,9 @@
 
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Resourceful", "Source\Resourceful\Resourceful.csproj", "{8BA5BC72-5727-4CDA-80CA-2F289AD48062}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KSP-Recall", "Source\KSP-Recall\KSP-Recall.csproj", "{40E7A5F2-C30E-43E9-B345-51971959149F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Resourceful", "Source\Resourceful\Resourceful.csproj", "{8BA5BC72-5727-4CDA-80CA-2F289AD48062}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,14 +15,14 @@ Global
 		{5DF4A87C-15E4-4C67-9314-02E7BDCB449D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5DF4A87C-15E4-4C67-9314-02E7BDCB449D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5DF4A87C-15E4-4C67-9314-02E7BDCB449D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8BA5BC72-5727-4CDA-80CA-2F289AD48062}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8BA5BC72-5727-4CDA-80CA-2F289AD48062}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8BA5BC72-5727-4CDA-80CA-2F289AD48062}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8BA5BC72-5727-4CDA-80CA-2F289AD48062}.Release|Any CPU.Build.0 = Release|Any CPU
 		{40E7A5F2-C30E-43E9-B345-51971959149F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{40E7A5F2-C30E-43E9-B345-51971959149F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{40E7A5F2-C30E-43E9-B345-51971959149F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{40E7A5F2-C30E-43E9-B345-51971959149F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8BA5BC72-5727-4CDA-80CA-2F289AD48062}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8BA5BC72-5727-4CDA-80CA-2F289AD48062}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8BA5BC72-5727-4CDA-80CA-2F289AD48062}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8BA5BC72-5727-4CDA-80CA-2F289AD48062}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		Policies = $0

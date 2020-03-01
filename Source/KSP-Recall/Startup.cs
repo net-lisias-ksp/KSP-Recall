@@ -24,24 +24,24 @@ using UnityEngine;
 
 namespace KSP_Recall
 {
-    [KSPAddon(KSPAddon.Startup.Instantly, true)]
-    internal class Startup : MonoBehaviour
+	[KSPAddon(KSPAddon.Startup.Instantly, true)]
+	internal class Startup : MonoBehaviour
 	{
-        private void Start()
-        {
-            Log.init();
-            Log.force("Version {0}", Version.Text);
+		private void Start()
+		{
+			Log.init();
+			Log.force("Version {0}", Version.Text);
 
-            try
-            {
-                KSPe.Util.Compatibility.Check<Startup>(typeof(Version), typeof(Configuration));
-                KSPe.Util.Installation.Check<Startup>("000_KSP-Recall");
-            }
-            catch (KSPe.Util.InstallmentException e)
-            {
-                Log.error(e.ToShortMessage());
-                KSPe.Common.Dialogs.ShowStopperAlertBox.Show(e);
-            }
-        }
+			try
+			{
+				KSPe.Util.Compatibility.Check<Startup>(typeof(Version), typeof(Configuration));
+				KSPe.Util.Installation.Check<Startup>("999_KSP-Recall");
+			}
+			catch (KSPe.Util.InstallmentException e)
+			{
+				Log.error(e.ToShortMessage());
+				KSPe.Common.Dialogs.ShowStopperAlertBox.Show(e);
+			}
+		}
 	}
 }
