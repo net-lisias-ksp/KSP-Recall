@@ -74,21 +74,21 @@ namespace KSP_Recall
 
 		public override void OnAwake()
 		{
-			Log.dbg("OnAwake {0}", this.name);
+			Log.dbg("OnAwake {0}:{1:X}", this.name, this.part.GetInstanceID());
 			base.OnAwake();
 			if (null == this.resource) this.resource = new Resource_List();
 		}
 
 		public override void OnStart(StartState state)
 		{
-			Log.dbg("OnStart {0} {1} {2}", this.name, state, this.active);
+			Log.dbg("OnStart {0}:{1:X} {2} {3}", this.name, this.part.GetInstanceID(), state, this.active);
 			base.OnStart(state);
 			if (0 != this.resource.List.Count) this.RestoreResourceList();
 		}
 
 		public override void OnLoad(ConfigNode node)
 		{
-			Log.dbg("OnLoad {0} {1}", this.name, null != node);
+			Log.dbg("OnLoad {0}:{1:X} {2}", this.name, this.part.GetInstanceID(), null != node);
 			base.OnLoad(node);
 		}
 
@@ -96,13 +96,12 @@ namespace KSP_Recall
 
 		#region Part Events Handlers
 		[KSPEvent(guiActive = false, active = true)]
-		void OnPartScaleChanged(BaseEventDetails data)
+		void OnPartResourceChanged(BaseEventDetails data)
 		{
 			// Just to validate the package
-			float factorAbsolute = data.Get<float>("factorAbsolute");
-			float factorRelative = data.Get<float>("factorRelative");
+			int instanceId = data.Get<int>("InstanceID");
 
-			Log.dbg("OnPartScaleChanged {0} {1}", factorAbsolute, factorRelative);
+			Log.dbg("OnPartResourceChanged for InstanceId {0:X}", instanceId);
 
 			this.UpdateResourceList();
 		}
