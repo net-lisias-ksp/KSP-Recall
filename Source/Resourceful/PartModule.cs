@@ -39,7 +39,6 @@ namespace KSP_Recall
 		#endregion
 
 
-		[Serializable]
 		private struct Resource_t
 		{
 			[SerializeField] private PartResource node;
@@ -59,37 +58,82 @@ namespace KSP_Recall
 			}
 		}
 
-		[Serializable]
-		private class Resource_List : ScriptableObject
+		private class Resource_List
 		{
-			private List<Resource_t> list = null;
-			public List<Resource_t> List => this.list ?? (this.list = new List<Resource_t>());
+			private readonly Dictionary<int, List<Resource_t>> map = new Dictionary<int, List<Resource_t>>();
+
+			public void Clear(Part part)
+			{
+				this.map[part.GetInstanceID()].Clear();
+			}
+
+			public void Destroy(Part part)
+			{
+				this.map.Remove(part.GetInstanceID());
+			}
+
+			public List<Resource_t> List(Part part)
+			{
+				if (!this.map.ContainsKey(part.GetInstanceID())) this.map[part.GetInstanceID()] = new List<Resource_t>();
+				return this.map[part.GetInstanceID()];
+			}
+
+			public bool HasSomething(Part part) => 0 != this.List(part).Count;
+
+			internal void Copy(Part from, Part to)
+			{
+				List<Resource_t> l = this.List(to);
+				l.Clear();
+				l.AddRange(this.List(from));
+			}
 		}
 
-		[SerializeField]
-		private Resource_List resource;
+		private static readonly Resource_List RESOURCE_POOL = new Resource_List();
 
 
-		#region KSP Events
+		#region KSP Life Cycle
 
 		public override void OnAwake()
 		{
 			Log.dbg("OnAwake {0}:{1:X}", this.name, this.part.GetInstanceID());
 			base.OnAwake();
-			if (null == this.resource) this.resource = new Resource_List();
+			if (RESOURCE_POOL.HasSomething(this.part)) this.RestoreResourceList();
 		}
 
 		public override void OnStart(StartState state)
 		{
 			Log.dbg("OnStart {0}:{1:X} {2} {3}", this.name, this.part.GetInstanceID(), state, this.active);
 			base.OnStart(state);
-			if (0 != this.resource.List.Count) this.RestoreResourceList();
+		}
+
+		public override void OnCopy(PartModule fromModule)
+		{
+			Log.dbg("OnCopy {0}:{1:X} from {2:X}", this.name, this.part.GetInstanceID(), fromModule.part.GetInstanceID());
+			base.OnCopy(fromModule);
+			RESOURCE_POOL.Copy(fromModule.part, this.part);
+			if (RESOURCE_POOL.HasSomething(this.part)) this.RestoreResourceList();
 		}
 
 		public override void OnLoad(ConfigNode node)
 		{
 			Log.dbg("OnLoad {0}:{1:X} {2}", this.name, this.part.GetInstanceID(), null != node);
 			base.OnLoad(node);
+		}
+
+		public override void OnSave(ConfigNode node)
+		{
+			Log.dbg("OnLoad {0}:{1:X} {2}", this.name, this.part.GetInstanceID(), null != node);
+			base.OnSave(node);
+		}
+
+		#endregion
+
+		#region Unity Life Cycle
+
+		private void OnDestroy()
+		{
+			Log.dbg("OnDestroy {0}:{1:X}", this.name, this.part.GetInstanceID());
+			RESOURCE_POOL.Destroy(this.part);
 		}
 
 		#endregion
@@ -109,18 +153,23 @@ namespace KSP_Recall
 
 		private void UpdateResourceList()
 		{
-			this.resource.List.Clear();
+			RESOURCE_POOL.List(this.part).Clear();
 			foreach (PartResource pr in this.part.Resources)
-				this.resource.List.Add(Resource_t.From(pr));
-			Log.dbg("Updated {0} resources for {1}", this.resource.List.Count, this.name);
+				RESOURCE_POOL.List(this.part).Add(Resource_t.From(pr));
+			Log.dbg("Updated {0} resources for {1}:{2:X}", RESOURCE_POOL.List(this.part).Count, this.name, this.part.GetInstanceID());
 		}
 
 		private void RestoreResourceList()
 		{
-			Log.dbg("Restoring {0} resources from {1}", this.resource.List.Count, this.name);
+			if (!this.active)
+			{
+				Log.dbg("Ignoring {0} resources from {1}:{2:X}", RESOURCE_POOL.List(this.part).Count, this.name, this.part.GetInstanceID());
+				return;
+			}
+			Log.dbg("Restoring {0} resources from {1}:{2:X}", RESOURCE_POOL.List(this.part).Count, this.name, this.part.GetInstanceID());
 
 			this.part.Resources.Clear();
-			foreach (Resource_t resource in this.resource.List)
+			foreach (Resource_t resource in RESOURCE_POOL.List(this.part))
 				this.part.Resources.Add(resource.ToPartResource(this.part));
 		}
 
