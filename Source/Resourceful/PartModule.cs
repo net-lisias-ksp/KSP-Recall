@@ -32,7 +32,7 @@ namespace KSP_Recall
 
 		#region KSP UI
 
-		[KSPField(isPersistant = false, guiActiveEditor = true, guiName = "KSP-Recall::Resourceful")]//Scale
+		[KSPField(isPersistant = false, guiActiveEditor = true, guiName = "KSP-Recall::Resourceful")]
 		[UI_Toggle(disabledText = "Disabled", enabledText = "Enabled", scene = UI_Scene.Editor)]
 		public bool active = false;
 
@@ -78,7 +78,7 @@ namespace KSP_Recall
 				return this.map[part.GetInstanceID()];
 			}
 
-			public bool HasSomething(Part part) => 0 != this.List(part).Count;
+			public bool HasSomething(Part part) => this.map.ContainsKey(part.GetInstanceID());
 
 			internal void Copy(Part from, Part to)
 			{
