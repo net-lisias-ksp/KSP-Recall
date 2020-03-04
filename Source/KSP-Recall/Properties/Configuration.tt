@@ -1,8 +1,8 @@
 ﻿<# /* This file is licensed under the Do What the F* You Want to Public License ( http://www.wtfpl.net )
-    * by LisiasT. http://ksp.lisias.net
-    *
-    * You are allowed to copy, modify and use this file unrestrictly. Just don't bother me with ridiculous demands. Please. :)
-    */
+	* by LisiasT. http://ksp.lisias.net
+	*
+	* You are allowed to copy, modify and use this file unrestrictly. Just don't bother me with ridiculous demands. Please. :)
+	*/
 #>
 
 <# // from https://docs.microsoft.com/en-us/visualstudio/modeling/walkthrough-generating-code-by-using-text-templates?view=vs-2017 #>
@@ -10,74 +10,117 @@
 <#@ output extension=".cs" #>
 <#@ import namespace="System.IO" #>
 <#
-    string PROJECT_NAME = "KSP_Recall";
-    int major = 0;
-    int minor = 0;
-    int patch = 0;
-    int build = 0;
+	string PROJECT_NAME = "KSP_Recall";
 
-    try
-    {
-        string file = this.Host.ResolvePath("../../../" + PROJECT_NAME + ".version");
-        string text = File.ReadAllText(file);
+	int min_major = 0;
+	int min_minor = 0;
+	int min_patch = 0;
 
-        {
-            int i = text.IndexOf("\"VERSION\"", System.StringComparison.Ordinal);
-            int j = text.IndexOf("}", i + 1, System.StringComparison.Ordinal);
-            text = text.Substring(i, j-i+1);
-        }
+	int max_major = 999;
+	int max_minor = 999;
+	int max_patch = 999;
 
-        try
-        {
-            int i = text.IndexOf("\"MAJOR\"", System.StringComparison.Ordinal);
-            while (!Char.IsNumber(text[i])) ++i;
-            int j = i;
-            while (Char.IsNumber(text[j])) ++j;
-            Int32.TryParse(text.Substring(i,j-i), out major);
-        }
-        catch { }
+	try
+	{
+		string file = this.Host.ResolvePath("../../../" + PROJECT_NAME + ".version");
+		string text = File.ReadAllText(file);
 
-        try
-        {
-            int i = text.IndexOf("\"MINOR\"", System.StringComparison.Ordinal);
-            while (!Char.IsNumber(text[i])) ++i;
-            int j = i;
-            while (Char.IsNumber(text[j])) ++j;
-            Int32.TryParse(text.Substring(i,j-i), out minor);
-        }
-        catch { }
+		{
+			int i = text.IndexOf("\"KSP_VERSION_MIN\"", System.StringComparison.Ordinal);
+			int j = text.IndexOf("}", i + 1, System.StringComparison.Ordinal);
+			text = text.Substring(i, j-i+1);
+		}
 
-        try
-        {
-            int i = text.IndexOf("\"PATCH\"", System.StringComparison.Ordinal);
-            while (!Char.IsNumber(text[i])) ++i;
-            int j = i;
-            while (Char.IsNumber(text[j])) ++j;
-            Int32.TryParse(text.Substring(i,j-i), out patch);
-        }
-        catch { }
+		try
+		{
+			int i = text.IndexOf("\"MAJOR\"", System.StringComparison.Ordinal);
+			while (!Char.IsNumber(text[i])) ++i;
+			int j = i;
+			while (Char.IsNumber(text[j])) ++j;
+			Int32.TryParse(text.Substring(i,j-i), out min_major);
+		}
+		catch { }
 
-        try
-        {
-            int i = text.IndexOf("\"BUILD\"", System.StringComparison.Ordinal);
-            while (!Char.IsNumber(text[i])) ++i;
-            int j = i;
-            while (Char.IsNumber(text[j])) ++j;
-            Int32.TryParse(text.Substring(i,j-i), out build);
-        }
-        catch { }
-    }
-    catch (Exception e)
-    {
-        Write("Error: " + e.Message);
-    }
+		try
+		{
+			int i = text.IndexOf("\"MINOR\"", System.StringComparison.Ordinal);
+			while (!Char.IsNumber(text[i])) ++i;
+			int j = i;
+			while (Char.IsNumber(text[j])) ++j;
+			Int32.TryParse(text.Substring(i,j-i), out min_minor);
+		}
+		catch { }
+
+		try
+		{
+			int i = text.IndexOf("\"PATCH\"", System.StringComparison.Ordinal);
+			while (!Char.IsNumber(text[i])) ++i;
+			int j = i;
+			while (Char.IsNumber(text[j])) ++j;
+			Int32.TryParse(text.Substring(i,j-i), out min_patch);
+		}
+		catch { }
+	}
+	catch (Exception e)
+	{
+		Write("Error: " + e.Message);
+	}
+
+	try
+	{
+		string file = this.Host.ResolvePath("../../../" + PROJECT_NAME + ".version");
+		string text = File.ReadAllText(file);
+
+		{
+			int i = text.IndexOf("\"KSP_VERSION_MAX\"", System.StringComparison.Ordinal);
+			int j = text.IndexOf("}", i + 1, System.StringComparison.Ordinal);
+			text = text.Substring(i, j-i+1);
+		}
+
+		try
+		{
+			int i = text.IndexOf("\"MAJOR\"", System.StringComparison.Ordinal);
+			while (!Char.IsNumber(text[i])) ++i;
+			int j = i;
+			while (Char.IsNumber(text[j])) ++j;
+			Int32.TryParse(text.Substring(i,j-i), out max_major);
+		}
+		catch { }
+
+		try
+		{
+			int i = text.IndexOf("\"MINOR\"", System.StringComparison.Ordinal);
+			while (!Char.IsNumber(text[i])) ++i;
+			int j = i;
+			while (Char.IsNumber(text[j])) ++j;
+			Int32.TryParse(text.Substring(i,j-i), out max_minor);
+		}
+		catch { }
+
+		try
+		{
+			int i = text.IndexOf("\"PATCH\"", System.StringComparison.Ordinal);
+			while (!Char.IsNumber(text[i])) ++i;
+			int j = i;
+			while (Char.IsNumber(text[j])) ++j;
+			Int32.TryParse(text.Substring(i,j-i), out max_patch);
+		}
+		catch { }
+	}
+	catch (Exception e)
+	{
+		Write("Error: " + e.Message);
+	}
+
 #>
 
 // Automatically generated code. Any changes will be lost!
 namespace <#= PROJECT_NAME #>
 {
-    public static class Configuration
-    {
-        public static readonly int[] Unity = { 5, 2017, 2019 };
-    }
+	public static class Configuration
+	{
+		public static readonly int[] Unity = { 2019 };
+		public static readonly int[] KSP_Min = { <#= min_major #>, <#= min_minor #>, <#= min_patch #> };
+		public static readonly int[] KSP_Max = { <#= max_major #>, <#= max_minor #>, <#= max_patch #> };
+	}
 }
