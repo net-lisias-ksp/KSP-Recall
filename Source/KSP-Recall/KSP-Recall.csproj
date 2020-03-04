@@ -41,11 +41,8 @@
     <Reference Include="UnityEngine.UI">
       <HintPath>..\..\..\..\..\..\LIB\managed\1.4.1\UnityEngine.UI.dll</HintPath>
     </Reference>
-    <Reference Include="KSPe">
-      <HintPath>..\..\..\..\..\..\LIB\plugins\KSPe.dll</HintPath>
-    </Reference>
-    <Reference Include="KSPe.UI">
-      <HintPath>..\..\..\..\..\..\LIB\plugins\KSPe.UI.dll</HintPath>
+    <Reference Include="KSPe.Light.Recall">
+      <HintPath>..\..\..\..\..\..\LIB\plugins\KSPe.Light.Recall.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
