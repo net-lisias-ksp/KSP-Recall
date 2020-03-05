@@ -109,8 +109,11 @@ namespace KSP_Recall
 		{
 			Log.dbg("OnCopy {0}:{1:X} from {2:X}", this.name, this.part.GetInstanceID(), fromModule.part.GetInstanceID());
 			base.OnCopy(fromModule);
-			RESOURCE_POOL.Copy(fromModule.part, this.part);
-			if (RESOURCE_POOL.HasSomething(this.part)) this.RestoreResourceList();
+			if (RESOURCE_POOL.HasSomething(fromModule.part))
+			{
+				RESOURCE_POOL.Copy(fromModule.part, this.part);
+				this.RestoreResourceList();
+			}
 		}
 
 		public override void OnLoad(ConfigNode node)
