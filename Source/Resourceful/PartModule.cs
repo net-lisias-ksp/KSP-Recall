@@ -20,7 +20,6 @@
 	along with KSP-Recall If not, see <https://www.gnu.org/licenses/>.
 
 */
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -163,10 +162,10 @@ namespace KSP_Recall
 		{
 			if (!this.active)
 			{
-				Log.dbg("Ignoring {0} resources from {1}:{2:X}", RESOURCE_POOL.List(this.part).Count, this.name, this.part.GetInstanceID());
+				Log.dbg("Ignoring {0} resources for {1}:{2:X}", RESOURCE_POOL.List(this.part).Count, this.name, this.part.GetInstanceID());
 				return;
 			}
-			Log.dbg("Restoring {0} resources from {1}:{2:X}", RESOURCE_POOL.List(this.part).Count, this.name, this.part.GetInstanceID());
+			Log.dbg("Restoring {0} resources for {1}:{2:X}", RESOURCE_POOL.List(this.part).Count, this.name, this.part.GetInstanceID());
 
 			this.part.Resources.Clear();
 			foreach (Resource_t resource in RESOURCE_POOL.List(this.part))
