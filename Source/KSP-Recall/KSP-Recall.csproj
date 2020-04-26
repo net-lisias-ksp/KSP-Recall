@@ -55,6 +55,8 @@
     <Compile Include="Properties\Configuration.cs">
       <DependentUpon>Configuration.tt</DependentUpon>
     </Compile>
+    <Compile Include="SanityCheck.cs" />
+    <Compile Include="GUI\ShowStopperAlertBox.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\Version.tt">

@@ -124,7 +124,7 @@ namespace KSP_Recall
 
 		public override void OnSave(ConfigNode node)
 		{
-			Log.dbg("OnLoad {0}:{1:X} {2}", this.name, this.part.GetInstanceID(), null != node);
+			Log.dbg("OnSave {0}:{1:X} {2}", this.name, this.part.GetInstanceID(), null != node);
 			base.OnSave(node);
 		}
 
