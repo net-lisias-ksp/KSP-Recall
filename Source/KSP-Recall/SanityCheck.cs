@@ -68,6 +68,7 @@ namespace KSP_Recall
 			}
 
 			int total_count = 0;
+			int parts_with_attachment_count = 0;
 			int parts_with_resourceful_count = 0;
 			int showstoppers_count = 0;
 
@@ -85,6 +86,7 @@ namespace KSP_Recall
 					// However, that co-routine stunt appears to have solved it.
 					// But we will keep this as a ghinea-pig in the case the problem happens again.
 					int retries = WAIT_ROUNDS;
+					bool containsAttachment = false;
 					bool containsResourceful = false;
 					Exception culprit = null;
 					
@@ -95,6 +97,7 @@ namespace KSP_Recall
 						bool should_yield = false;
 						try 
 						{
+							containsAttachment = prefab.Modules.Contains("Attachment");
 							containsResourceful = prefab.Modules.Contains("Resourceful");
 							++total_count;
 							break;  // Yeah. This while stunt was done just to be able to do this. All the rest is plain clutter! :D 
@@ -118,6 +121,13 @@ namespace KSP_Recall
 
 					try
 					{
+						if (containsAttachment && this.checkForAttachment(prefab))
+						{
+							Log.info("Removing Attachment support for {0} ({1}).", p.name, p.title);
+							prefab.Modules.Remove(prefab.Modules["Attachment"]);
+						}
+						else ++parts_with_attachment_count;
+
 						if (containsResourceful && this.checkForResourceful(prefab))
 						{
 							Log.info("Removing Resourceful support for {0} ({1}).", p.name, p.title);
@@ -140,7 +150,7 @@ namespace KSP_Recall
 				}
 #endif
 			}
-			Log.info("SanityCheck Concluded : {0} parts found ; {2} parts using Resourceful ; {3} show stoppers detected .", total_count, parts_with_resourceful_count, showstoppers_count);
+			Log.info("SanityCheck Concluded : {0} parts found ; {1} parts using Attachment ; {2} parts using Resourceful ; {3} show stoppers detected .", total_count, parts_with_attachment_count, parts_with_resourceful_count, showstoppers_count);
 			SanityCheck.isConcluded = true;
 
 			if (showstoppers_count > 0)
