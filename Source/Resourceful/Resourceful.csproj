@@ -35,9 +35,6 @@
     <Reference Include="UnityEngine">
       <HintPath>..\..\..\..\..\..\LIB\managed\1.4.1\UnityEngine.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.UI">
-      <HintPath>..\..\..\..\..\..\LIB\managed\1.4.1\UnityEngine.UI.dll</HintPath>
-    </Reference>
     <Reference Include="KSPe.Light.Recall">
       <HintPath>..\..\..\..\..\..\LIB\plugins\KSPe.Light.Recall.dll</HintPath>
     </Reference>
