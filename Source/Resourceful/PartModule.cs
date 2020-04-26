@@ -45,7 +45,7 @@ namespace KSP_Recall
 			internal PartResource ToPartResource(Part part)
 			{
 				PartResource r = new PartResource(part);
-				r.Copy(node);
+				r.Copy(this.node);
 				return r;
 			}
 
