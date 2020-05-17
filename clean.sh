@@ -20,6 +20,6 @@ rm -f "./GameData/$TARGETDIR/$VERSIONFILE"
 rm -f "./GameData/$TARGETDIR/CHANGE_LOG.md"
 rm -f "./GameData/$TARGETDIR/README.md"
 rm -f "./GameData/$TARGETDIR/LICENSE*"
-for dll in KSPAPIExtensions KSPe 000_KSPe KSPe.UI; do
+for dll in $DLLS ; do
     clean $dll
 done
