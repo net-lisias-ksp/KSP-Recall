@@ -17,7 +17,7 @@
 	along with KSP-Recall. If not, see <https://ksp.lisias.net/SKL-1_0.txt>.
 
 	You should have received a copy of the GNU General Public License 2.0
-	along with KSP-Recall If not, see <https://www.gnu.org/licenses/>.
+	along with KSP-Recall. If not, see <https://www.gnu.org/licenses/>.
 
 */
 using System;

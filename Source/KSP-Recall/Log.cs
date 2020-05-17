@@ -1,24 +1,17 @@
 ﻿/*
 	This file is part of KSP-Recall
-	(C) 2020 Lisias T : http://lisias.net <support@lisias.net>
+	© 2020 LisiasT : http://lisias.net <support@lisias.net>
 
-	KSP-Recall is double licensed, as follows:
+	THIE FILE is licensed to you under:
 
-	* SKL 1.0 : https://ksp.lisias.net/SKL-1_0.txt
-	* GPL 2.0 : https://www.gnu.org/licenses/gpl-2.0.txt
+	* WTFPL - http://www.wtfpl.net
+		* Everyone is permitted to copy and distribute verbatim or modified
+ 		    copies of this license document, and changing it is allowed as long
+			as the name is changed.
 
-	And you are allowed to choose the License that better suit your needs.
-
-	KSP-Recall is distributed in the hope that it will be useful,
+	THIE FILE is distributed in the hope that it will be useful,
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-
-	You should have received a copy of the SKL Standard License 1.0
-	along with KSP-Recall. If not, see <https://ksp.lisias.net/SKL-1_0.txt>.
-
-	You should have received a copy of the GNU General Public License 2.0
-	along with KSP-Recall If not, see <https://www.gnu.org/licenses/>.
-
 */
 using System;
 using KSPe.Util.Log;
