@@ -41,6 +41,31 @@ Currently, the following fixes are available once installed:
 	+ KSP 1.9.x resets resources to prefab while cloning parts [#96](https://github.com/net-lisias-ksp/TweakScale/issues/96)
 * More to come! 
 
+## For Add'On Authors
+
+### [Issue #1](https://github.com/net-lisias-ksp/KSP-Recall/issues/1) KSP 1.9.x resets resources to prefab while cloning parts
+
+Add'Ons that supports TweakScale using `Scale_Redist.dll` but do not change resources themselves will be automatically fixed - TweakScale "calls" KSP Recall as the last step of the rescaling, anything you do on `IRescalable::OnRescale(ScalingFactor factor)` will be preserved.
+
+Add'Ons that also changes the Part's resources outside of the `OnRescale` callback or without direct support for/from TweakScale will need to add the following lines of code every time their Part Resources are changed:
+
+```C#
+            // send Resource Changed message to KSP Recall if needed
+            if (0 != this.part.Resources.Count)
+            {
+                BaseEventDetails data = new BaseEventDetails (BaseEventDetails.Sender.USER);
+                data.Set<int> ("InstanceID", this.part.GetInstanceID());
+                data.Set<Type>("issuer", this.GetType ());
+                part.SendEvent ("OnPartResourceChanged", data, 0);
+            }
+
+// note: If your part can be set to have <ZERO> resources, omit the "if" above to hint Recall that it should delete any internal cache for the part
+```
+
+It's **extremely** important to send this event **only at the last moment possible**, after changing the resources. There's no guarantee about when this Event will be handled (it can be handled right on the spot, or only next week - nobody knows). You can only be sure about **when it will not be handled**: before being issued. So do whatever you need, and add that lines above before the end of the function/method/procedure/whatever to avoid risking Recall caching your resources before you are done.
+
+_Add'Ons that support TweakScale by handling the `OnPartScaleChanged` event need to add that lines above too as the last step of their scaling tasks_. Since Events are completely asynchronous, there's a good chance that by the time TweakScale sends `OnPartResourceChanged` to Recall, you could not handled yet (or be in the middle of the handling!!!) your `OnPartScaleChanged` , and so Recall will essentially undo what you had done on your part (as it will get a snapshot of the current Resources before the change).
+
 
 ## Installation
 
@@ -65,7 +90,7 @@ Detailed installation instructions are now on its own file (see the [In a Hurry]
 			- Adapt : Reuse, modify or incorporate source code into your works (and redistribute it!) 
 		+ Under the following terms:
 			- You retain any copyright notices
-			- You recognize and respect any trademarks
+			- You recognise and respect any trademarks
 			- You don't impersonate the authors, neither redistribute a derivative that could be misrepresented as theirs.
 			- You credit the author and republish the copyright notices on your works where the code is used.
 			- You relicense (and fully comply) your works using GPL 2.0 (or later)
