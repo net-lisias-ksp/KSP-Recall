@@ -20,6 +20,7 @@
 	along with KSP-Recall. If not, see <https://www.gnu.org/licenses/>.
 
 */
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -140,15 +141,27 @@ namespace KSP_Recall
 
 		#endregion
 
-		#region Part Events Handlers
+		#region Part Events Handlers]
+
+		[Obsolete("Since I'm an idiot that struggles with the most basic English principles, I inadequately defined the event name on the first public release. Please use OnPartResourcesChanged instead.")]
 		[KSPEvent(guiActive = false, active = true)]
 		void OnPartResourceChanged(BaseEventDetails data)
 		{
-			// Just to validate the package
 			int instanceId = data.Get<int>("InstanceID");
+			if (this.GetInstanceID() != instanceId) return;
 
-			Log.dbg("OnPartResourceChanged for InstanceId {0:X}", instanceId);
+			Log.dbg("(Deprecated) OnPartResourceChanged for InstanceId {0:X}", instanceId);
+			this.UpdateResourceList();
+		}
 
+		[KSPEvent(guiActive = false, active = true)]
+		void OnPartResourcesChanged(BaseEventDetails data)
+		{
+			int instanceId = data.Get<int>("InstanceID");
+			if (this.GetInstanceID() != instanceId) return;
+
+			Type issuer = data.Get<Type>("issuer");
+			Log.dbg("OnPartResourcesChanged for InstanceId {0:X}, issued by {1}", instanceId, issuer);
 			this.UpdateResourceList();
 		}
 		#endregion
