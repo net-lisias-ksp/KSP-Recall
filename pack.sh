@@ -17,4 +17,5 @@ zip $FILE "INSTALL.md"
 zip -r $FILE ./GameData/* -x ".*"
 zip -r $FILE ./PluginData/* -x ".*"
 zip -d $FILE __MACOSX "**/.DS_Store"
+zip -d $FILE ./GameData/999_KSP-Recall/patches/attachment.cfg
 mv $FILE ./Archive

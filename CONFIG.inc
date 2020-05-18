@@ -5,7 +5,7 @@ TARGETDIR="999_$PACKAGE"
 TARGETBINDIR="$TARGETDIR/Plugins"
 PROJECTSDIR="$PACKAGE/"
 VERSIONFILE="KSP_Recall.version"
-DLLS="KSP-Recall Resourceful Attachment"
+DLLS="KSP-Recall Resourceful"
 
 PROJECT_BRANCH=`git branch | grep \* | cut -d ' ' -f2`
 if [ "$PROJECT_BRANCH" == "master" ] ; then
