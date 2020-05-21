@@ -32,7 +32,6 @@ namespace KSP_Recall
 	{
 		private static readonly int WAIT_ROUNDS = 120; // @60fps, would render 2 secs.
 
-		private const string ATTACHMENT_MODULE_NAME = "Attachment";
 		private const string RESOURCEFUL_MODULE_NAME = "Resourceful";
 
 		internal static bool isConcluded = false;
@@ -69,7 +68,6 @@ namespace KSP_Recall
 			}
 
 			int total_count = 0;
-			int parts_with_attachment_count = 0;
 			int parts_with_resourceful_count = 0;
 			int showstoppers_count = 0;
 
@@ -87,7 +85,6 @@ namespace KSP_Recall
 					// However, that co-routine stunt appears to have solved it.
 					// But we will keep this as a ghinea-pig in the case the problem happens again.
 					int retries = WAIT_ROUNDS;
-					bool containsAttachment = false;
 					bool containsResourceful = false;
 					Exception culprit = null;
 					
@@ -98,8 +95,7 @@ namespace KSP_Recall
 						bool should_yield = false;
 						try 
 						{
-							containsAttachment = prefab.Modules.Contains(ATTACHMENT_MODULE_NAME);
-							containsResourceful = prefab.Modules.Contains(ATTACHMENT_MODULE_NAME);
+							containsResourceful = prefab.Modules.Contains(RESOURCEFUL_MODULE_NAME);
 							++total_count;
 							break;  // Yeah. This while stunt was done just to be able to do this. All the rest is plain clutter! :D 
 						}
@@ -127,13 +123,6 @@ namespace KSP_Recall
 
 						string due = null;
 
-						if (containsAttachment && (null != (due = this.checkForAttachment(prefab, minimumKSP))))
-						{
-							Log.info("Removing {0} support for {1} ({2}) due {3}.", ATTACHMENT_MODULE_NAME, p.name, p.title, due);
-							prefab.Modules.Remove(prefab.Modules[ATTACHMENT_MODULE_NAME]);
-						}
-						else ++parts_with_attachment_count;
-
 						if (containsResourceful && (null != (due = this.checkForResourceful(prefab, minimumKSP))))
 						{
 							Log.info("Removing {0} support for {1} ({2}) due {3}.", RESOURCEFUL_MODULE_NAME, p.name, p.title, due);
@@ -157,7 +146,7 @@ namespace KSP_Recall
 #endif
 			}
 
-			Log.info("SanityCheck Concluded : {0} parts found ; {1} parts using {2} ; {3} parts using {4} ; {5} show stoppers detected .", total_count, parts_with_attachment_count, ATTACHMENT_MODULE_NAME, parts_with_resourceful_count, ATTACHMENT_MODULE_NAME, showstoppers_count);
+			Log.info("SanityCheck Concluded : {0} parts found ; {1} parts using {2} ; {3} show stoppers detected .", total_count, parts_with_resourceful_count, RESOURCEFUL_MODULE_NAME, showstoppers_count);
 			SanityCheck.isConcluded = true;
 
 			if (showstoppers_count > 0)
@@ -169,19 +158,6 @@ namespace KSP_Recall
 		private const string MSG_KSP_NO_SUPPORTED = "your KSP version doesn't need it.";
 		private const string MSG_PART_DOES_NOT_NEED = "this part doesn't need it.";
 		private const string MSG_PART_NOT_SUPPORTED = "this part is not supported.";
-		private string checkForAttachment(Part p, KSPe.Util.KSP.Version minimumKSP)
-		{
-			Log.dbg("Checking {0} Sanity for {1} at {2}", ATTACHMENT_MODULE_NAME, p.name, (null != p.partInfo ? p.partInfo.partUrl : "<no partInfo>"));
-
-			if (KSPe.Util.KSP.Version.Current < minimumKSP) return MSG_KSP_NO_SUPPORTED;
-			// if (0 == p.attachNodes.Count) return MSG_PART_DOES_NOT_NEED; Some AddOn can add a Resource later, so I commented it out
-			if (null != p.variants && (null == p.variants.GetVariantNames() || 0 == p.variants.GetVariantNames().Count)) return MSG_PART_DOES_NOT_NEED;
-			if (p.name.StartsWith("kerbalEVA")) return MSG_PART_NOT_SUPPORTED;
-			if (p.name.StartsWith("maleEVA")) return MSG_PART_NOT_SUPPORTED;
-			if (p.name.StartsWith("femaleEVA")) return MSG_PART_NOT_SUPPORTED;
-
-			return null;
-		}
 
 		private string checkForResourceful(Part p, KSPe.Util.KSP.Version minimumKSP)
 		{
