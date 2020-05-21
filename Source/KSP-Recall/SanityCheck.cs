@@ -164,7 +164,7 @@ namespace KSP_Recall
 			Log.dbg("Checking {0} Sanity for {1} at {2}", RESOURCEFUL_MODULE_NAME, p.name, p.partInfo.partUrl ?? "<NO URL>");
 
 			if (KSPe.Util.KSP.Version.Current < minimumKSP) return MSG_KSP_NO_SUPPORTED;
-			// if (0 == p.Resources.Count) return MSG_PART_DOES_NOT_NEED; Some AddOn can add an Attach Node later, so I commented it out
+			// if (0 == p.Resources.Count) return MSG_PART_DOES_NOT_NEED; Some AddOn can add Resources later, so I commented it out
 			if (p.name.StartsWith("kerbalEVA")) return MSG_PART_NOT_SUPPORTED;
 			if (p.name.StartsWith("maleEVA")) return MSG_PART_NOT_SUPPORTED;
 			if (p.name.StartsWith("femaleEVA")) return MSG_PART_NOT_SUPPORTED;
