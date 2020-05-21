@@ -39,6 +39,8 @@ Currently, the following fixes are available once installed:
 
 * TweakScale:
 	+ KSP 1.9.x resets resources to prefab while cloning parts [#96](https://github.com/net-lisias-ksp/TweakScale/issues/96)
+* VAP/SPH Editor
+	+ When cloning parts (using or not symmetry), KSP 1.9.x "forgets" the amount of Resources set by the user. KSP Recall fixes that.
 * More to come! 
 
 ## For Add'On Authors
