@@ -30,18 +30,20 @@ namespace KSP_Recall
 	[KSPAddon(KSPAddon.Startup.EditorAny, false)]
 	public class EditorHelper : MonoBehaviour
 	{
+        private readonly bool IsOnKSP19 = KSPe.Util.KSP.Version.Current >= KSPe.Util.KSP.Version.FindByVersion(1,9,0);
+
 		#region Unity Life Cycle
 
 		private void Awake()
 		{
 			Log.dbg("Awake {0}", this.name);
-			GameEvents.onEditorShipModified.Add(OnEditorShipModified);
+			if (this.IsOnKSP19) GameEvents.onEditorShipModified.Add(OnEditorShipModified);
 		}
 
 		private void OnDestroy()
 		{
 			Log.dbg("OnDestroy {0}", this.name);
-			GameEvents.onEditorShipModified.Remove(OnEditorShipModified);
+			if (this.IsOnKSP19) GameEvents.onEditorShipModified.Remove(OnEditorShipModified);
 		}
 
 		#endregion
