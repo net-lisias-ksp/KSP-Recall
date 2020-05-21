@@ -148,7 +148,7 @@ namespace KSP_Recall
 		void OnPartResourceChanged(BaseEventDetails data)
 		{
 			int instanceId = data.Get<int>("InstanceID");
-			if (this.GetInstanceID() != instanceId) return;
+			if (this.part.GetInstanceID() != instanceId) return;
 
 			Log.dbg("(Deprecated) OnPartResourceChanged for InstanceId {0:X}", instanceId);
 			this.UpdateResourceList();
@@ -158,7 +158,7 @@ namespace KSP_Recall
 		void OnPartResourcesChanged(BaseEventDetails data)
 		{
 			int instanceId = data.Get<int>("InstanceID");
-			if (this.GetInstanceID() != instanceId) return;
+			if (this.part.GetInstanceID() != instanceId) return;
 
 			Type issuer = data.Get<Type>("issuer");
 			Log.dbg("OnPartResourcesChanged for InstanceId {0:X}, issued by {1}", instanceId, issuer);
