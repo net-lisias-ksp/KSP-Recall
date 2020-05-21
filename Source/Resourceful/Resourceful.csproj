@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="PartModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="EditorHelper.cs" />
     <Compile Include="PartResourcePool.cs" />
   </ItemGroup>
   <ItemGroup>
