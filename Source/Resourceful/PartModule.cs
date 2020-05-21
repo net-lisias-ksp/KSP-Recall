@@ -25,11 +25,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace KSP_Recall
-
 {
 	public class Resourceful : PartModule
 	{
-
 		#region KSP UI
 
 		[KSPField(isPersistant = false, guiActiveEditor = true, guiName = "KSP-Recall::Resourceful")]
@@ -39,65 +37,13 @@ namespace KSP_Recall
 		#endregion
 
 
-		private struct Resource_t
-		{
-			[SerializeField] private PartResource node;
-
-			internal PartResource ToPartResource(Part part)
-			{
-				PartResource r = new PartResource(part);
-				r.Copy(this.node);
-				return r;
-			}
-
-			internal static Resource_t From(PartResource pr)
-			{
-				Resource_t r = new Resource_t();
-				r.node = pr;
-				return r;
-			}
-		}
-
-		private class Resource_List
-		{
-			private readonly Dictionary<int, List<Resource_t>> map = new Dictionary<int, List<Resource_t>>();
-
-			public void Clear(Part part)
-			{
-				this.map[part.GetInstanceID()].Clear();
-			}
-
-			public void Destroy(Part part)
-			{
-				this.map.Remove(part.GetInstanceID());
-			}
-
-			public List<Resource_t> List(Part part)
-			{
-				if (!this.map.ContainsKey(part.GetInstanceID())) this.map[part.GetInstanceID()] = new List<Resource_t>();
-				return this.map[part.GetInstanceID()];
-			}
-
-			public bool HasSomething(Part part) => this.map.ContainsKey(part.GetInstanceID());
-
-			internal void Copy(Part from, Part to)
-			{
-				List<Resource_t> l = this.List(to);
-				l.Clear();
-				l.AddRange(this.List(from));
-			}
-		}
-
-		private static readonly Resource_List RESOURCE_POOL = new Resource_List();
-
-
 		#region KSP Life Cycle
 
 		public override void OnAwake()
 		{
 			Log.dbg("OnAwake {0}:{1:X}", this.name, this.part.GetInstanceID());
 			base.OnAwake();
-			if (RESOURCE_POOL.HasSomething(this.part)) this.RestoreResourceList();
+			if (Pool.RESOURCES.HasSomething(this.part)) this.RestoreResourceList();
 		}
 
 		public override void OnStart(StartState state)
@@ -110,9 +56,9 @@ namespace KSP_Recall
 		{
 			Log.dbg("OnCopy {0}:{1:X} from {2:X}", this.name, this.part.GetInstanceID(), fromModule.part.GetInstanceID());
 			base.OnCopy(fromModule);
-			if (RESOURCE_POOL.HasSomething(fromModule.part))
+			if (Pool.RESOURCES.HasSomething(fromModule.part))
 			{
-				RESOURCE_POOL.Copy(fromModule.part, this.part);
+				Pool.RESOURCES.Copy(fromModule.part, this.part);
 				this.RestoreResourceList();
 			}
 		}
@@ -136,7 +82,7 @@ namespace KSP_Recall
 		private void OnDestroy()
 		{
 			Log.dbg("OnDestroy {0}:{1:X}", this.name, this.part.GetInstanceID());
-			RESOURCE_POOL.Destroy(this.part);
+			Pool.RESOURCES.Destroy(this.part);
 		}
 
 		#endregion
@@ -168,24 +114,19 @@ namespace KSP_Recall
 
 		private void UpdateResourceList()
 		{
-			RESOURCE_POOL.List(this.part).Clear();
-			foreach (PartResource pr in this.part.Resources)
-				RESOURCE_POOL.List(this.part).Add(Resource_t.From(pr));
-			Log.dbg("Updated {0} resources for {1}:{2:X}", RESOURCE_POOL.List(this.part).Count, this.name, this.part.GetInstanceID());
+			Pool.RESOURCES.Update(this.part);
+			Log.dbg("Updated {0} resources for {1}:{2:X}", Pool.RESOURCES.Count(this.part), this.name, this.part.GetInstanceID());
 		}
 
 		private void RestoreResourceList()
 		{
 			if (!this.active)
 			{
-				Log.dbg("Ignoring {0} resources for {1}:{2:X}", RESOURCE_POOL.List(this.part).Count, this.name, this.part.GetInstanceID());
+				Log.dbg("Ignoring {0} resources for {1}:{2:X}", Pool.RESOURCES.Count(this.part), this.name, this.part.GetInstanceID());
 				return;
 			}
-			Log.dbg("Restoring {0} resources for {1}:{2:X}", RESOURCE_POOL.List(this.part).Count, this.name, this.part.GetInstanceID());
-
-			this.part.Resources.Clear();
-			foreach (Resource_t resource in RESOURCE_POOL.List(this.part))
-				this.part.Resources.Add(resource.ToPartResource(this.part));
+			Log.dbg("Restoring {0} resources for {1}:{2:X}", Pool.RESOURCES.Count(this.part), this.name, this.part.GetInstanceID());
+			Pool.RESOURCES.Restore(this.part);
 		}
 
 		private static KSPe.Util.Log.Logger Log = KSPe.Util.Log.Logger.CreateForType<Resourceful>("KSP-Recall", "Resourceful");
