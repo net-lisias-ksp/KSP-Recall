@@ -2,7 +2,7 @@
 
 Recall for KSP blunders, screw ups and borks.
 
-Aims to fix Stock misbehavious the most seamlessly as possible.
+Aims to fix Stock misbehaviours the most seamlessly as possible.
 
 
 ## In a Hurry

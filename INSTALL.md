@@ -1,6 +1,8 @@
 # KSP-Recall
 
-TBD
+Recall for KSP blunders, screw ups and borks.
+
+Aims to fix Stock misbehaviours the most seamlessly as possible.
 
 ## Installation Instructions
 
