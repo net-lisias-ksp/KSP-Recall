@@ -11,6 +11,10 @@ To install, place the GameData folder inside your Kerbal Space Program folder:
 * Extract the package's `GameData/` folder into your KSP's as follows:
 	+ `<PACKAGE>/GameData/000_KSP-Recall/*` --> `<KSP_ROOT>/GameData/000_KSP-Recall`
 		- Overwrite any preexisting file.
+* Extract the included dependencies (optional)
+	+ `<PACKAGE>/GameData/ModuleManagerWatchDog` --> `<KSP_ROOT>/GameData`
+	+ `<PACKAGE>/GameData/666_ModuleManagerWatchDog.dll` --> `<KSP_ROOT>/GameData`
+		- Overwrite any preexisting file.
 
 The following file layout must be present after installation:
 
@@ -27,7 +31,10 @@ The following file layout must be present after installation:
 			NOTICE
 			README.md
 			KSP-Recall.version
+		[ModuleManagerWatchDog]
+			...
 		ModuleManager.dll
+		ModuleManagerWatchDog.dll
 		...
 	KSP.log
 	PastDatabase.cfg
@@ -37,5 +44,8 @@ The following file layout must be present after installation:
 
 ### Dependencies
 
-* Module Manager 3.0.7 or later
+* [Module Manager Watch Dog](https://github.com/net-lisias-ksp/ModuleManagerWatchDog/releases)
+	+ Included
+	+ Licensed to TweakScale under [SKL 1.0](https://ksp.lisias.net/SKL-1_0.txt)
+* Module Manager 3.1.3 or later
 	+ **NOT** Included
