@@ -30,7 +30,7 @@ namespace KSP_Recall
 	[KSPAddon(KSPAddon.Startup.EditorAny, false)]
 	public class EditorHelper : MonoBehaviour
 	{
-        private readonly bool IsOnKSP19 = KSPe.Util.KSP.Version.Current >= KSPe.Util.KSP.Version.FindByVersion(1,9,0);
+		private readonly bool IsOnKSP19 = 1 == KSPe.Util.KSP.Version.Current.MAJOR && 9 == KSPe.Util.KSP.Version.Current.MINOR;
 
 		#region Unity Life Cycle
 

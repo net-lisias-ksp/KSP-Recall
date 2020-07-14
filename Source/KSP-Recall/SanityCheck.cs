@@ -118,12 +118,9 @@ namespace KSP_Recall
 
 					try
 					{
-						KSPe.Util.KSP.Version minimumKSP = KSPe.Util.KSP.Version.FindByVersion(1, 9, 0);
-						Log.dbg("Minimum KSP allowed is {0}", minimumKSP.ToString());
-
 						string due = null;
 
-						if (containsResourceful && (null != (due = this.checkForResourceful(prefab, minimumKSP))))
+						if (containsResourceful && (null != (due = this.checkForResourceful(prefab))))
 						{
 							Log.info("Removing {0} support for {1} ({2}) due {3}.", RESOURCEFUL_MODULE_NAME, p.name, p.title, due);
 							prefab.Modules.Remove(prefab.Modules[RESOURCEFUL_MODULE_NAME]);
@@ -159,11 +156,11 @@ namespace KSP_Recall
 		private const string MSG_PART_DOES_NOT_NEED = "this part doesn't need it.";
 		private const string MSG_PART_NOT_SUPPORTED = "this part is not supported.";
 
-		private string checkForResourceful(Part p, KSPe.Util.KSP.Version minimumKSP)
+		private string checkForResourceful(Part p)
 		{
 			Log.dbg("Checking {0} Sanity for {1} at {2}", RESOURCEFUL_MODULE_NAME, p.name, p.partInfo.partUrl ?? "<NO URL>");
 
-			if (KSPe.Util.KSP.Version.Current < minimumKSP) return MSG_KSP_NO_SUPPORTED;
+			if ( !(1 == KSPe.Util.KSP.Version.Current.MAJOR && 9 == KSPe.Util.KSP.Version.Current.MINOR) ) return MSG_KSP_NO_SUPPORTED;
 			// if (0 == p.Resources.Count) return MSG_PART_DOES_NOT_NEED; Some AddOn can add Resources later, so I commented it out
 			if (p.name.StartsWith("kerbalEVA")) return MSG_PART_NOT_SUPPORTED;
 			if (p.name.StartsWith("maleEVA")) return MSG_PART_NOT_SUPPORTED;
