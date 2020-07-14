@@ -21,8 +21,6 @@
 
 */
 using System;
-using System.Collections.Generic;
-using UnityEngine;
 
 namespace KSP_Recall
 {
@@ -129,7 +127,7 @@ namespace KSP_Recall
 			Pool.RESOURCES.Restore(this.part);
 		}
 
-		private static KSPe.Util.Log.Logger Log = KSPe.Util.Log.Logger.CreateForType<Resourceful>("KSP-Recall", "Resourceful");
+		private static readonly KSPe.Util.Log.Logger Log = KSPe.Util.Log.Logger.CreateForType<Resourceful>("KSP-Recall", "Resourceful");
 		static Resourceful()
 		{
 			Log.level =
