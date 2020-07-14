@@ -123,7 +123,7 @@ namespace KSP_Recall
 						if (containsResourceful && (null != (due = this.checkForResourceful(prefab))))
 						{
 							Log.info("Removing {0} support for {1} ({2}) due {3}.", RESOURCEFUL_MODULE_NAME, p.name, p.title, due);
-							prefab.Modules.Remove(prefab.Modules[RESOURCEFUL_MODULE_NAME]);
+							prefab.RemoveModule(prefab.Modules[RESOURCEFUL_MODULE_NAME]);
 						}
 						else ++parts_with_resourceful_count;
 					}
