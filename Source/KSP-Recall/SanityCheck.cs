@@ -33,6 +33,7 @@ namespace KSP_Recall
 		private static readonly int WAIT_ROUNDS = 120; // @60fps, would render 2 secs.
 
 		private const string RESOURCEFUL_MODULE_NAME = "Resourceful";
+		private const string DRIFTLESS_MODULE_NAME = "Driftless";
 
 		internal static bool isConcluded = false;
 
@@ -69,6 +70,7 @@ namespace KSP_Recall
 
 			int total_count = 0;
 			int parts_with_resourceful_count = 0;
+			int parts_with_driftless_count = 0;
 			int showstoppers_count = 0;
 
 			foreach (AvailablePart p in PartLoader.LoadedPartsList)
@@ -86,6 +88,7 @@ namespace KSP_Recall
 					// But we will keep this as a ghinea-pig in the case the problem happens again.
 					int retries = WAIT_ROUNDS;
 					bool containsResourceful = false;
+					bool containsDriftless = false;
 					Exception culprit = null;
 					
 					prefab = p.partPrefab; // Reaching the prefab here in the case another Mod recreates it from zero. If such hypothecical mod recreates the whole part, we're doomed no matter what.
@@ -96,6 +99,7 @@ namespace KSP_Recall
 						try 
 						{
 							containsResourceful = prefab.Modules.Contains(RESOURCEFUL_MODULE_NAME);
+							containsDriftless = prefab.Modules.Contains(DRIFTLESS_MODULE_NAME);
 							++total_count;
 							break;  // Yeah. This while stunt was done just to be able to do this. All the rest is plain clutter! :D 
 						}
@@ -126,6 +130,13 @@ namespace KSP_Recall
 							prefab.RemoveModule(prefab.Modules[RESOURCEFUL_MODULE_NAME]);
 						}
 						else ++parts_with_resourceful_count;
+
+						if (containsDriftless && (null != (due = this.checkForDriftless(prefab))))
+						{
+							Log.info("Removing {0} support for {1} ({2}) due {3}.", DRIFTLESS_MODULE_NAME, p.name, p.title, due);
+							prefab.RemoveModule(prefab.Modules[DRIFTLESS_MODULE_NAME]);
+						}
+						else ++parts_with_driftless_count;
 					}
 					catch (Exception e)
 					{
@@ -165,6 +176,15 @@ namespace KSP_Recall
 			if (p.name.StartsWith("kerbalEVA")) return MSG_PART_NOT_SUPPORTED;
 			if (p.name.StartsWith("maleEVA")) return MSG_PART_NOT_SUPPORTED;
 			if (p.name.StartsWith("femaleEVA")) return MSG_PART_NOT_SUPPORTED;
+
+			return null;
+		}
+
+		private string checkForDriftless(Part p)
+		{
+			Log.dbg("Checking {0} Sanity for {1} at {2}", DRIFTLESS_MODULE_NAME, p.name, p.partInfo.partUrl ?? "<NO URL>");
+
+			if ( KSPe.Util.KSP.Version.Current < KSPe.Util.KSP.Version.FindByVersion(1,8,0) ) return MSG_KSP_NO_SUPPORTED;
 
 			return null;
 		}

@@ -32,6 +32,7 @@ namespace KSP_Recall
 			List<string> tags = new List<string>();
 
 			if (checkForResourceful()) tags.Add("KSPRECALL-RESOURCEFUL");
+			if (checkForDriftless()) tags.Add("KSPRECALL-DRIFTLESS");
 
 			return tags.ToArray();
 		}
@@ -39,6 +40,13 @@ namespace KSP_Recall
 		private static bool checkForResourceful()
 		{
 			if (1 == KSPe.Util.KSP.Version.Current.MAJOR && 9 == KSPe.Util.KSP.Version.Current.MINOR) return true;
+
+			return false;
+		}
+
+		private static bool checkForDriftless()
+		{
+			if (KSPe.Util.KSP.Version.Current >= KSPe.Util.KSP.Version.FindByVersion(1,8,0)) return true;
 
 			return false;
 		}

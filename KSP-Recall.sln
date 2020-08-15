@@ -5,6 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KSP-Recall", "Source\KSP-Re
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Resourceful", "Source\Resourceful\Resourceful.csproj", "{8BA5BC72-5727-4CDA-80CA-2F289AD48062}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Driftless", "Source\Driftless\Driftless.csproj", "{736DD88D-D8C8-45C1-9079-864DFCBEC2EF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,6 +25,10 @@ Global
 		{8BA5BC72-5727-4CDA-80CA-2F289AD48062}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8BA5BC72-5727-4CDA-80CA-2F289AD48062}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8BA5BC72-5727-4CDA-80CA-2F289AD48062}.Release|Any CPU.Build.0 = Release|Any CPU
+		{736DD88D-D8C8-45C1-9079-864DFCBEC2EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{736DD88D-D8C8-45C1-9079-864DFCBEC2EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{736DD88D-D8C8-45C1-9079-864DFCBEC2EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{736DD88D-D8C8-45C1-9079-864DFCBEC2EF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		Policies = $0
