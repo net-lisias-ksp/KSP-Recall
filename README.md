@@ -2,7 +2,7 @@
 
 Recall for KSP blunders, screw ups and borks.
 
-Aims to fix Stock misbehaviours the most seamlessly as possible.
+Aims to fix Stock misbehaviours the most seamlessly as possible, trying hard to introduce new ones in the process.
 
 
 ## In a Hurry
@@ -27,11 +27,11 @@ Aims to fix Stock misbehaviours the most seamlessly as possible.
 
 Tired of constantly updating your Add'Ons each time a new KSP release fsck up something?
 
-Restless while waiting your favorite Add'On to be updated so you can play without invoking devils on dark and incompreensible rituals?
+Restless while waiting your favorite Add'On to be updated so you can play without invoking devils using dark and incomprehensible rituals?
 
 So this Add'On is for you.
 
-By installing this thingy, unsolved bugs and mishaops from KSP Development Team will be fixed or at least workarounded, saving Add'On Authors from the hassle to handle them themselves.
+By installing this thingy, unsolved bugs and mishaps from KSP Development Team will be fixed or at least worked around, saving Add'On Authors from the hassle to handle them themselves - most o the time without introducing new ones. :)
 
 It aims to need minimal coupling with existent code, as well to be selectively injected on the broken parts in order to prevent *unholly intercations with third-party modules* that decide to fix things their own way.
 
@@ -41,7 +41,51 @@ Currently, the following fixes are available once installed:
 	+ KSP 1.9.x resets resources to prefab while cloning parts [#96](https://github.com/net-lisias-ksp/TweakScale/issues/96)
 * VAP/SPH Editor
 	+ When cloning parts (using or not symmetry), KSP 1.9.x "forgets" the amount of Resources set by the user. KSP Recall fixes that.
-* More to come! 
+* Fuel Switches
+	+ **Some** Fuel Switches suffers from the same problem as TweakScale above. They are also fixed by KSP-Recall
+* Heading Drifting on crafts at rest
+	+ From KSP 1.8 and above, crafts started to change the Heading at their own, even with parking breaks or no wheels at all!
+	+ KSP-Recall now have a work around for this.
+* More to come as a Need to Code basis.
+
+
+## For End Users
+
+This is not intended to be "used" by end-users. It provides services to Add'On authors and/or fixes automatically some known problems on many different KSP versions.
+
+Currently, the following automatic fixes are available:
+
+### Automatically restores Resources changed by Fuel Switches.
+
+As the title says, KSP-Recall detects when something changed on the craft (while Editing it) and tries to restore the Resources as intended by the Add'On authors, brute forcing the right way over the KSP 1.9.x. had brute forced its way (that breaks some Add'Ons).
+
+However, and you as an user must be aware of it, some Fuel Switches don't cope very well with others. It's highly probable that you will have problems on installing more than on Fuel Switch on your KSP, because some of them install themselves on the parts without caring about any other one already there.
+
+On a rule of thumb, it's possible to have more than one Fuel Switch installed on KSP. What you can't is have more than one Fuel Switch installed on the same part, and this is where most Fuel Switches authors are stomping their own toes.
+
+Right now, this is what it's known to the date:
+
+* Interstellar Fuel Switch
+	+ Works without KSP-Recall.
+	+ It's coded it's own Resource Management, so it's imune to KSP 1.9 "bruteness".
+* Firespitter
+	+ I detected no problems on it
+* Anything that supports (or it's supported by) TweakScale
+	+ TweakScale already handles KSP-Recall, so anything that makes use of `Scale_Redist` is already covered
+	+ Modular Fuel Tanks is one of that Add'Ons, as long nobody shoves its on parts that already have another Fuel Switch.
+* B9 Parts Switch should work. As longe there're no other Fuel Switch installed on the same part.
+* Other fuel switches:
+	+ As long the OnEditorVesselModified is fired on each change (or one of the Custom Events from Recall, see below), it should work fine.
+	+ Please report on this thread anything that you thing is wrong. I'm fixing them as I'm aware of them.
+
+### Crafts at rest changes drifts the Heading by their own
+
+On TweakScale's [Forum thread](https://forum.kerbalspaceprogram.com/index.php?/topic/179030-ksp-141-tweakscale-under-lisias-management-24321-2020-00804/&do=findComment&comment=3836931), a discussion about a problem introduced on KSP 1.8 that made the crafts to drift the heading randomly when leaved at their own, even with parking breaks or not wheels at all!
+
+KSP-Recall introduces a new work around for this problem, detecting when the Heading drift is unwanted and canceling it.
+
+It **does not** fixes, yet, the drift induced by the wheels itself (that were being summed up with this one).
+
 
 ## For Add'On Authors
 
