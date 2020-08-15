@@ -57,6 +57,7 @@
     </Compile>
     <Compile Include="SanityCheck.cs" />
     <Compile Include="GUI\ShowStopperAlertBox.cs" />
+    <Compile Include="ModuleManagerSupport.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\Version.tt">
