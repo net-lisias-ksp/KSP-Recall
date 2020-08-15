@@ -48,6 +48,8 @@ Currently, the following fixes are available once installed:
 	+ KSP-Recall now have a work around for this.
 * More to come as a Need to Code basis.
 
+Fixes not needed on the current KSP instalment **are not applied**. So it's safe to just install KSP-Recall on anything you have (besides wasting a bit more time on the loading).
+
 
 ## For End Users
 

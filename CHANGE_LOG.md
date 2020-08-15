@@ -1,5 +1,9 @@
 # KSP-Recall :: Change Log
 
+* 2020-0815: 0.0.4.0 (LisiasT) for KSP >= 1.8.0
+	+ Adds a Work Around for crafts drifting on the Heading at rest, even when without wheels attached.
+		- There's another similar problem on the wheels themselves, KSP Recall are still working on this one
+	+ **Way** smarter selective applying of the Modules when needed.  
 * 2020-0714: 0.0.3.2 (LisiasT) for [1.9.0 <= KSP <= 1.9.1]
 	+ Maintenance Release.
 		- Better (and safer) deactivation code using info gathered from [TweakScale](https://github.com/net-lisias-ksp/TweakScale/issues/125).
