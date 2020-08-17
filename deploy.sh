@@ -9,9 +9,12 @@ check() {
 	fi
 
 	if [ ! -f "./GameData/$TARGETBINDIR/KSPe.Light.Recall.dll" ] ; then
-		echo "KSPe.Light not found!!! Aborting."
-		read line
-		exit -1
+		if [ ! -f "${LIB}/KSPe.Light.Recall.dll" ] ; then
+				echo "KSPe.Light.Recall not found!!! Aborting."
+				read line
+				exit -1
+		fi
+		cp "${LIB}/KSPe.Light.Recall.dll" "./GameData/$TARGETBINDIR/"
 	fi
 }
 
