@@ -74,14 +74,15 @@ namespace KSP_Recall
 		#region Unity Life Cycle
 
 
-		private const float DELTA = 0.01f;
+		private const float DELTA = 0.01f;	// 0.01 = 1cm. On my machine, the maximum spurious speed on rest was ~8.5 mm/s, says KER.
+											// I will probably need to make this adjustable somehow, this can be machine speed dependent...
 		private Rigidbody rb = null;
 		private void FixedUpdate()
 		{
-			if(!HighLogic.LoadedSceneIsFlight || part.vessel.state != Vessel.State.ACTIVE || part.vessel.situation != Vessel.Situations.LANDED) return;
+			if(!HighLogic.LoadedSceneIsFlight /*|| part.vessel.state != Vessel.State.ACTIVE*/ || part.vessel.situation != Vessel.Situations.LANDED) return;
+			if(this.rb.velocity.magnitude > DELTA) return;
 
-			if(this.rb.velocity.magnitude < DELTA)
-				this.rb.AddTorque(0,0,0,ForceMode.Force);
+			this.rb.AddTorque(0,0,0,ForceMode.Force);
 		}
 
 		private void OnDestroy()
