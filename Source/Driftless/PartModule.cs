@@ -29,8 +29,8 @@ namespace KSP_Recall
 	{
 		#region KSP UI
 
-		[KSPField(isPersistant = false, guiActiveEditor = true, guiName = "KSP-Recall::Driftless")]
-		[UI_Toggle(disabledText = "Disabled", enabledText = "Enabled", scene = UI_Scene.Editor)]
+		[KSPField(isPersistant = false, guiActive = true, guiActiveEditor = false, guiName = "KSP-Recall::Driftless")]
+		[UI_Toggle(disabledText = "Disabled", enabledText = "Enabled", scene = UI_Scene.Flight)]
 		public bool active = false;
 
 		#endregion
