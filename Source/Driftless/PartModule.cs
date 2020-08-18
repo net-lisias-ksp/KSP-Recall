@@ -82,6 +82,13 @@ namespace KSP_Recall
 			this.init();
 		}
 
+		// Needed because I had overriden OnActive.
+		// See https://kerbalspaceprogram.com/api/class_part_module.html#a6f2dd76038326c527e64d2ce96bb45fe
+		public override bool IsStageable()
+		{
+			return false;
+		}
+
 		public override void OnInactive()
 		{
 			Log.dbg("OnInactive {0}:{1:X}", this.name, this.part.GetInstanceID());
