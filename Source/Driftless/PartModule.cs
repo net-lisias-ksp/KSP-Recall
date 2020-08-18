@@ -86,6 +86,7 @@ namespace KSP_Recall
 		{
 			Log.dbg("OnInactive {0}:{1:X}", this.name, this.part.GetInstanceID());
 			base.OnInactive();
+			this.deinit();
 		}
 
 		#endregion
@@ -127,7 +128,11 @@ namespace KSP_Recall
 				this.deltaV *= 20;		// Kerbals have *way* more spurious velocities!
 				Log.dbg("{0}:{1:X} is a Kerbal on EVA. Multiplying the DELTA_V.", this.name, this.part.GetInstanceID());
 			}
+		}
 
+		private void deinit()
+		{
+			this.rb = null;
 		}
 
 		private static readonly KSPe.Util.Log.Logger Log = KSPe.Util.Log.Logger.CreateForType<Driftless>("KSP-Recall", "Driftless");
