@@ -98,9 +98,9 @@ namespace KSP_Recall
 		private Rigidbody rb = null;
 		private void FixedUpdate()
 		{
-			if(!HighLogic.LoadedSceneIsFlight /*|| part.vessel.state != Vessel.State.ACTIVE*/ || part.vessel.situation != Vessel.Situations.LANDED) return;
-			if(null == this.rb) return;
-			if(this.rb.velocity.magnitude > DELTA) return;
+			if (null == this.rb) return;
+			if (!HighLogic.LoadedSceneIsFlight || part.vessel.situation != Vessel.Situations.LANDED) return;
+			if (this.rb.velocity.magnitude > DELTA) return;
 
 			this.rb.AddTorque(0,0,0,ForceMode.Force);
 		}
