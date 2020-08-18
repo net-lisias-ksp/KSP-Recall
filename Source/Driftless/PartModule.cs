@@ -93,8 +93,7 @@ namespace KSP_Recall
 
 		#region Unity Life Cycle
 
-		private const float DELTA = 0.01f;	// 0.01 = 1cm. On my machine, the maximum spurious speed on rest was ~8.5 mm/s, says KER.
-											// I will probably need to make this adjustable somehow, this can be machine speed dependent...
+		private float deltaV = 0f;
 		private Rigidbody rb = null;
 		private void FixedUpdate()
 		{
@@ -113,11 +112,22 @@ namespace KSP_Recall
 		#endregion
 
 
+		private const float DELTA = 0.01f;	// 0.01 = 1cm. On my machine, the maximum spurious velocity on rest was ~8.5 mm/s, says KER.
+											// I will probably need to make this adjustable somehow, this can be machine speed dependent...
 		private void init()
 		{
 			this.rb = this.part.GetComponent<Rigidbody>();
+
 			if(null == this.rb)
 				Log.dbg("{0}:{1:X} has no RigidBody.", this.name, this.part.GetInstanceID());
+
+			this.deltaV = DELTA;
+			if(this.part.Modules.Contains("KerbalEVA"))
+			{
+				this.deltaV *= 20;		// Kerbals have *way* more spurious velocities!
+				Log.dbg("{0}:{1:X} is a Kerbal on EVA. Multiplying the DELTA_V.", this.name, this.part.GetInstanceID());
+			}
+
 		}
 
 		private static readonly KSPe.Util.Log.Logger Log = KSPe.Util.Log.Logger.CreateForType<Driftless>("KSP-Recall", "Driftless");
