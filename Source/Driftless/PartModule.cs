@@ -48,7 +48,6 @@ namespace KSP_Recall
 		{
 			Log.dbg("OnStart {0}:{1:X} {2} {3}", this.name, this.part.GetInstanceID(), state, this.active);
 			base.OnStart(state);
-			this.rb = this.part.GetComponent<Rigidbody>();
 		}
 
 		public override void OnCopy(PartModule fromModule)
@@ -69,10 +68,30 @@ namespace KSP_Recall
 			base.OnSave(node);
 		}
 
+		public override void OnInitialize()
+		{
+			Log.dbg("OnInitialize {0}:{1:X}", this.name, this.part.GetInstanceID());
+			base.OnInitialize();
+			this.init();
+		}
+
+		public override void OnActive()
+		{
+			Log.dbg("OnActive {0}:{1:X}", this.name, this.part.GetInstanceID());
+			base.OnActive();
+			this.init();
+		}
+
+		public override void OnInactive()
+		{
+			Log.dbg("OnInactive {0}:{1:X}", this.name, this.part.GetInstanceID());
+			base.OnInactive();
+		}
+
 		#endregion
 
-		#region Unity Life Cycle
 
+		#region Unity Life Cycle
 
 		private const float DELTA = 0.01f;	// 0.01 = 1cm. On my machine, the maximum spurious speed on rest was ~8.5 mm/s, says KER.
 											// I will probably need to make this adjustable somehow, this can be machine speed dependent...
@@ -80,6 +99,7 @@ namespace KSP_Recall
 		private void FixedUpdate()
 		{
 			if(!HighLogic.LoadedSceneIsFlight /*|| part.vessel.state != Vessel.State.ACTIVE*/ || part.vessel.situation != Vessel.Situations.LANDED) return;
+			if(null == this.rb) return;
 			if(this.rb.velocity.magnitude > DELTA) return;
 
 			this.rb.AddTorque(0,0,0,ForceMode.Force);
@@ -91,6 +111,14 @@ namespace KSP_Recall
 		}
 
 		#endregion
+
+
+		private void init()
+		{
+			this.rb = this.part.GetComponent<Rigidbody>();
+			if(null == this.rb)
+				Log.dbg("{0}:{1:X} has no RigidBody.", this.name, this.part.GetInstanceID());
+		}
 
 		private static readonly KSPe.Util.Log.Logger Log = KSPe.Util.Log.Logger.CreateForType<Driftless>("KSP-Recall", "Driftless");
 		static Driftless()
