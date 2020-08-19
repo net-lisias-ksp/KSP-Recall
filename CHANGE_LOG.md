@@ -1,5 +1,7 @@
 # KSP-Recall :: Change Log
 
+* 2020-0817: 0.0.4.2 (LisiasT) for KSP >= 1.8.0 PRE-RELEASE
+	+ Fixes an annoying situation where Decouplers and Docking Ports with `Driftless` blocks fuel to engines above them on the stack. 
 * 2020-0817: 0.0.4.1 (LisiasT) for KSP >= 1.8.0
 	+ An error on handling parts without `RigidBody` was raining NREs on the KSP.log. Fixed.
 	+ A slightly smarter handling of inactive and rigidbodyless parts may save a tiny little bit of CPU time.
