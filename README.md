@@ -2,7 +2,7 @@
 
 Recall for KSP blunders, screw ups and borks.
 
-Aims to fix Stock misbehaviours the most seamlessly as possible, trying hard to introduce new ones in the process.
+Aims to fix Stock misbehaviours the most seamlessly as possible, trying hard to **do not** introduce new ones in the process. :)
 
 
 ## In a Hurry
@@ -31,9 +31,9 @@ Restless while waiting your favorite Add'On to be updated so you can play withou
 
 So this Add'On is for you.
 
-By installing this thingy, unsolved bugs and mishaps from KSP Development Team will be fixed or at least worked around, saving Add'On Authors from the hassle to handle them themselves - most o the time without introducing new ones. :)
+By installing this thingy, unsolved bugs and mishaps from KSP Development Team will be fixed or at least worked around, saving Add'On Authors from the hassle to handle them themselves - most of the time without introducing new ones. :)
 
-It aims to need minimal coupling with existent code, as well to be selectively injected on the broken parts in order to prevent *unholly intercations with third-party modules* that decide to fix things their own way.
+It aims to need minimal coupling with existent code, as well to be selectively injected on the affected parts in order to prevent *unholy interactions with third-party modules* that decide to fix things their own way.
 
 Currently, the following fixes are available once installed:
 
@@ -44,11 +44,11 @@ Currently, the following fixes are available once installed:
 * Fuel Switches
 	+ **Some** Fuel Switches suffers from the same problem as TweakScale above. They are also fixed by KSP-Recall
 * Heading Drifting on crafts at rest
-	+ From KSP 1.8 and above, crafts started to change the Heading at their own, even with parking breaks or no wheels at all!
-	+ KSP-Recall now have a work around for this.
+	+ From KSP 1.8 and above, crafts started to change the Heading at their own when at rest, even with parking breaks or no wheels at all!
+	+ KSP-Recall now has a workaround for this.
 * More to come as a Need to Code basis.
 
-Fixes not needed on the current KSP instalment **are not applied**. So it's safe to just install KSP-Recall on anything you have (besides wasting a bit more time on the loading).
+Fixes not needed on the current KSP instalment **are not applied**. So it's safe to just install KSP-Recall on anything you have (besides wasting a tiny little bit more time on the loading).
 
 
 ## For End Users
@@ -86,7 +86,7 @@ On TweakScale's [Forum thread](https://forum.kerbalspaceprogram.com/index.php?/t
 
 KSP-Recall introduces a new work around for this problem, detecting when the Heading drift is unwanted and canceling it.
 
-It **does not** fixes, yet, the drift induced by the wheels itself (that were being summed up with this one).
+It **does not** fixes, specifically, the drift induced by the wheels itself, but helps on preventing situations where the wheels problem would be triggered.
 
 
 ## For Add'On Authors
