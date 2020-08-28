@@ -1,5 +1,9 @@
 # KSP-Recall :: Change Log
 
+* 2020-0827: 0.0.4.4 (LisiasT) for KSP >= 1.8.0
+	+ Some tool (and I'm hunting this \*\*\*\*), with all its wisdom, decided to "help me" adding silently a configuration that automatically converts EoL between UNIX and Windows. And did the stunt on a DLL.
+		+ This release fixes the DLL.
+		+ Full history on [Forum](https://forum.kerbalspaceprogram.com/index.php?/topic/179030-ksp-141-tweakscale-under-lisias-management-24321-2020-00804/&do=findComment&comment=3845367). 
 * 2020-0817: 0.0.4.3 (LisiasT) for KSP >= 1.8.0
 	+ Fixes an annoying situation where Decouplers and Docking Ports with `Driftless` blocks fuel to engines above them on the stack. 
 * 2020-0817: 0.0.4.2 (LisiasT) for KSP >= 1.8.0 PRE-RELEASE
