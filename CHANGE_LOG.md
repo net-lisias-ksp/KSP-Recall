@@ -1,5 +1,8 @@
 # KSP-Recall :: Change Log
 
+* 2020-1220: 0.0.5.0 (LisiasT) for KSP >= 1.8.0
+	+ Preventing installing Driftless on KSP 1.11.
+		- Check [Issue #10](https://github.com/net-lisias-ksp/KSP-Recall/issues/10)
 * 2020-0827: 0.0.4.4 (LisiasT) for KSP >= 1.8.0
 	+ Some tool (and I'm hunting this \*\*\*\*), with all its wisdom, decided to "help me" adding silently a configuration that automatically converts EoL between UNIX and Windows. And did the stunt on a DLL.
 		+ This release fixes the DLL.
