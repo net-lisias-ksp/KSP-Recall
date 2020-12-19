@@ -35,7 +35,7 @@ namespace KSP_Recall
 			try
 			{
 				KSPe.Util.Compatibility.Check<Startup>(typeof(Version), typeof(Configuration));
-				KSPe.Util.Installation.Check<Startup>("999_KSP-Recall");
+				KSPe.Util.Installation.Check<Startup>("KSP-Recall", "999_KSP-Recall", null);
 			}
 			catch (KSPe.Util.InstallmentException e)
 			{
