@@ -1,6 +1,6 @@
 ﻿/*
 	This file is part of KSP-Recall
-	(C) 2020 Lisias T : http://lisias.net <support@lisias.net>
+	(C) 2020-2021 Lisias T : http://lisias.net <support@lisias.net>
 
 	KSP-Recall is double licensed, as follows:
 
