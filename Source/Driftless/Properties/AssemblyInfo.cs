@@ -7,9 +7,9 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyTitle("KSP-Recall :: Driftless")]
 [assembly: AssemblyDescription("<TBD>")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("L Aerospace KSP Division")]
+[assembly: AssemblyCompany(KSP_Recall.Version.Company)]
 [assembly: AssemblyProduct("Driftless")]
-[assembly: AssemblyCopyright("© 2020 LisiasT")]
+[assembly: AssemblyCopyright(KSP_Recall.Version.Copyight)]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

@@ -88,5 +88,7 @@ namespace <#= PROJECT_NAME #>
 #else
 		public const string Text = Number + " /L Alpha";
 #endif
+		public const string Company = "L Aerospace KSP Division";
+		public const string Copyight = "© 2020 LisiasT"";
 	}
 }
