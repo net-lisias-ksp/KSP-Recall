@@ -24,7 +24,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace KSP_Recall
+namespace KSP_Recall { namespace Resourcefull 
 
 {
 	[KSPAddon(KSPAddon.Startup.EditorAny, false)]
@@ -98,4 +98,4 @@ namespace KSP_Recall
 				;
 		}
 	}
-}
+} }

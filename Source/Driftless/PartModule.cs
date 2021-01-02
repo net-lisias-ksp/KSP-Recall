@@ -23,7 +23,7 @@
 using System;
 using UnityEngine;
 
-namespace KSP_Recall
+namespace KSP_Recall { namespace Drfitless
 {
 	public class Driftless : PartModule
 	{
@@ -154,4 +154,4 @@ namespace KSP_Recall
 				;
 		}
 	}
-}
+} }

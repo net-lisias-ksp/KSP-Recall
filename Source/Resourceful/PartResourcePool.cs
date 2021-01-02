@@ -23,7 +23,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace KSP_Recall
+namespace KSP_Recall { namespace Resourcefull
 {
 	internal class Pool
 	{
@@ -118,4 +118,4 @@ namespace KSP_Recall
 
 		internal static readonly Resource_List RESOURCES = new Resource_List();
 	}
-}
+} }

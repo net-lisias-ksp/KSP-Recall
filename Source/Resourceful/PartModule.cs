@@ -22,7 +22,7 @@
 */
 using System;
 
-namespace KSP_Recall
+namespace KSP_Recall { namespace Resourcefull 
 {
 	public class Resourceful : PartModule
 	{
@@ -139,4 +139,4 @@ namespace KSP_Recall
 				;
 		}
 	}
-}
+} }
