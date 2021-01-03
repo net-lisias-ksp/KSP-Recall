@@ -53,7 +53,14 @@ namespace KSP_Recall
 
 		private static bool checkForAttached()
 		{
-			return (KSPe.Util.KSP.Version.Current >= KSPe.Util.KSP.Version.FindByVersion(1,9,0));
+			//return (KSPe.Util.KSP.Version.Current >= KSPe.Util.KSP.Version.FindByVersion(1,9,0));
+
+			// Gave up on tackling this down on Recall. I didn't managed to zero in the exact point in which
+			// the attach nodes are being reverted to prefab on the KSP 1.11.x VAB/SPH, so I decided to
+			// brute force my way (again) on TweakScale - a less than ideal solution, as I was hoping to
+			// implement something that could be resusable by third-parties too. :(
+			// The not so bad news is that the change doesn't breaks the add'ons on previous KSP versions, so...
+			return false; 
 		}
 	}
 }
