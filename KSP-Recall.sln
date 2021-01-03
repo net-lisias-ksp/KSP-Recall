@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Resourceful", "Source\Resou
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Driftless", "Source\Driftless\Driftless.csproj", "{736DD88D-D8C8-45C1-9079-864DFCBEC2EF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Attached", "Source\Attached\Attached.csproj", "{FE47E629-DB24-4518-B6A0-799BA3E758D6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +31,10 @@ Global
 		{736DD88D-D8C8-45C1-9079-864DFCBEC2EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{736DD88D-D8C8-45C1-9079-864DFCBEC2EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{736DD88D-D8C8-45C1-9079-864DFCBEC2EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE47E629-DB24-4518-B6A0-799BA3E758D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE47E629-DB24-4518-B6A0-799BA3E758D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE47E629-DB24-4518-B6A0-799BA3E758D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE47E629-DB24-4518-B6A0-799BA3E758D6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		Policies = $0

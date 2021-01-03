@@ -33,6 +33,7 @@ namespace KSP_Recall
 
 			if (checkForResourceful()) tags.Add("KSPRECALL-RESOURCEFUL");
 			if (checkForDriftless()) tags.Add("KSPRECALL-DRIFTLESS");
+			if (checkForAttached()) tags.Add("KSPRECALL-ATTACHED");
 
 			return tags.ToArray();
 		}
@@ -48,6 +49,11 @@ namespace KSP_Recall
 				&&
 				(KSPe.Util.KSP.Version.Current < KSPe.Util.KSP.Version.FindByVersion(1,11,0))
 			;
+		}
+
+		private static bool checkForAttached()
+		{
+			return (KSPe.Util.KSP.Version.Current >= KSPe.Util.KSP.Version.FindByVersion(1,9,0));
 		}
 	}
 }
