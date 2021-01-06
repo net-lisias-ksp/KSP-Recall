@@ -7,10 +7,10 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyTitle("KSP-Recall :: Resourceful")]
 [assembly: AssemblyDescription("<TBD>")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany(KSP_Recall.Version.Company)]
-[assembly: AssemblyProduct("Resourceful")]
-[assembly: AssemblyCopyright(KSP_Recall.Version.Copyight)]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCompany(KSP_Recall.LegalMamboJambo.Company)]
+[assembly: AssemblyProduct(KSP_Recall.LegalMamboJambo.Product)]
+[assembly: AssemblyCopyright(KSP_Recall.LegalMamboJambo.Copyight)]
+[assembly: AssemblyTrademark(KSP_Recall.LegalMamboJambo.Trademark)]
 [assembly: AssemblyCulture("")]
 
 // The assembly version has the format "{Major}.{Minor}.{Build}.{Revision}".

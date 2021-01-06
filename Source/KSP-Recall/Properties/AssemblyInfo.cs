@@ -7,10 +7,10 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyTitle("KSP-Recall")]
 [assembly: AssemblyDescription("<TBD>")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("L Aerospace KSP Division")]
-[assembly: AssemblyProduct("KSP_Recall")]
-[assembly: AssemblyCopyright("© 2020 LisiasT")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCompany(KSP_Recall.LegalMamboJambo.Company)]
+[assembly: AssemblyProduct(KSP_Recall.LegalMamboJambo.Product)]
+[assembly: AssemblyCopyright(KSP_Recall.LegalMamboJambo.Copyight)]
+[assembly: AssemblyTrademark(KSP_Recall.LegalMamboJambo.Trademark)]
 [assembly: AssemblyCulture("")]
 
 // The assembly version has the format "{Major}.{Minor}.{Build}.{Revision}".

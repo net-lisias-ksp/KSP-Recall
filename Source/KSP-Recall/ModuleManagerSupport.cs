@@ -34,6 +34,7 @@ namespace KSP_Recall
 			if (checkForResourceful()) tags.Add("KSPRECALL-RESOURCEFUL");
 			if (checkForDriftless()) tags.Add("KSPRECALL-DRIFTLESS");
 			if (checkForAttached()) tags.Add("KSPRECALL-ATTACHED");
+			if (checkForChillingOut()) tags.Add("KSPRECALL-CHILLINGOUT");
 
 			return tags.ToArray();
 		}
@@ -61,6 +62,11 @@ namespace KSP_Recall
 			// implement something that could be resusable by third-parties too. :(
 			// The not so bad news is that the change doesn't breaks the add'ons on previous KSP versions, so...
 			return false; 
+		}
+
+		private static bool checkForChillingOut()
+		{
+			return (KSPe.Util.KSP.Version.Current >= KSPe.Util.KSP.Version.FindByVersion(1,11,0));
 		}
 	}
 }
