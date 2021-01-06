@@ -1,5 +1,10 @@
 # KSP-Recall :: Changes
 
+* 2021-0106: 0.0.6.0 **BETA** (LisiasT) for KSP >= 1.8.0
+	+ Preliminary attempt to overcome the new bug on launching from KSP 1.11
+	+ Check the following posts for more information:
+		- [KAX](https://forum.kerbalspaceprogram.com/index.php?/topic/180268-131/page/9/&tab=comments#comment-3901075)
+		- [Impossible Innovations](https://forum.kerbalspaceprogram.com/index.php?/topic/175694-131/&do=findComment&comment=3901072).  
 * 2020-1220: 0.0.5.0 (LisiasT) for KSP >= 1.8.0
 	+ Preventing installing Driftless on KSP 1.11.
 		- Check [Issue #10](https://github.com/net-lisias-ksp/KSP-Recall/issues/10)
