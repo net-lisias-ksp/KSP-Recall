@@ -8,7 +8,7 @@
     <RootNamespace>Driftless</RootNamespace>
     <AssemblyName>Driftless</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <BaseIntermediateOutputPath>..\..\obj\KSP-Recall</BaseIntermediateOutputPath>
+    <BaseIntermediateOutputPath>..\..\obj\Driftless</BaseIntermediateOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>

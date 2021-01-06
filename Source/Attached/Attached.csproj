@@ -8,7 +8,7 @@
     <RootNamespace>Attached</RootNamespace>
     <AssemblyName>Attached</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <BaseIntermediateOutputPath>..\..\obj\KSP-Recall</BaseIntermediateOutputPath>
+    <BaseIntermediateOutputPath>..\..\obj\Attached</BaseIntermediateOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
