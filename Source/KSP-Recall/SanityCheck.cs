@@ -35,6 +35,7 @@ namespace KSP_Recall
 		private const string RESOURCEFUL_MODULE_NAME = "Resourceful";
 		private const string DRIFTLESS_MODULE_NAME = "Driftless";
 		private const string ATTACHED_MODULE_NAME = "Attached";
+		private const string CHILLINGOUT_MODULE_NAME = "ChillingOut";
 
 		internal static bool isConcluded = false;
 
@@ -73,6 +74,7 @@ namespace KSP_Recall
 			int parts_with_resourceful_count = 0;
 			int parts_with_driftless_count = 0;
 			int parts_with_attached_count = 0;
+			int parts_with_chillingout_count = 0;
 			int showstoppers_count = 0;
 
 			foreach (AvailablePart p in PartLoader.LoadedPartsList)
@@ -92,6 +94,7 @@ namespace KSP_Recall
 					bool containsResourceful = false;
 					bool containsDriftless = false;
 					bool containsAttached = false;
+					bool containsChillingOut = false;
 					Exception culprit = null;
 					
 					prefab = p.partPrefab; // Reaching the prefab here in the case another Mod recreates it from zero. If such hypothecical mod recreates the whole part, we're doomed no matter what.
@@ -104,6 +107,7 @@ namespace KSP_Recall
 							containsResourceful = prefab.Modules.Contains(RESOURCEFUL_MODULE_NAME);
 							containsDriftless = prefab.Modules.Contains(DRIFTLESS_MODULE_NAME);
 							containsAttached = prefab.Modules.Contains(ATTACHED_MODULE_NAME);
+							containsChillingOut = prefab.Modules.Contains(CHILLINGOUT_MODULE_NAME);
 							++total_count;
 							break;  // Yeah. This while stunt was done just to be able to do this. All the rest is plain clutter! :D 
 						}
@@ -148,6 +152,14 @@ namespace KSP_Recall
 							prefab.RemoveModule(prefab.Modules[ATTACHED_MODULE_NAME]);
 						}
 						else ++parts_with_attached_count;
+
+						if (containsChillingOut && (null != (due = this.checkForChillingOut(prefab))))
+						{
+							Log.info("Removing {0} support for {1} ({2}) due {3}.", CHILLINGOUT_MODULE_NAME, p.name, p.title, due);
+							prefab.RemoveModule(prefab.Modules[CHILLINGOUT_MODULE_NAME]);
+						}
+						else ++parts_with_chillingout_count;
+
 					}
 					catch (Exception e)
 					{
@@ -165,7 +177,13 @@ namespace KSP_Recall
 #endif
 			}
 
-			Log.info("SanityCheck Concluded : {0} parts found ; {1} parts using {2} ; {3} parts using {4} ; {5} parts using {6} ; {7} show stoppers detected .", total_count, parts_with_resourceful_count, RESOURCEFUL_MODULE_NAME, parts_with_driftless_count, DRIFTLESS_MODULE_NAME, parts_with_attached_count, ATTACHED_MODULE_NAME, showstoppers_count);
+			Log.info("SanityCheck Concluded : {0} parts found ; {1} parts using {2} ; {3} parts using {4} ; {5} parts using {6} ; {7} parts using {8} ; {9} show stoppers detected ."
+				, total_count
+				, parts_with_resourceful_count, RESOURCEFUL_MODULE_NAME
+				, parts_with_driftless_count, DRIFTLESS_MODULE_NAME
+				, parts_with_attached_count, ATTACHED_MODULE_NAME
+				, parts_with_chillingout_count, CHILLINGOUT_MODULE_NAME
+				, showstoppers_count);
 			SanityCheck.isConcluded = true;
 
 			if (showstoppers_count > 0)
@@ -206,6 +224,15 @@ namespace KSP_Recall
 			Log.dbg("Checking {0} Sanity for {1} at {2}", ATTACHED_MODULE_NAME, p.name, p.partInfo.partUrl ?? "<NO URL>");
 
 			if ( KSPe.Util.KSP.Version.Current < KSPe.Util.KSP.Version.FindByVersion(1,8,0) ) return MSG_KSP_NO_SUPPORTED;
+
+			return null;
+		}
+
+		private string checkForChillingOut(Part p)
+		{
+			Log.dbg("Checking {0} Sanity for {1} at {2}", CHILLINGOUT_MODULE_NAME, p.name, p.partInfo.partUrl ?? "<NO URL>");
+
+			if ( KSPe.Util.KSP.Version.Current != KSPe.Util.KSP.Version.FindByVersion(1,11,0) ) return MSG_KSP_NO_SUPPORTED;
 
 			return null;
 		}
