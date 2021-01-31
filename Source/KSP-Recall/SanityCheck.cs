@@ -132,28 +132,28 @@ namespace KSP_Recall
 					{
 						string due = null;
 
-						if (containsResourceful && (null != (due = this.checkForResourceful(prefab))))
+						if (containsResourceful) if (null != (due = this.checkForResourceful(prefab)))
 						{
 							Log.info("Removing {0} support for {1} ({2}) due {3}.", RESOURCEFUL_MODULE_NAME, p.name, p.title, due);
 							prefab.RemoveModule(prefab.Modules[RESOURCEFUL_MODULE_NAME]);
 						}
 						else ++parts_with_resourceful_count;
 
-						if (containsDriftless && (null != (due = this.checkForDriftless(prefab))))
+						if (containsDriftless) if (null != (due = this.checkForDriftless(prefab)))
 						{
 							Log.info("Removing {0} support for {1} ({2}) due {3}.", DRIFTLESS_MODULE_NAME, p.name, p.title, due);
 							prefab.RemoveModule(prefab.Modules[DRIFTLESS_MODULE_NAME]);
 						}
 						else ++parts_with_driftless_count;
 
-						if (containsAttached && (null != (due = this.checkForAttached(prefab))))
+						if (containsAttached) if (null != (due = this.checkForAttached(prefab)))
 						{
 							Log.info("Removing {0} support for {1} ({2}) due {3}.", ATTACHED_MODULE_NAME, p.name, p.title, due);
 							prefab.RemoveModule(prefab.Modules[ATTACHED_MODULE_NAME]);
 						}
 						else ++parts_with_attached_count;
 
-						if (containsChillingOut && (null != (due = this.checkForChillingOut(prefab))))
+						if (containsChillingOut) if (null != (due = this.checkForChillingOut(prefab)))
 						{
 							Log.info("Removing {0} support for {1} ({2}) due {3}.", CHILLINGOUT_MODULE_NAME, p.name, p.title, due);
 							prefab.RemoveModule(prefab.Modules[CHILLINGOUT_MODULE_NAME]);

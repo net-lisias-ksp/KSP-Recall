@@ -85,7 +85,7 @@ namespace KSP_Recall { namespace Resourcefull
 
 		#endregion
 
-		#region Part Events Handlers]
+		#region Part Events Handlers
 
 		[Obsolete("Since I'm an idiot that struggles with the most basic English principles, I inadequately defined the event name on the first public release. Please use OnPartResourcesChanged instead.")]
 		[KSPEvent(guiActive = false, active = true)]
