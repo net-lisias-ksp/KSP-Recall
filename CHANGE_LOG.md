@@ -1,5 +1,9 @@
 # KSP-Recall :: Change Log
 
+* 2021-0209: 0.0.6.1 (LisiasT) for KSP >= 1.8.0
+	+ Updating the KSPe.Light, with a fix on the installment check
+	+ Some minor fixes on the stats of the Sanity Checks.
+	+ Removing the Beta status, the `ChilliongOut` stunt appears to be working fine.
 * 2021-0106: 0.0.6.0 **BETA** (LisiasT) for KSP >= 1.8.0
 	+ Preliminary attempt to overcome the new bug on launching from KSP 1.11
 	+ Check the following posts for more information:
