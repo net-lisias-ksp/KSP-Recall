@@ -143,15 +143,5 @@ namespace KSP_Recall { namespace Driftless
 		}
 
 		private static readonly KSPe.Util.Log.Logger Log = KSPe.Util.Log.Logger.CreateForType<Driftless>("KSP-Recall", "Driftless");
-		static Driftless()
-		{
-			Log.level =
-#if DEBUG
-				KSPe.Util.Log.Level.TRACE
-#else
-				KSPe.Util.Log.Level.INFO
-#endif
-				;
-		}
 	}
 } }

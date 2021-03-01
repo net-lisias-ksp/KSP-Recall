@@ -87,15 +87,5 @@ namespace KSP_Recall { namespace Attached
 		}
 
 		private static KSPe.Util.Log.Logger Log = KSPe.Util.Log.Logger.CreateForType<Attached>("KSP-Recall", "Attached-EditorHelper");
-		static EditorHelper()
-		{
-			Log.level =
-#if DEBUG
-				KSPe.Util.Log.Level.TRACE
-#else
-				KSPe.Util.Log.Level.INFO
-#endif
-				;
-		}
 	}
 } }

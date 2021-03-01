@@ -29,7 +29,6 @@ namespace KSP_Recall
 	{
 		private void Start()
 		{
-			Log.init();
 			Log.force("Version {0} running on KSP {1}", Version.Text, KSPe.Util.KSP.Version.Current.ToString());
 
 			try

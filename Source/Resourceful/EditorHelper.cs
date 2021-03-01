@@ -87,15 +87,5 @@ namespace KSP_Recall { namespace Resourcefull
 		}
 
 		private static KSPe.Util.Log.Logger Log = KSPe.Util.Log.Logger.CreateForType<Resourceful>("KSP-Recall", "Resoureful-EditorHelper");
-		static EditorHelper()
-		{
-			Log.level =
-#if DEBUG
-				KSPe.Util.Log.Level.TRACE
-#else
-				KSPe.Util.Log.Level.INFO
-#endif
-				;
-		}
 	}
 } }

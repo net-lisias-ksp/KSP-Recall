@@ -31,10 +31,11 @@ namespace KSP_Recall
 		{
 			List<string> tags = new List<string>();
 
-			if (checkForResourceful()) tags.Add("KSPRECALL-RESOURCEFUL");
-			if (checkForDriftless()) tags.Add("KSPRECALL-DRIFTLESS");
-			if (checkForAttached()) tags.Add("KSPRECALL-ATTACHED");
-			if (checkForChillingOut()) tags.Add("KSPRECALL-CHILLINGOUT");
+			if (checkForResourceful())	tags.Add("KSPRECALL-RESOURCEFUL");
+			if (checkForDriftless())	tags.Add("KSPRECALL-DRIFTLESS");
+			if (checkForAttached())		tags.Add("KSPRECALL-ATTACHED");
+			if (checkForChillingOut())	tags.Add("KSPRECALL-CHILLINGOUT");
+			if (checkForRefunding())	tags.Add("KSPRECALL-REFUNDING");
 
 			return tags.ToArray();
 		}
