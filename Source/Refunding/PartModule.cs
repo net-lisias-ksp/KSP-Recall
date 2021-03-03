@@ -171,9 +171,15 @@ namespace KSP_Recall { namespace Refunds
 
 			double scaledValue = 10000 * this.costFix; // To compensate the 0.0001 uniCost of the PartReourceDefinition
 
+			// One of the ugliest hacks I even did on KSP. Pretty nasty!! :P
+
+			// This will prevent the cost of the Refunding from being subtracked from the cost of the Part, what would counter-attack
+			// the fix below
 			FieldInfo field = typeof(PartResource).GetField("maxAmount", BindingFlags.Instance | BindingFlags.Public);
 			field.SetValue(pr, 0d);
 
+			// This effectivelly "steals back" the Funds lost by the KSP's current stunt (using the prefab's cost on recovering costs)
+			// See https://github.com/net-lisias-ksp/KSP-Recall/issues/12
 			field = typeof(PartResource).GetField("amount", BindingFlags.Instance | BindingFlags.Public);
 			field.SetValue(pr, scaledValue);
 
