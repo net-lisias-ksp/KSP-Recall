@@ -1,5 +1,10 @@
 # KSP-Recall :: Changes
 
+* 2021-0302: 0.0.7.0 **BETA** (LisiasT) for KSP >= 1.8.0
+	+ Implements a ~~ugly hack~~, I mean, a workaround for the KSP 1.11.x bug on recovering funds described on Issue [#12](https://github.com/net-lisias-ksp/KSP-Recall/issues/12).
+	+ **Attention please**
+		- **DO NOT** use this on "production". This thing may be unsafe, as I used some dirty tricks that can backfire later.
+		- Not all add'ons are guaranteed to work yet, I need to study some affected add'ons in order to detect the most simple way to support them. 
 * 2021-0209: 0.0.6.1 (LisiasT) for KSP >= 1.8.0
 	+ Updating the KSPe.Light, with a fix on the installment check
 	+ Some minor fixes on the stats of the Sanity Checks.
