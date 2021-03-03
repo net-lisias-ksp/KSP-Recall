@@ -1,29 +1,31 @@
 ## ANNOUNCE
 
-[KSP Recall 0.0.4.3](https://github.com/net-lisias-ksp/KSP-Recall/releases) in on the Wild, featuring:
+[KSP Recall 0.0.7.0 **BETA**](https://github.com/net-lisias-ksp/KSP-Recall/releases/tag/PRE-RELEASE%2F0.0.7.0) in on the Wild, featuring:
 
-* A fix for the infinite NRE on the *dedriftification* - some parts just don't have a `RigidBody`, and I didn't told the code about it.
-	+ And now without blocking fuel when applied on Decouplers and Docking Ports below engines on staging. 
-* Saving a tiny bit of CPU doing smarter handling of inactive and *rigidbodyless* parts.
+* A (dirty) workaround for the KSP 1.11.x faulty calculation of Funds on recovering crafts (Issue [#12](https://github.com/net-lisias-ksp/KSP-Recall/issues/12))
 
-On my tests, I managed to leave a craft alone for 15 minutes without drifting a single degree, but once I got about 22 degrees after 45 minutes (still better than 1 degree each 2 or 3 seconds, though) - it all depends of your CPU and how many parts are being active on the scene.
+A new module, `Refunding`, as well a new "Resource" was introduced for KSP 1.11, to counter attack the miscalculation mentioned above.
 
-Kerbals are just another part on the scene. Depending on how many parts are in physics range (and their position on the list), they will or will not drift even with Recall installed.
+When recovering the craft, the badly calculated refunds will still be there, but an additional Resource called "Refunding" will be present ~~stealing~~ giving back the losses.
 
-For sadistic Kerbonauts that don't refrain themselves from torturing their gaming machines, adjusting the *Maximum Physics Delta-Time Per Frame* may render good results. If your CPU is near the limit (flickering the timestamp on top left to yellow), you may want to increase it a bit.
+![](https://user-images.githubusercontent.com/64334/109741166-49a36080-7bab-11eb-8b15-1fe0741f53d4.png)
 
-Constant CPU overload (time stamp on top left is always yellow or even red) are currently known to heavily inducing drifting, as this situation apparently aborts the FixedUpdate on some Modules (and so `Driftless` is rendered useless).
+### DANGER, WILL ROBINSON, DANGER
 
-Note: Wheels and Landing Legs **also** drifts, but due different reasons. However, it was realised that `Driftless` prevents, most of the time, the situation that triggers the Wheels and Legs drift. So it ended up being a fix, after all. :)
+This is a preliminary **BETA** version intended to be tested on the field. The ~~kludge~~, I mean, the workaround worked on controlled environments, but I need to test this thing on the field in order to check both the effectiveness and safety of the stunt.
 
-Finally, the `Driftless` PAW now appears only on flight. `Resourceful` still appears only on Editor.
+**PLEASE, PRETTY PLEASE** USE THIS ONLY ON DISPOSABLE SAVEGAMES.
 
-Good Luck!  
+Additionally, the solution doesn't works, **YET**, for every add'on on the wild - currently PartModules that changes the cost of the part on the flight scene may be missed. The next Release, 0.0.7.1, will support them but now I need to check how this thing will behave on the field first.
+
+Add'On authors that make use of the `IPartCostModifier` please report your findings on the Issue [#12](https://github.com/net-lisias-ksp/KSP-Recall/issues/12).
+
+I need your feedback.
 
 - - - 
 
 This Release will be published using the following Schedule:
 
 * GitHub, reaching manual installers first and users of KSP-AVC. Right now.
-* CurseForge, Right now.
-* SpaceDock (and CKAN users), Right now.
+* CurseForge, will not be published.
+* SpaceDock (and CKAN users), will not be published.
