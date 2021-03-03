@@ -88,8 +88,7 @@ namespace KSP_Recall { namespace Refunds
 			switch(HighLogic.LoadedScene)
 			{
 				case GameScenes.FLIGHT:
-					this.Recalculate();
-					this.UpdateResource();
+					this.SynchronousFullUpdate();
 					break;
 				case GameScenes.EDITOR:
 					this.RestoreResource();
@@ -112,16 +111,24 @@ namespace KSP_Recall { namespace Refunds
 		[KSPEvent(guiActive = false, active = true)]
 		void OnPartScaleChanged(BaseEventDetails data)
 		{
-			//int instanceId = data.Get<int>("InstanceID");
-			//if (this.part.GetInstanceID() != instanceId) return;
-
-			//Type issuer = data.Get<Type>("issuer");
-			//Log.dbg("OnPartResourcesChanged for InstanceId {0:X}, issued by {1}", instanceId, issuer);
 			Log.dbg("OnPartScaleChanged");
-			this.enabled = true;
+			this.AsynchronousFullUpdate();
 		}
 
 		#endregion
+
+		// Should be called while flight, where you don't need to get the module updated on spot.
+		internal void AsynchronousFullUpdate()
+		{
+			this.enabled = true;
+		}
+
+		// Should be called before iminent situations (as flight termination) where you *NEED* the thing updated before something "terminal" happens.
+		internal void SynchronousFullUpdate()
+		{
+			this.Recalculate();
+			this.UpdateResource();
+		}
 
 		internal void Recalculate()
 		{
