@@ -1,10 +1,12 @@
 # KSP-Recall :: Change Log
 
-* 2021-0303: 0.0.7.1 **BETA** (LisiasT) for KSP >= 1.8.0
-	+ Enhances that ~~ugly hack~~, I mean, a workaround for the KSP 1.11.x bug on recovering funds described on Issue [#12](https://github.com/net-lisias-ksp/KSP-Recall/issues/12).
+* 2021-0303: 0.0.7.2 **BETA** (LisiasT) for KSP >= 1.8.0
+	+ Enhances further more that ~~ugly hack~~, I mean, a workaround for the KSP 1.11.x bug on recovering funds described on Issue [#12](https://github.com/net-lisias-ksp/KSP-Recall/issues/12).
 		- Most, if not all, Add'Ons are expected to be supported directly or indirectly this time. 
 	+ **Attention please**
 		- **DO NOT** use this on "production". This thing may be unsafe, as I used some dirty tricks that can backfire later.
+* 2021-0303: 0.0.7.1 **BETA** (LisiasT) for KSP >= 1.8.0
+	+ **DITCHED** due a mishap on the craft charge on Launch 
 * 2021-0302: 0.0.7.0 **BETA** (LisiasT) for KSP >= 1.8.0
 	+ Implements a ~~ugly hack~~, I mean, a workaround for the KSP 1.11.x bug on recovering funds described on Issue [#12](https://github.com/net-lisias-ksp/KSP-Recall/issues/12).
 	+ **Attention please**
