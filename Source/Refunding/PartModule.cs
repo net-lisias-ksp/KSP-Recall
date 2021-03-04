@@ -50,6 +50,10 @@ namespace KSP_Recall { namespace Refunds
 			base.OnAwake();
 			// Here we have a problem. Some parts have the this.part.partInfo set, others don't.
 			// Don't know why, and this is worrying - TweakScale depends on this! Is this a race condition?
+
+			// Keep this inactive until someone need the fixed costs, to avoiding being incorrectly charged on Launch
+			// (we are charged after the Craft it's initialised on launch)
+			this.enabled = false;
 		}
 
 		public override void OnStart(StartState state)
@@ -70,7 +74,7 @@ namespace KSP_Recall { namespace Refunds
 			base.OnLoad(node);
 			if (null == this.part.partInfo)
 				this.prefab = this.part;
-			this.enabled = false;
+			this.RestoreResource();
  		}
 
 		public override void OnSave(ConfigNode node)
@@ -108,12 +112,16 @@ namespace KSP_Recall { namespace Refunds
 
 		#region Part Events Handlers
 
+#if false
+		// This apparently is not needed, and we need to delay this thing anyway to avoiding initialising before
+		// KSP charges for Launch, and it's easier to handle this without reluing on GameEvents.OnFundsChanged.
 		[KSPEvent(guiActive = false, active = true)]
 		void OnPartScaleChanged(BaseEventDetails data)
 		{
 			Log.dbg("OnPartScaleChanged");
 			this.AsynchronousFullUpdate();
 		}
+#endif
 
 		#endregion
 
@@ -176,7 +184,7 @@ namespace KSP_Recall { namespace Refunds
 			Log.dbg("Before {0} {1} {2} {3}", pr.ToString(), pr.amount, pr.maxAmount, pr.info.unitCost);
 			//pr.SetInfo(this.CreateCustomResourceDef(this.costFix/pr.maxAmount)); // TweakScale scales the Resource MaxAmount, so we need to divide the cost by tje current maxAmount/amount
 
-			double scaledValue = 10000 * this.costFix; // To compensate the 0.0001 uniCost of the PartReourceDefinition
+			double scaledValue = (1/pr.info.unitCost) * this.costFix; // To compensate the 0.0001 uniCost of the PartReourceDefinition
 
 			// One of the ugliest hacks I even did on KSP. Pretty nasty!! :P
 
@@ -197,10 +205,10 @@ namespace KSP_Recall { namespace Refunds
 		private void RestoreResource()
 		{
 			PartResource pr = this.part.Resources.Get(RESOURCENAME);
-			if (0d == pr.maxAmount) return;
+			if (1d == pr.maxAmount) return;
 
 			FieldInfo field = typeof(PartResource).GetField("maxAmount", BindingFlags.Instance | BindingFlags.Public);
-			field.SetValue(pr, 0d);
+			field.SetValue(pr, 1d);
 			pr.amount = 0;
 		}
 #else
