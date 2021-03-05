@@ -37,16 +37,17 @@ It aims to need minimal coupling with existent code, as well to be selectively i
 
 Currently, the following fixes are available once installed:
 
-* TweakScale:
-	+ KSP 1.9.x resets resources to prefab while cloning parts [#96](https://github.com/net-lisias-ksp/TweakScale/issues/96)
-* VAP/SPH Editor
-	+ When cloning parts (using or not symmetry), KSP 1.9.x "forgets" the amount of Resources set by the user. KSP Recall fixes that.
-* Fuel Switches
-	+ **Some** Fuel Switches suffers from the same problem as TweakScale above. They are also fixed by KSP-Recall
-* Heading Drifting on crafts at rest
-	+ From KSP 1.8 and above, crafts started to change the Heading at their own when at rest, even with parking breaks or no wheels at all!
-	+ KSP-Recall now has a workaround for this.
-* Seamless fix for Add'Ons that implements `IPastCostModifier` running on KSP 1.11.x
+* Resources being reset to prefab when a part has his Resources changed by an Add'On (as TweakScale) (i.e., by Alt+Click a part, or by using symmetry) on KSP 1.9.x . 
+	+ [KSP 1.9.x resets resources to prefab while cloning parts](https://github.com/net-lisias-ksp/KSP-Recall/issues/1)
+		- This solution aims to be reusable to any Add'On that have the same problem with a simple two liner.
+	+ Some Add'Ons that supports TweakScale by using `Scale_Redist.dll` are also fixed by collateral effect.
+* Losing Resources' amount settings when cloning parts (Alt+Click) on KSP 1.9.x
+	+ As described [here](https://forum.kerbalspaceprogram.com/index.php?/topic/193875-*).
+* Parked crafts (even without wheels) drifting the Heading randomly on KSP >= 1.8
+	+ Crafts with wheels also drifts, but due a different problem - still to be tackled down.
+	+ This was discussed [here](https://forum.kerbalspaceprogram.com/index.php?/topic/179030-ksp-141-tweakscale-under-lisias-management-24321-2020-00804/&do=findComment&comment=3836931).
+* I.C.A. (Instantaneous Craft Annihilation) on KSP 1.11.0 when launching or switching back to vessels with some older parts, when the vessel is over a static with collider (does not happens when the craft is directly over the PQS ground)
+* Seamless fix for Add'Ons that [implements `IPastCostModifier` running on KSP 1.11.x](https://github.com/net-lisias-ksp/KSP-Recall/issues/12)
 	+ [Darth Pointer's Pay to Play](https://github.com/DarthPointer/PayToPlay/)
 	+ [FreeThinker's Interstellar Fuel Switch](https://github.com/sswelm/KSP-Interstellar-Extended/)
 	+ [allista's Cargo Accelerators](https://github.com/allista/CargoAccelerators)
