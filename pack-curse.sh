@@ -15,7 +15,9 @@ FILE=${pwd}/Archive/$PACKAGE-$VERSION${PROJECT_STATE}-CurseForge.zip
 echo $FILE
 clean
 cd GameData
-zip -r $FILE ./TweakScale/* -x ".*"
-zip -r $FILE ./999_Scale_Redist.dll
+
+zip -r $FILE ./999_KSP-Recall/* -x ".*"
+zip -r $FILE ./ModuleManagerWatchDog/* -x ".*"
+zip -r $FILE ./666_ModuleManagerWatchDog.dll
 zip -d $FILE __MACOSX "**/.DS_Store"
 cd $pwd
