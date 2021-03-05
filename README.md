@@ -46,7 +46,17 @@ Currently, the following fixes are available once installed:
 * Heading Drifting on crafts at rest
 	+ From KSP 1.8 and above, crafts started to change the Heading at their own when at rest, even with parking breaks or no wheels at all!
 	+ KSP-Recall now has a workaround for this.
-* More to come as a Need to Code basis.
+* Seamless fix for Add'Ons that implements `IPastCostModifier` running on KSP 1.11.x
+	+ [Darth Pointer's Pay to Play](https://github.com/DarthPointer/PayToPlay/)
+	+ [FreeThinker's Interstellar Fuel Switch](https://github.com/sswelm/KSP-Interstellar-Extended/)
+	+ [allista's Cargo Accelerators](https://github.com/allista/CargoAccelerators)
+	+ [All Angel 125 Add'Ons that uses WildBlueTools](https://github.com/Angel-125/WildBlueTools/)
+	+ [Nathan Kell's Modular Fuel System](https://github.com/NathanKell/ModularFuelSystem/) (and Real Fuels)
+	+ [IgorZ's Kerbal Inventory System](https://github.com/ihsoft/KIS)
+	+ [KOS](https://github.com/KSP-KOS/KOS)
+	+ [Kerbalism](https://github.com/Kerbalism/Kerbalism)
+	+ [And many, many others](https://github.com/search?o=desc&p=3&q=IPartCostModifier&s=indexed&type=Code) - perhaps Squad's own modules (who knows?)
+* More to come as a Needed to Code basis.
 
 Fixes not needed on the current KSP instalment **are not applied**. So it's safe to just install KSP-Recall on anything you have (besides wasting a tiny little bit more time on the loading).
 
@@ -87,6 +97,14 @@ On TweakScale's [Forum thread](https://forum.kerbalspaceprogram.com/index.php?/t
 KSP-Recall introduces a new work around for this problem, detecting when the Heading drift is unwanted and canceling it.
 
 It **does not** fixes, specifically, the drift induced by the wheels itself, but helps on preventing situations where the wheels problem would be triggered.
+
+### Fixing Costs refunds when Recovering Crafts on KSP 1.11.x
+
+On TweakScale's [Forum thread](https://forum.kerbalspaceprogram.com/index.php?/topic/179030-*/&do=findComment&comment=3934078), a discussion about a problem introduced on KSP 1.1.0 that made refunds on craft recovering problematic - as the user end up losing any extra costs a module implements for the part using the `IPartCostModifier`.
+
+Many, many add'ons are affected by this problem.
+
+KSP-Recall solves this by implementing a new module, `Refunding`, that makes use of a meta-resource (also called `Refunding`) to trick the game cost recovering algorithms in giving you back the Funds it miscalculates.
 
 
 ## For Add'On Authors
