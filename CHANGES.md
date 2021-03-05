@@ -1,5 +1,9 @@
 # KSP-Recall :: Changes
 
+* 2021-0305: 0.0.7.3 (LisiasT) for KSP >= 1.8.0
+	+ (Properly) Implements a ~~ugly hack~~, I mean, a workaround for the KSP 1.11.x bug on recovering funds described on Issue [#12](https://github.com/net-lisias-ksp/KSP-Recall/issues/12).
+		- Thanks a lot to [firethorn6](https://forum.kerbalspaceprogram.com/index.php?/profile/210389-firethorn6/) and [DarthPointer](https://forum.kerbalspaceprogram.com/index.php?/profile/203932-darthpointer/) for reporting the problem and further help on diagnosing it and testing the solution!
+	+ Fixes a deployment mishap for CurseForge
 * 2021-0303: 0.0.7.2 **BETA** (LisiasT) for KSP >= 1.8.0
 	+ Enhances further more that ~~ugly hack~~, I mean, a workaround for the KSP 1.11.x bug on recovering funds described on Issue [#12](https://github.com/net-lisias-ksp/KSP-Recall/issues/12).
 		- Most, if not all, Add'Ons are expected to be supported directly or indirectly this time. 
