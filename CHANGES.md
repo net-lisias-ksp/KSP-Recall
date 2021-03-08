@@ -1,6 +1,6 @@
 # KSP-Recall :: Changes
 
-* 2021-0307: 0.0.7.4 (LisiasT) for KSP >= 1.8.0
+* 2021-0308: 0.0.7.5 (LisiasT) for KSP >= 1.8.0
 	+ Fixed a pretty lame mistake on initiating the `Refund` PartModule.
 * 2021-0305: 0.0.7.3 (LisiasT) for KSP >= 1.8.0
 	+ (Properly) Implements a ~~ugly hack~~, I mean, a workaround for the KSP 1.11.x bug on recovering funds described on Issue [#12](https://github.com/net-lisias-ksp/KSP-Recall/issues/12).
