@@ -20,8 +20,6 @@
 	along with KSP-Recall. If not, see <https://www.gnu.org/licenses/>.
 
 */
-using System;
-using System.Linq;
 using System.Reflection;
 
 namespace KSP_Recall { namespace Refunds 
@@ -80,6 +78,7 @@ namespace KSP_Recall { namespace Refunds
 		public override void OnSave(ConfigNode node)
 		{
 			Log.dbg("OnSave {0}:{1:X} {2}", this.name, this.part.GetInstanceID(), null != node);
+			this.SynchronousFullUpdate();
 			base.OnSave(node);
 		}
 
