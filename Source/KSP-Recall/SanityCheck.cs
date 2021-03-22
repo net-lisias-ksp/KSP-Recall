@@ -36,6 +36,7 @@ namespace KSP_Recall
 		private const string DRIFTLESS_MODULE_NAME = "Driftless";
 		private const string ATTACHED_MODULE_NAME = "Attached";
 		private const string CHILLINGOUT_MODULE_NAME = "ChillingOut";
+		private const string REFUNDING_MODULE_NAME = "RefundingForKSP111x";
 
 		internal static bool isConcluded = false;
 
@@ -95,6 +96,7 @@ namespace KSP_Recall
 					bool containsDriftless = false;
 					bool containsAttached = false;
 					bool containsChillingOut = false;
+					bool containsRefunding = false;
 					Exception culprit = null;
 					
 					prefab = p.partPrefab; // Reaching the prefab here in the case another Mod recreates it from zero. If such hypothecical mod recreates the whole part, we're doomed no matter what.
@@ -108,6 +110,7 @@ namespace KSP_Recall
 							containsDriftless = prefab.Modules.Contains(DRIFTLESS_MODULE_NAME);
 							containsAttached = prefab.Modules.Contains(ATTACHED_MODULE_NAME);
 							containsChillingOut = prefab.Modules.Contains(CHILLINGOUT_MODULE_NAME);
+							containsRefunding = prefab.Modules.Contains(REFUNDING_MODULE_NAME);
 							++total_count;
 							break;  // Yeah. This while stunt was done just to be able to do this. All the rest is plain clutter! :D 
 						}
@@ -160,6 +163,12 @@ namespace KSP_Recall
 						}
 						else ++parts_with_chillingout_count;
 
+						if (containsRefunding) if (null != (due = this.checkForRefunding(prefab)))
+						{
+							Log.info("Removing {0} support for {1} ({2}) due {3}.", CHILLINGOUT_MODULE_NAME, p.name, p.title, due);
+							prefab.RemoveModule(prefab.Modules[CHILLINGOUT_MODULE_NAME]);
+						}
+						else ++parts_with_chillingout_count;
 					}
 					catch (Exception e)
 					{
@@ -233,6 +242,15 @@ namespace KSP_Recall
 			Log.dbg("Checking {0} Sanity for {1} at {2}", CHILLINGOUT_MODULE_NAME, p.name, p.partInfo.partUrl ?? "<NO URL>");
 
 			if ( KSPe.Util.KSP.Version.Current != KSPe.Util.KSP.Version.FindByVersion(1,11,0) ) return MSG_KSP_NO_SUPPORTED;
+
+			return null;
+		}
+
+		private string checkForRefunding(Part p)
+		{
+			Log.dbg("Checking {0} Sanity for {1} at {2}", REFUNDING_MODULE_NAME, p.name, p.partInfo.partUrl ?? "<NO URL>");
+
+			if ( !(1 == KSPe.Util.KSP.Version.Current.MAJOR && 11 == KSPe.Util.KSP.Version.Current.MINOR) ) return MSG_KSP_NO_SUPPORTED;
 
 			return null;
 		}
