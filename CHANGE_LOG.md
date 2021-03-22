@@ -1,5 +1,14 @@
 # KSP-Recall :: Change Log
 
+* 2021-0322: 0.0.7.6 (LisiasT) for KSP >= 1.8.0
+	+ Made the `Refunding` stunt invisible on the U.I., decluttering the widgets.
+		- Thanks for the [tip](https://forum.kerbalspaceprogram.com/index.php?/topic/192048-18/&do=findComment&comment=3943384), [Hohmannson](https://forum.kerbalspaceprogram.com/index.php?/profile/202712-hohmannson/)
+	+ Preventing `Refunding` from messing up Stock Stackable parts
+		- At the expense of having its costs fixed on Recovering, however
+		- Thanks for [Krazy1](https://forum.kerbalspaceprogram.com/index.php?/profile/203523-krazy1/) for reporting [this](https://forum.kerbalspaceprogram.com/index.php?/topic/192048-18/&do=findComment&comment=3943444).
+	+ Preventing `Refunding` from messing up Stackable on KIS
+		- No collateral effects expected on this one.
+	+ Added a Sanity Check for `Refunding` on KSP-Recall Startup. 
 * 2021-0308: 0.0.7.5 (LisiasT) for KSP >= 1.8.0
 	+ Fixed a pretty lame mistake on initiating the `Refund` PartModule.
 * 2021-0307: 0.0.7.4 (LisiasT) for KSP >= 1.8.0
