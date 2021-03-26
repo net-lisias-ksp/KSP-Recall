@@ -251,6 +251,9 @@ namespace KSP_Recall
 			Log.dbg("Checking {0} Sanity for {1} at {2}", REFUNDING_MODULE_NAME, p.name, p.partInfo.partUrl ?? "<NO URL>");
 
 			if ( !(1 == KSPe.Util.KSP.Version.Current.MAJOR && 11 == KSPe.Util.KSP.Version.Current.MINOR) ) return MSG_KSP_NO_SUPPORTED;
+			if (p.name.StartsWith("kerbalEVA")) return MSG_PART_NOT_SUPPORTED;
+			if (p.name.StartsWith("maleEVA")) return MSG_PART_NOT_SUPPORTED;
+			if (p.name.StartsWith("femaleEVA")) return MSG_PART_NOT_SUPPORTED;
 
 			return null;
 		}
