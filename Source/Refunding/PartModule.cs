@@ -88,6 +88,9 @@ namespace KSP_Recall { namespace Refunds
 
 		private void Update()
 		{
+			this.enabled = this.active;
+			if (!this.active) return;
+
 			switch(HighLogic.LoadedScene)
 			{
 				case GameScenes.FLIGHT:
@@ -127,7 +130,7 @@ namespace KSP_Recall { namespace Refunds
 		// Should be called while flight, where you don't need to get the module updated on spot.
 		internal void AsynchronousFullUpdate()
 		{
-			this.enabled = true;
+			this.enabled = this.active;
 		}
 
 		// Should be called before iminent situations (as flight termination) where you *NEED* the thing updated before something "terminal" happens.
@@ -140,7 +143,11 @@ namespace KSP_Recall { namespace Refunds
 		internal void Recalculate()
 		{
 			Log.dbg("Recalculate {0}:{1:X}", this.name, this.part.GetInstanceID());
-			if (!this.part.Resources.Contains(RESOURCENAME)) return;
+			if (!(this.active && this.part.Resources.Contains(RESOURCENAME)))
+			{
+				this.costFix = 0;
+				return;
+			}
 
 			double originalCost = this.CalculateOriginalCost();
 			double resourceCosts = this.CalculateResourcesCost();
