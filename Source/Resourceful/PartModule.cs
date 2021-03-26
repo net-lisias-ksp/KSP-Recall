@@ -28,7 +28,7 @@ namespace KSP_Recall { namespace Resourcefull
 	{
 		#region KSP UI
 
-		[KSPField(isPersistant = false, guiActive = false, guiActiveEditor = true, guiName = "KSP-Recall::Resourceful")]
+		[KSPField(isPersistant = true, guiActive = false, guiActiveEditor = true, guiName = "KSP-Recall::Resourceful")]
 		[UI_Toggle(disabledText = "Disabled", enabledText = "Enabled", scene = UI_Scene.Editor)]
 		public bool active = false;
 

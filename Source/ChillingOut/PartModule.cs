@@ -29,7 +29,7 @@ namespace KSP_Recall { namespace ChillingOut
 	{
 		#region KSP UI
 
-		[KSPField(isPersistant = false, guiActive = true, guiActiveEditor = false, guiName = "KSP-Recall::ChillingOut")]
+		[KSPField(isPersistant = true, guiActive = true, guiActiveEditor = false, guiName = "KSP-Recall::ChillingOut")]
 		[UI_Toggle(disabledText = "Disabled", enabledText = "Enabled", scene = UI_Scene.Flight)]
 		public bool active = false;
 

@@ -28,7 +28,7 @@ namespace KSP_Recall { namespace Attached
 	{
 		#region KSP UI
 
-		[KSPField(isPersistant = false, guiActive = false, guiActiveEditor = true, guiName = "KSP-Recall::Attached")]
+		[KSPField(isPersistant = true, guiActive = false, guiActiveEditor = true, guiName = "KSP-Recall::Attached")]
 		[UI_Toggle(disabledText = "Disabled", enabledText = "Enabled", scene = UI_Scene.Editor)]
 		public bool active = false;
 
