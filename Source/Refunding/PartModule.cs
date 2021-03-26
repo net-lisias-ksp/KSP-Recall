@@ -179,6 +179,11 @@ namespace KSP_Recall { namespace Refunds
 		{
 			Log.dbg("UpdateResource {0}:{1:X}", this.name, this.part.GetInstanceID());
 			PartResource pr = this.part.Resources.Get(RESOURCENAME);
+			if (null == pr)
+			{
+				Log.warn("Part {0}:{1} from {2}:{3} had the Refunding resource stollen!", this.part.name, this,part.GetInstanceID(), this.part.vessel.vesselName, this.part.vessel.GetInstanceID());
+				return;
+			}
 
 			Log.dbg("Before {0} {1} {2} {3}", pr.ToString(), pr.amount, pr.maxAmount, pr.info.unitCost);
 			//pr.SetInfo(this.CreateCustomResourceDef(this.costFix/pr.maxAmount)); // TweakScale scales the Resource MaxAmount, so we need to divide the cost by tje current maxAmount/amount
