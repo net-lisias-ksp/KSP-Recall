@@ -34,6 +34,9 @@ namespace KSP_Recall { namespace Refunds
 		[UI_Toggle(disabledText = "Disabled", enabledText = "Enabled", scene = UI_Scene.Editor)]
 		public bool active = false;
 
+		[KSPField(isPersistant = true, guiActive = false, guiActiveEditor = false)]
+		public double OriginalCost = 0f;
+
 		#endregion
 
 		private Part _prefab = null;
@@ -72,13 +75,14 @@ namespace KSP_Recall { namespace Refunds
 			base.OnLoad(node);
 			if (null == this.part.partInfo)
 				this.prefab = this.part;
+			if (!this.active) return;
+
 			this.RestoreResource();
  		}
 
 		public override void OnSave(ConfigNode node)
 		{
 			Log.dbg("OnSave {0}:{1:X} {2}", this.name, this.part.GetInstanceID(), null != node);
-			this.SynchronousFullUpdate();
 			base.OnSave(node);
 		}
 
@@ -88,8 +92,8 @@ namespace KSP_Recall { namespace Refunds
 
 		private void Update()
 		{
-			this.enabled = this.active;
 			if (!this.active) return;
+			Log.dbg("Update {0}:{1:X}", this.name, this.part.GetInstanceID());
 
 			switch(HighLogic.LoadedScene)
 			{
@@ -98,6 +102,8 @@ namespace KSP_Recall { namespace Refunds
 					break;
 				case GameScenes.EDITOR:
 					this.RestoreResource();
+					this.CalculateOriginalCost();
+					this.SynchronousFullUpdate();
 					break;
 				default:
 					break;
@@ -127,7 +133,7 @@ namespace KSP_Recall { namespace Refunds
 
 		#endregion
 
-		// Should be called while flight, where you don't need to get the module updated on spot.
+		// Should be called while flight or editing, where you don't need to get the module updated on the spot.
 		internal void AsynchronousFullUpdate()
 		{
 			this.enabled = this.active;
@@ -149,42 +155,51 @@ namespace KSP_Recall { namespace Refunds
 				return;
 			}
 
-			double originalCost = this.CalculateOriginalCost();
 			double resourceCosts = this.CalculateResourcesCost();
-			double wrongCost = originalCost - resourceCosts;
-			double rightCost = originalCost + this.CalculatetModulesCost() - resourceCosts;
+			double wrongCost = this.OriginalCost - resourceCosts;
+			double rightCost = this.OriginalCost + this.CalculateModulesCost() - resourceCosts;
 			this.costFix = -wrongCost + rightCost;
 
-			Log.dbg("Recalculate Results originalCost: {0:0.0}; resourceCosts:{1:0.0}; wrongCost:{2:0.0}; rightCost:{3:0.0}; fix:{4:0.0} ; ", originalCost, resourceCosts, wrongCost, rightCost, this.costFix);
+			Log.dbg("Recalculate Results originalCost: {0:0.0}; resourceCosts:{1:0.0}; wrongCost:{2:0.0}; rightCost:{3:0.0}; fix:{4:0.0} ; ", this.OriginalCost, resourceCosts, wrongCost, rightCost, this.costFix);
 		}
 
-		private double CalculateOriginalCost()
+		private void CalculateOriginalCost()
 		{
 			double r = this.part.partInfo.cost;
-			foreach (PartResource pr in this.prefab.Resources)
-				r += (null != pr.info ? (pr.amount * pr.info.unitCost) : 0);
-			return r;
-		}
-
-		private double CalculatetModulesCost()
-		{
-			double r = 0;
-			foreach (PartModule pm in this.part.Modules) if (pm is IPartCostModifier)
-				r += ((IPartCostModifier)pm).GetModuleCost(0, ModifierStagingSituation.CURRENT);
-			return r;
+			r += this.CalculateResourcesCost();
+			r += this.CalculateModulesCost();
+			this.OriginalCost = r;
 		}
 
 		private double CalculateResourcesCost()
 		{
 			double r = 0;
 			foreach (PartResource pr in this.part.Resources) if (RESOURCENAME != pr.resourceName)
-				r += pr.maxAmount * pr.info.unitCost;
+			{
+				double cost = (null != pr.info ? (pr.amount * pr.info.unitCost) : 0); // Why some resources have no info? o.O
+				// Why this.part.vessel is NULL at this point? :/
+				//Log.dbg("CalculateResourcesCost({0},{1},{2}) => {3}", this.part.vessel.vesselName, this.part.partInfo.partName, pr.resourceName, cost);
+				Log.dbg("CalculateResourcesCost({0},{1}) => {2}", this.part.partInfo.name, pr.resourceName, cost);
+				r += cost;
+			}
+			return r;
+		}
+
+		private double CalculateModulesCost()
+		{
+			double r = 0;
+			foreach (PartModule pm in this.part.Modules) if (pm is IPartCostModifier)
+			{
+				float cost = ((IPartCostModifier)pm).GetModuleCost(0, ModifierStagingSituation.CURRENT);
+				Log.dbg("CalculateModulesCost({0},{1}) => {2}", this.part.partInfo.name, pm.moduleName, cost);
+				r += cost;
+			}
 			return r;
 		}
 
 		private void UpdateResource()
 		{
-			Log.dbg("UpdateResource {0}:{1:X}", this.name, this.part.GetInstanceID());
+			Log.dbg("UpdateResource {0}:{1:X}", this.part.partInfo.name, this.part.GetInstanceID());
 			PartResource pr = this.part.Resources.Get(RESOURCENAME);
 			if (null == pr)
 			{
@@ -215,8 +230,14 @@ namespace KSP_Recall { namespace Refunds
 #if true
 		private void RestoreResource()
 		{
+			// THIS SHOULD NOT BE CALLED when this.active is false, or it may inject a Refunding resource when none is desired.
 			PartResource pr = this.part.Resources.Get(RESOURCENAME);
-			if (null == pr || 1d == pr.maxAmount) return;
+			if (null == pr)
+			{
+				PartResourceDefinition prd = PartResourceLibrary.Instance.GetDefinition(RESOURCENAME);
+				this.part.Resources.Add(prd.name, 0, 1, true, true, false, true, PartResource.FlowMode.None);
+			}
+			if (1d == pr.maxAmount) return;
 
 			FieldInfo field = typeof(PartResource).GetField("maxAmount", BindingFlags.Instance | BindingFlags.Public);
 			field.SetValue(pr, 1d);
