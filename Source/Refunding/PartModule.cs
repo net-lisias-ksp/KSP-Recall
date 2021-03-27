@@ -103,7 +103,6 @@ namespace KSP_Recall { namespace Refunds
 				case GameScenes.EDITOR:
 					this.RestoreResource();
 					this.CalculateOriginalCost();
-					this.SynchronousFullUpdate();
 					break;
 				default:
 					break;
@@ -235,7 +234,7 @@ namespace KSP_Recall { namespace Refunds
 			if (null == pr)
 			{
 				PartResourceDefinition prd = PartResourceLibrary.Instance.GetDefinition(RESOURCENAME);
-				this.part.Resources.Add(prd.name, 0, 1, true, true, false, true, PartResource.FlowMode.None);
+				this.part.Resources.Add(prd.name, 0, 1, false, false, false, false, PartResource.FlowMode.None);
 			}
 			if (1d == pr.maxAmount) return;
 
