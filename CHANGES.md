@@ -1,5 +1,12 @@
 # KSP-Recall :: Changes
 
+* 2021-0327: 0.0.7.7 (LisiasT) for KSP >= 1.8.0
+	+ Properly implemented the `active` attribute, allowing `Refunding` to be deactivate on a part per part basis if something wrong happens on the field.
+	+ Reworked the `Refunding` mechanism, injecting the Resource at runtime as needed.
+		- This will hopefully workaround the problem with Fuel Switches and other add'ons that mangle the Resource Pool of the part.
+	+ Preventing `Resourceful` to be applied on parts with `ModuleCargoPart`, `ModuleComet`, `ModuleAsteroid` and `ModuleKerbal` as these are proven problematic on the field with code that handles resources. 
+	+ The `activate` property of all Modules are now persisted on saving.
+		- Be cautious, this can screw up your savegame. 
 * 2021-0322: 0.0.7.6 (LisiasT) for KSP >= 1.8.0
 	+ Made the `Refunding` stunt invisible on the U.I., decluttering the widgets.
 		- Thanks for the [tip](https://forum.kerbalspaceprogram.com/index.php?/topic/192048-18/&do=findComment&comment=3943384), [Hohmannson](https://forum.kerbalspaceprogram.com/index.php?/profile/202712-hohmannson/)
