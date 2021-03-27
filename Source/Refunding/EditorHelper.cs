@@ -20,13 +20,15 @@
 	along with KSP-Recall. If not, see <https://www.gnu.org/licenses/>.
 
 */
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace KSP_Recall { namespace Refunds 
 
 {
-	[KSPAddon(KSPAddon.Startup.FlightAndKSC, false)]
-	public class FlightHelper : MonoBehaviour
+	[KSPAddon(KSPAddon.Startup.EditorAny, false)]
+	public class EditorHelper : MonoBehaviour
 	{
 		private readonly bool IsOnKSP11 = 1 == KSPe.Util.KSP.Version.Current.MAJOR && 11 == KSPe.Util.KSP.Version.Current.MINOR;
 
@@ -35,29 +37,28 @@ namespace KSP_Recall { namespace Refunds
 		private void Awake()
 		{
 			Log.dbg("Awake {0}", this.name);
-			if (this.IsOnKSP11) GameEvents.OnVesselRecoveryRequested.Add(OnVesselRecoveryRequested);
+			if (this.IsOnKSP11) GameEvents.onEditorShipModified.Add(OnEditorShipModified);
 		}
 
 		private void OnDestroy()
 		{
 			Log.dbg("OnDestroy {0}", this.name);
-			if (this.IsOnKSP11) GameEvents.OnVesselRecoveryRequested.Remove(OnVesselRecoveryRequested);
+			if (this.IsOnKSP11) GameEvents.onEditorShipModified.Remove(OnEditorShipModified);
 		}
 
 		#endregion
 
 		#region Events Handlers
 
-		private void OnVesselRecoveryRequested(Vessel data)
+		private void OnEditorShipModified(ShipConstruct data)
 		{
-			Log.dbg("OnVesselRecoveryRequested {0}", data.name);
+			Log.dbg("OnEditorShipModified {0}", data.shipName);
 			foreach (Part p in data.Parts) if (p.Modules.Contains<Refunding>())
-				p.Modules.GetModule<Refunding>().SynchronousFullUpdate();
-				
+				p.Modules.GetModule<Refunding>().AsynchronousFullUpdate();
 		}
 
 		#endregion
 
-		private static KSPe.Util.Log.Logger Log = KSPe.Util.Log.Logger.CreateForType<EditorHelper>("KSP-Recall", "Refunding-FlightHelper");
+		private static KSPe.Util.Log.Logger Log = KSPe.Util.Log.Logger.CreateForType<EditorHelper>("KSP-Recall", "Refunding-EditorHelper");
 	}
 } }
