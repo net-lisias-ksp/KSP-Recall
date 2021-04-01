@@ -41,7 +41,8 @@ namespace KSP_Recall { namespace Attached
 		{
 			Log.dbg("OnAwake {0}:{1:X}", this.name, this.part.GetInstanceID());
 			base.OnAwake();
-			if (Pool.ATTACHMENTS.HasSomething(this.part)) this.RestoreList();
+			this.active = Globals.Instance.Attached;
+			if (this.active && Pool.ATTACHMENTS.HasSomething(this.part)) this.RestoreList();
 		}
 
 		public override void OnStart(StartState state)

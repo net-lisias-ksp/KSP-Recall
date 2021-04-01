@@ -42,6 +42,7 @@ namespace KSP_Recall { namespace Driftless
 		{
 			Log.dbg("OnAwake {0}:{1:X}", this.name, this.part.GetInstanceID());
 			base.OnAwake();
+			this.active = Globals.Instance.Driftless;
 		}
 
 		public override void OnStart(StartState state)

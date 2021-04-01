@@ -28,20 +28,18 @@ namespace KSP_Recall { namespace Refunds
 	[KSPAddon(KSPAddon.Startup.FlightAndKSC, false)]
 	public class FlightHelper : MonoBehaviour
 	{
-		private readonly bool IsOnKSP11 = 1 == KSPe.Util.KSP.Version.Current.MAJOR && 11 == KSPe.Util.KSP.Version.Current.MINOR;
-
 		#region Unity Life Cycle
 
 		private void Awake()
 		{
 			Log.dbg("Awake {0}", this.name);
-			if (this.IsOnKSP11) GameEvents.OnVesselRecoveryRequested.Add(OnVesselRecoveryRequested);
+			if (Globals.Instance.Refunding) GameEvents.OnVesselRecoveryRequested.Add(OnVesselRecoveryRequested);
 		}
 
 		private void OnDestroy()
 		{
 			Log.dbg("OnDestroy {0}", this.name);
-			if (this.IsOnKSP11) GameEvents.OnVesselRecoveryRequested.Remove(OnVesselRecoveryRequested);
+			if (Globals.Instance.Refunding) GameEvents.OnVesselRecoveryRequested.Remove(OnVesselRecoveryRequested);
 		}
 
 		#endregion

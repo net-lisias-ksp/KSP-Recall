@@ -55,6 +55,8 @@ namespace KSP_Recall { namespace Refunds
 			// Keep this inactive until someone need the fixed costs, to avoiding being incorrectly charged on Launch
 			// (we are charged after the Craft it's initialised on launch)
 			this.enabled = false;
+
+			this.active = Globals.Instance.Refunding;
 		}
 
 		public override void OnStart(StartState state)

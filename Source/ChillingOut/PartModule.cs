@@ -42,6 +42,7 @@ namespace KSP_Recall { namespace ChillingOut
 		{
 			Log.dbg("OnAwake {0}:{1:X}", this.name, this.part.GetInstanceID());
 			base.OnAwake();
+			this.active = Globals.Instance.ChillingOut;
 		}
 
 		public override void OnStart(StartState state)

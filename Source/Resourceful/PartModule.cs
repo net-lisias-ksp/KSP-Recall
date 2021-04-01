@@ -41,7 +41,8 @@ namespace KSP_Recall { namespace Resourcefull
 		{
 			Log.dbg("OnAwake {0}:{1:X}", this.name, this.part.GetInstanceID());
 			base.OnAwake();
-			if (Pool.RESOURCES.HasSomething(this.part)) this.RestoreResourceList();
+			this.active = Globals.Instance.Resourceful;
+			if (this.active && Pool.RESOURCES.HasSomething(this.part)) this.RestoreResourceList();
 		}
 
 		public override void OnStart(StartState state)

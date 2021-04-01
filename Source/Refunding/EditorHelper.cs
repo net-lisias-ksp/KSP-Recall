@@ -30,20 +30,18 @@ namespace KSP_Recall { namespace Refunds
 	[KSPAddon(KSPAddon.Startup.EditorAny, false)]
 	public class EditorHelper : MonoBehaviour
 	{
-		private readonly bool IsOnKSP11 = 1 == KSPe.Util.KSP.Version.Current.MAJOR && 11 == KSPe.Util.KSP.Version.Current.MINOR;
-
 		#region Unity Life Cycle
 
 		private void Awake()
 		{
 			Log.dbg("Awake {0}", this.name);
-			if (this.IsOnKSP11) GameEvents.onEditorShipModified.Add(OnEditorShipModified);
+			if (Globals.Instance.Refunding) GameEvents.onEditorShipModified.Add(OnEditorShipModified);
 		}
 
 		private void OnDestroy()
 		{
 			Log.dbg("OnDestroy {0}", this.name);
-			if (this.IsOnKSP11) GameEvents.onEditorShipModified.Remove(OnEditorShipModified);
+			if (Globals.Instance.Refunding) GameEvents.onEditorShipModified.Remove(OnEditorShipModified);
 		}
 
 		#endregion

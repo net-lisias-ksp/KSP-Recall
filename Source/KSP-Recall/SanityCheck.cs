@@ -201,6 +201,8 @@ namespace KSP_Recall
 			}
 		}
 
+		private const string MSG_INSTALLATION_FORCED = "Installation of {0} forced on KSP-Recall.cfg. Proceed with caution!";
+
 		private const string MSG_KSP_NO_SUPPORTED = "your KSP version doesn't need it.";
 		private const string MSG_PART_DOES_NOT_NEED = "this part doesn't need it.";
 		private const string MSG_PART_NOT_SUPPORTED = "this part is not supported.";
@@ -209,7 +211,13 @@ namespace KSP_Recall
 		{
 			Log.dbg("Checking {0} Sanity for {1} at {2}", RESOURCEFUL_MODULE_NAME, p.name, p.partInfo.partUrl ?? "<NO URL>");
 
-			if ( !(1 == KSPe.Util.KSP.Version.Current.MAJOR && 9 == KSPe.Util.KSP.Version.Current.MINOR) ) return MSG_KSP_NO_SUPPORTED;
+			if ( !(1 == KSPe.Util.KSP.Version.Current.MAJOR && 9 == KSPe.Util.KSP.Version.Current.MINOR) )
+			{
+				if (!Globals.Instance.Resourceful) return MSG_KSP_NO_SUPPORTED;
+				else Log.warn(MSG_INSTALLATION_FORCED, RESOURCEFUL_MODULE_NAME);
+			}
+
+
 			// if (0 == p.Resources.Count) return MSG_PART_DOES_NOT_NEED; Some AddOn can add Resources later, so I commented it out
 			if (p.name.StartsWith("kerbalEVA"))		return MSG_PART_NOT_SUPPORTED;
 			if (p.name.StartsWith("maleEVA"))		return MSG_PART_NOT_SUPPORTED;
@@ -226,8 +234,14 @@ namespace KSP_Recall
 		{
 			Log.dbg("Checking {0} Sanity for {1} at {2}", DRIFTLESS_MODULE_NAME, p.name, p.partInfo.partUrl ?? "<NO URL>");
 
-			if ( KSPe.Util.KSP.Version.Current < KSPe.Util.KSP.Version.FindByVersion(1,8,0) ) return MSG_KSP_NO_SUPPORTED;
-			if ( KSPe.Util.KSP.Version.Current > KSPe.Util.KSP.Version.FindByVersion(1,11,0) ) return MSG_KSP_NO_SUPPORTED;
+			if ( KSPe.Util.KSP.Version.Current < KSPe.Util.KSP.Version.FindByVersion(1,8,0)
+				||
+				KSPe.Util.KSP.Version.Current > KSPe.Util.KSP.Version.FindByVersion(1,11,0)
+			)
+			{
+				if (!Globals.Instance.Driftless) return MSG_KSP_NO_SUPPORTED;
+				else Log.warn(MSG_INSTALLATION_FORCED, DRIFTLESS_MODULE_NAME);
+			}
 
 			return null;
 		}
@@ -236,7 +250,11 @@ namespace KSP_Recall
 		{
 			Log.dbg("Checking {0} Sanity for {1} at {2}", ATTACHED_MODULE_NAME, p.name, p.partInfo.partUrl ?? "<NO URL>");
 
-			if ( KSPe.Util.KSP.Version.Current < KSPe.Util.KSP.Version.FindByVersion(1,8,0) ) return MSG_KSP_NO_SUPPORTED;
+			if ( KSPe.Util.KSP.Version.Current < KSPe.Util.KSP.Version.FindByVersion(1,8,0) )
+			{
+				if (!Globals.Instance.Attached) return MSG_KSP_NO_SUPPORTED;
+				else Log.warn(MSG_INSTALLATION_FORCED, ATTACHED_MODULE_NAME);
+			}
 
 			return null;
 		}
@@ -245,7 +263,11 @@ namespace KSP_Recall
 		{
 			Log.dbg("Checking {0} Sanity for {1} at {2}", CHILLINGOUT_MODULE_NAME, p.name, p.partInfo.partUrl ?? "<NO URL>");
 
-			if ( KSPe.Util.KSP.Version.Current != KSPe.Util.KSP.Version.FindByVersion(1,11,0) ) return MSG_KSP_NO_SUPPORTED;
+			if ( KSPe.Util.KSP.Version.Current != KSPe.Util.KSP.Version.FindByVersion(1,11,0) )
+			{
+				if (!Globals.Instance.ChillingOut) return MSG_KSP_NO_SUPPORTED;
+				else Log.warn(MSG_INSTALLATION_FORCED, CHILLINGOUT_MODULE_NAME);
+			}
 
 			return null;
 		}
@@ -254,7 +276,12 @@ namespace KSP_Recall
 		{
 			Log.dbg("Checking {0} Sanity for {1} at {2}", REFUNDING_MODULE_NAME, p.name, p.partInfo.partUrl ?? "<NO URL>");
 
-			if ( !(1 == KSPe.Util.KSP.Version.Current.MAJOR && 11 == KSPe.Util.KSP.Version.Current.MINOR) ) return MSG_KSP_NO_SUPPORTED;
+			if ( !(1 == KSPe.Util.KSP.Version.Current.MAJOR && 11 == KSPe.Util.KSP.Version.Current.MINOR) )
+			{
+				if (!Globals.Instance.Refunding) return MSG_KSP_NO_SUPPORTED;
+				else Log.warn(MSG_INSTALLATION_FORCED, REFUNDING_MODULE_NAME);
+			}
+
 			if (p.name.StartsWith("kerbalEVA"))		return MSG_PART_NOT_SUPPORTED;
 			if (p.name.StartsWith("maleEVA"))		return MSG_PART_NOT_SUPPORTED;
 			if (p.name.StartsWith("femaleEVA"))		return MSG_PART_NOT_SUPPORTED;
