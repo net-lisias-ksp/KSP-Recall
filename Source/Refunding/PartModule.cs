@@ -250,6 +250,21 @@ namespace KSP_Recall { namespace Refunds
 			if (null != pr) this.part.Resources.Remove(pr);
 		}
 
+		// Remove the Refunding Resource from parts with PartModuleCargo that can be stackable
+		internal void RemoveResourceWhenNeeded()
+		{
+			if (this.part.Modules.Contains("ModuleCargoPart") && this.IsResourceless())
+				this.RemoveResourceIfAvailable();
+		}
+
+		private bool IsResourceless()
+		{
+			int count = 0;
+			foreach (PartResource pr in this.part.Resources) if (!RESOURCENAME.Equals(pr.resourceName))
+				++count;
+			return 0 == count;
+		}
+
 #if true
 		private PartResource RestoreResource()
 		{
