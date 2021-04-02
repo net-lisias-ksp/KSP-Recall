@@ -160,13 +160,13 @@ namespace KSP_Recall { namespace Refunds
 		// (screw the CPU, we need the data NOW).
 		internal void SynchronousFullUpdate()
 		{
-			if (!this.active) return;
+			if (!this.active) return; // Just in case someone call it directly
 
 			this.Recalculate();
 			this.UpdateResource();
 		}
 
-		internal void Recalculate()
+		private void Recalculate()
 		{
 			Log.dbg("Recalculate {0}:{1:X}", this.name, this.part.GetInstanceID());
 			if (!(this.active && this.part.Resources.Contains(RESOURCENAME)))
@@ -244,6 +244,8 @@ namespace KSP_Recall { namespace Refunds
 
 		private void RemoveResourceIfAvailable()
 		{
+			Log.dbg("Removing {0} from part {1}-{2}:{3}", RESOURCENAME, this.part.vessel.vesselName, this.part.partName, this.part.GetInstanceID());
+
 			PartResource pr = this.part.Resources.Get(RESOURCENAME);
 			if (null != pr) this.part.Resources.Remove(pr);
 		}
