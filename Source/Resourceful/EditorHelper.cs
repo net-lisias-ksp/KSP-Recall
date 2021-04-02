@@ -34,7 +34,7 @@ namespace KSP_Recall { namespace Resourcefull
 
 		private void Awake()
 		{
-			Log.dbg("Awake");
+			Log.dbg("Awake on {0}", HighLogic.LoadedScene);
 			if (Globals.Instance.Resourceful) GameEvents.onEditorShipModified.Add(OnEditorShipModified);
 		}
 

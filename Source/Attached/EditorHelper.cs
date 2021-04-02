@@ -34,7 +34,7 @@ namespace KSP_Recall { namespace Attached
 
 		private void Awake()
 		{
-			Log.dbg("Awake");
+			Log.dbg("Awake on {0}", HighLogic.LoadedScene);
 			if (Globals.Instance.Attached) GameEvents.onEditorShipModified.Add(OnEditorShipModified);
 		}
 

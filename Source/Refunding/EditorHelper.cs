@@ -34,7 +34,7 @@ namespace KSP_Recall { namespace Refunds
 
 		private void Awake()
 		{
-			Log.dbg("Awake");
+			Log.dbg("Awake on {0}", HighLogic.LoadedScene);
 			if (Globals.Instance.Refunding) GameEvents.onEditorShipModified.Add(OnEditorShipModified);
 		}
 

@@ -98,7 +98,7 @@ namespace KSP_Recall { namespace Refunds
 
 		public override void OnSave(ConfigNode node)
 		{
-			Log.dbg("OnSave {0}:{1:X} {2}", this.name, this.part.GetInstanceID(), null != node);
+			Log.dbg("OnSave {0}:{1:X}", this.name, this.part.GetInstanceID());
 			base.OnSave(node);
 		}
 
@@ -244,7 +244,7 @@ namespace KSP_Recall { namespace Refunds
 
 		private void RemoveResourceIfAvailable()
 		{
-			Log.dbg("Removing {0} from part {1}-{2}:{3}", RESOURCENAME, this.part.vessel.vesselName, this.part.partName, this.part.GetInstanceID());
+			Log.dbg("Removing {0} from part {1}-{2}:{3:X}", RESOURCENAME, this.part.vessel.vesselName, this.part.partName, this.part.GetInstanceID());
 
 			PartResource pr = this.part.Resources.Get(RESOURCENAME);
 			if (null != pr) this.part.Resources.Remove(pr);
