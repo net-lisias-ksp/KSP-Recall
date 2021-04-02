@@ -33,7 +33,7 @@ namespace KSP_Recall { namespace Refunds
 
 		private void Awake()
 		{
-			Log.dbg("Awake {0}", this.name);
+			Log.dbg("Awake");
 			if (Globals.Instance.Refunding)
 			{
 				GameEvents.OnVesselRecoveryRequested.Add(OnVesselRecoveryRequested);
@@ -43,7 +43,7 @@ namespace KSP_Recall { namespace Refunds
 
 		private void OnDestroy()
 		{
-			Log.dbg("OnDestroy {0}", this.name);
+			Log.dbg("OnDestroy");
 			if (Globals.Instance.Refunding)
 			{
 				GameEvents.onVesselChange.Remove(OnVesselChange);

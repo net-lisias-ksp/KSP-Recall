@@ -34,13 +34,13 @@ namespace KSP_Recall { namespace Resourcefull
 
 		private void Awake()
 		{
-			Log.dbg("Awake {0}", this.name);
+			Log.dbg("Awake");
 			if (Globals.Instance.Resourceful) GameEvents.onEditorShipModified.Add(OnEditorShipModified);
 		}
 
 		private void OnDestroy()
 		{
-			Log.dbg("OnDestroy {0}", this.name);
+			Log.dbg("OnDestroy");
 			if (Globals.Instance.Resourceful) GameEvents.onEditorShipModified.Remove(OnEditorShipModified);
 		}
 
