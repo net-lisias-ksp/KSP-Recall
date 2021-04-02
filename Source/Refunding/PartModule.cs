@@ -42,6 +42,7 @@ namespace KSP_Recall { namespace Refunds
 		private Part _prefab = null;
 		private Part prefab { get => _prefab ?? (_prefab = this.part.partInfo.partPrefab); set => _prefab = value; }
 		internal double costFix = 0;
+		private int delayTicks = 0;
 
 		#region KSP Life Cycle
 
@@ -52,7 +53,7 @@ namespace KSP_Recall { namespace Refunds
 			// Here we have a problem. Some parts have the this.part.partInfo set, others don't.
 			// Don't know why, and this is worrying - TweakScale depends on this! Is this a race condition?
 
-			// Keep this inactive until someone need the fixed costs, to avoiding being incorrectly charged on Launch
+			// Keep this disabled until someone need the recalculated costs, to avoiding being incorrectly charged on Launch
 			// (we are charged after the Craft it's initialised on launch)
 			this.enabled = false;
 
@@ -77,9 +78,22 @@ namespace KSP_Recall { namespace Refunds
 			base.OnLoad(node);
 			if (null == this.part.partInfo)
 				this.prefab = this.part;
+
+			// Always clean up the Resource on loading, as we need to get rid of reminiscents
+			// of the previous attempts. We don't want the Refunding resource on Edit Scene anyway.
+			//
+			// Additionally, clean up Parts those Refunding was inactivated by the user.
+			this.RemoveResourceIfAvailable();
+
 			if (!this.active) return;
 
-			this.RestoreResource();
+			// The cost of the craft is billed on launch, **after** loading the craft.
+			//
+			// So we need to postpone the Resource restoring until the last moment, or the
+			// user will be overbilled.
+			//
+			// The OriginalCost is calcultated on Editing time, but the Resource will be updated
+			// only at Flight time after launch.
  		}
 
 		public override void OnSave(ConfigNode node)
@@ -92,10 +106,11 @@ namespace KSP_Recall { namespace Refunds
 
 		#region Unity Life Cycle
 
-		private void Update()
+		private void FixedUpdate()
 		{
 			if (!this.active) return;
-			Log.dbg("Update {0}:{1:X}", this.name, this.part.GetInstanceID());
+			if (0 != --this.delayTicks) return;
+			Log.dbg("FixedUpdate {0}:{1:X}", this.name, this.part.GetInstanceID());
 
 			switch(HighLogic.LoadedScene)
 			{
@@ -103,7 +118,6 @@ namespace KSP_Recall { namespace Refunds
 					this.SynchronousFullUpdate();
 					break;
 				case GameScenes.EDITOR:
-					this.RestoreResource();
 					this.CalculateOriginalCost();
 					break;
 				default:
@@ -135,14 +149,19 @@ namespace KSP_Recall { namespace Refunds
 		#endregion
 
 		// Should be called while flight or editing, where you don't need to get the module updated on the spot.
-		internal void AsynchronousFullUpdate()
+		// This spreads the load on time, avoiding overloading the CPU on hot code.
+		internal void AsynchronousUpdate(int delayTicks = 1)
 		{
+			this.delayTicks = delayTicks;
 			this.enabled = this.active;
 		}
 
 		// Should be called before iminent situations (as flight termination) where you *NEED* the thing updated before something "terminal" happens.
+		// (screw the CPU, we need the data NOW).
 		internal void SynchronousFullUpdate()
 		{
+			if (!this.active) return;
+
 			this.Recalculate();
 			this.UpdateResource();
 		}
@@ -201,12 +220,7 @@ namespace KSP_Recall { namespace Refunds
 		private void UpdateResource()
 		{
 			Log.dbg("UpdateResource {0}:{1:X}", this.part.partInfo.name, this.part.GetInstanceID());
-			PartResource pr = this.part.Resources.Get(RESOURCENAME);
-			if (null == pr)
-			{
-				Log.warn("Part {0}:{1} from {2}:{3} had the Refunding resource stollen!", this.part.name, this,part.GetInstanceID(), this.part.vessel.vesselName, this.part.vessel.GetInstanceID());
-				return;
-			}
+			PartResource pr = this.part.Resources.Get(RESOURCENAME) ?? this.RestoreResource();
 
 			Log.dbg("Before {0} {1} {2} {3}", pr.ToString(), pr.amount, pr.maxAmount, pr.info.unitCost);
 			//pr.SetInfo(this.CreateCustomResourceDef(this.costFix/pr.maxAmount)); // TweakScale scales the Resource MaxAmount, so we need to divide the cost by tje current maxAmount/amount
@@ -228,8 +242,14 @@ namespace KSP_Recall { namespace Refunds
 			Log.dbg("After {0} {1} {2} {3}", pr.ToString(), pr.amount, pr.maxAmount, pr.info.unitCost);
 		}
 
+		private void RemoveResourceIfAvailable()
+		{
+			PartResource pr = this.part.Resources.Get(RESOURCENAME);
+			if (null != pr) this.part.Resources.Remove(pr);
+		}
+
 #if true
-		private void RestoreResource()
+		private PartResource RestoreResource()
 		{
 			// THIS SHOULD NOT BE CALLED when this.active is false, or it may inject a Refunding resource when none is desired.
 			PartResource pr = this.part.Resources.Get(RESOURCENAME);
@@ -238,11 +258,12 @@ namespace KSP_Recall { namespace Refunds
 				PartResourceDefinition prd = PartResourceLibrary.Instance.GetDefinition(RESOURCENAME);
 				this.part.Resources.Add(prd.name, 0, 1, false, false, false, false, PartResource.FlowMode.None);
 			}
-			if (1d == pr.maxAmount) return;
+			if (1d == pr.maxAmount) return pr;
 
 			FieldInfo field = typeof(PartResource).GetField("maxAmount", BindingFlags.Instance | BindingFlags.Public);
 			field.SetValue(pr, 1d);
 			pr.amount = 0;
+			return pr;
 		}
 #else
 		private void RestoreResource()

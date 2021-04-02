@@ -52,7 +52,7 @@ namespace KSP_Recall { namespace Refunds
 		{
 			Log.dbg("OnEditorShipModified {0}", data.shipName);
 			foreach (Part p in data.Parts) if (p.Modules.Contains<Refunding>())
-				p.Modules.GetModule<Refunding>().AsynchronousFullUpdate();
+				p.Modules.GetModule<Refunding>().AsynchronousUpdate();
 		}
 
 		#endregion

@@ -48,7 +48,7 @@ namespace KSP_Recall
 				this.ChillingOut = cn.GetValue<bool>("ChillingOut");
 				this.Driftless = cn.GetValue<bool>("Driftless");
 				this.Refunding = cn.GetValue<bool>("Refunding");
-				this.Resourceful = cn.GetValue<bool>("Resourcefull");
+				this.Resourceful = cn.GetValue<bool>("Resourceful");
 			}
 			catch (Exception)
 			{
