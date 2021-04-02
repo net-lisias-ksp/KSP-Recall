@@ -1,5 +1,5 @@
 ﻿/*
-	This file is part of Resourceful, a component of KSP-Recall
+	This file is part of Refunding, a component of KSP-Recall
 	(C) 2020-2021 Lisias T : http://lisias.net <support@lisias.net>
 
 	KSP-Recall is double licensed, as follows:
