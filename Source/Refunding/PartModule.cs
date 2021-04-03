@@ -228,14 +228,15 @@ namespace KSP_Recall { namespace Refunds
 				return;
 			}
 
+			// Rebuild the Refund Resource if it was destroyed by something like a Fuel Switch
 			PartResource pr = this.part.Resources.Get(RESOURCENAME) ?? this.RestoreResource();
 
 			Log.dbg("Before {0} {1} {2} {3}", pr.ToString(), pr.amount, pr.maxAmount, pr.info.unitCost);
-			//pr.SetInfo(this.CreateCustomResourceDef(this.costFix/pr.maxAmount)); // TweakScale scales the Resource MaxAmount, so we need to divide the cost by tje current maxAmount/amount
 
 			double scaledValue = (1/pr.info.unitCost) * this.costFix; // To compensate the 0.0001 uniCost of the PartReourceDefinition
 
 			// One of the ugliest hacks I even did on KSP. Pretty nasty!! :P
+			// (and being the only solution for while that handles FMRS and similar Add'Ons don't make it prettier!)
 
 			// This will prevent the cost of the Refunding from being subtracked from the cost of the Part, what would counter-attack
 			// the fix below
