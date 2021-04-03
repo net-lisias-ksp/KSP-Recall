@@ -80,6 +80,10 @@ namespace KSP_Recall { namespace Refunds
 			if (null == this.part.partInfo)
 				this.prefab = this.part;
 
+			// The code below should not be executed on game loading, as we don't have a real Part
+			// on memory to work on.
+			if (HighLogic.LoadedScene < GameScenes.MAINMENU) return;
+
 			// Always clean up the Resource on loading, as we need to get rid of reminiscents
 			// of the previous attempts. We don't want the Refunding resource on Edit Scene anyway.
 			//
