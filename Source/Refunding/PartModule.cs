@@ -221,6 +221,13 @@ namespace KSP_Recall { namespace Refunds
 		private void UpdateResource()
 		{
 			Log.dbg("UpdateResource {0}:{1:X}", this.part.partInfo.name, this.part.GetInstanceID());
+			if (this.IsStackable()) // Giving up on handling Stackables for now. The Rails stunt didn't worked as expected...
+			{
+				this.RemoveResourceIfAvailable();
+				Log.dbg("Part is Stackable. Removed Refunding support!");
+				return;
+			}
+
 			PartResource pr = this.part.Resources.Get(RESOURCENAME) ?? this.RestoreResource();
 
 			Log.dbg("Before {0} {1} {2} {3}", pr.ToString(), pr.amount, pr.maxAmount, pr.info.unitCost);
