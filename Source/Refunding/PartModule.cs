@@ -27,6 +27,7 @@ namespace KSP_Recall { namespace Refunds
 	public class Refunding : PartModule
 	{
 		internal const string RESOURCENAME = "RefundingForKSP111x";
+		internal const string MODULECARGOPART = "ModuleCargoPart";
 
 		#region KSP UI
 
@@ -169,7 +170,7 @@ namespace KSP_Recall { namespace Refunds
 		private void Recalculate()
 		{
 			Log.dbg("Recalculate {0}:{1:X}", this.name, this.part.GetInstanceID());
-			if (!(this.active && this.part.Resources.Contains(RESOURCENAME)))
+			if (!this.active)
 			{
 				this.costFix = 0;
 				return;
@@ -253,16 +254,37 @@ namespace KSP_Recall { namespace Refunds
 		// Remove the Refunding Resource from parts with PartModuleCargo that can be stackable
 		internal void RemoveResourceWhenNeeded()
 		{
-			if (this.part.Modules.Contains("ModuleCargoPart") && this.IsResourceless())
+			if (this.IsStackable())
 				this.RemoveResourceIfAvailable();
 		}
 
-		private bool IsResourceless()
+		private bool IsStackable()
 		{
-			int count = 0;
-			foreach (PartResource pr in this.part.Resources) if (!RESOURCENAME.Equals(pr.resourceName))
-				++count;
-			return 0 == count;
+			bool r = this.part.Modules.Contains(MODULECARGOPART);
+
+			if (r) { // Parts with resources are not stackable.
+				int count = 0;
+				foreach (PartResource pr in this.part.Resources) if (!RESOURCENAME.Equals(pr.resourceName))
+					++count;
+				r &= (0 == count);
+			}
+
+			// Yeah, I'm using reflection - so this PartModule is still useable on previous KSP versions if the user choose to fool around.
+			// Hacky and messy, uh? ]:->
+			if (r) { // If the part has resources, there's no point on check for the stackable
+				System.Type type = System.Type.GetType(MODULECARGOPART, false, true);
+				r &= (null != type);
+				if (r) 
+					foreach (PartModule pm in this.part.Modules) if (type.Equals(pm.GetType()))
+					{
+						FieldInfo field = type.GetField("stackableQuantity", BindingFlags.Instance | BindingFlags.Public);
+						r &= (null != field) && ((int)field.GetValue(pm) > 0);
+						break;
+					}
+			}
+
+			Log.dbg("{0}-{1}:{2:X} is {3}", this.part.vessel.vesselName, this.part.partName, this.part.GetInstanceID(), r ? "stackable" : "not stackable");
+			return r;
 		}
 
 #if true
