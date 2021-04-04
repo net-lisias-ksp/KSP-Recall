@@ -237,8 +237,6 @@ namespace KSP_Recall { namespace Refunds
 
 			Log.dbg("Before {0} {1} {2} {3}", pr.ToString(), pr.amount, pr.maxAmount, pr.info.unitCost);
 
-			double scaledValue = (1/pr.info.unitCost) * this.costFix; // To compensate the 0.0001 uniCost of the PartReourceDefinition
-
 			// One of the ugliest hacks I even did on KSP. Pretty nasty!! :P
 			// (and being the only solution for while that handles FMRS and similar Add'Ons don't make it prettier!)
 
@@ -250,7 +248,7 @@ namespace KSP_Recall { namespace Refunds
 			// This effectivelly "steals back" the Funds lost by the KSP's current stunt (using the prefab's cost on recovering costs)
 			// See https://github.com/net-lisias-ksp/KSP-Recall/issues/12
 			field = typeof(PartResource).GetField("amount", BindingFlags.Instance | BindingFlags.Public);
-			field.SetValue(pr, scaledValue);
+			field.SetValue(pr, this.costFix);
 
 			Log.dbg("After {0} {1} {2} {3}", pr.ToString(), pr.amount, pr.maxAmount, pr.info.unitCost);
 		}
@@ -309,7 +307,6 @@ namespace KSP_Recall { namespace Refunds
 				PartResourceDefinition prd = PartResourceLibrary.Instance.GetDefinition(RESOURCENAME);
 				this.part.Resources.Add(prd.name, 0, 1, false, false, false, false, PartResource.FlowMode.None);
 			}
-			if (1d == pr.maxAmount) return pr;
 
 			FieldInfo field = typeof(PartResource).GetField("maxAmount", BindingFlags.Instance | BindingFlags.Public);
 			field.SetValue(pr, 1d);
