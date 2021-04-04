@@ -1,7 +1,8 @@
 # KSP-Recall :: Known Issues
 
-* KSP-Recall 0.0.7.7 changed a bit how `Refunding` works, and in at least one situation a craft file created with the previous KSP-Recall release was loaded with the wrong prive on the VAB/SPH, leading to wasting funds no launching it.
-	+ Changing anything on the craft will trigger a recalculation, and the price will be corrected.
+* KSP 1.11 also introduced another bug, this one about a miscalculation on recovering costs when a craft is recovered.
+	+ A new Module `Refunding` and a *Meta Resource* called `RefundingForKSP111x` was created to handle this.
+	+ Not all Stackable parts are being correctly refunded at this moment. 
 * KSP 1.11 introduced a new bug on launching vessels using some old parts (as OPT and Firespitter). The problem appears to be on initialising the heat of such parts.
 	+ Check the following posts for more information:
 		- [KAX](https://forum.kerbalspaceprogram.com/index.php?/topic/180268-131/page/9/&tab=comments#comment-3901075)
