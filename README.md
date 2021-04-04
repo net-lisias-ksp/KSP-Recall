@@ -66,6 +66,12 @@ Fixes not needed on the current KSP instalment **are not applied**. So it's safe
 
 This is not intended to be "used" by end-users. It provides services to Add'On authors and/or fixes automatically some known problems on many different KSP versions.
 
+But there're some options that will allow the end user to control how the fixes works on his/machine.
+
+**Every fix** can be deactivated on a given part, without affecting the other ones. This change is persisted on the craft file and on the savegame, so you can even deactivate a fix on a part on a craft and not do it on another craft. For people willing to write patches, the name of the attribute is `active`.
+
+The user can also force his/her hand on how and where the fixes is installed by editing `GameData/999_KSP-Recall/KSP-Recall.cfg`. Changing this file will overrule the default installation decisions KSP-Recall does on startup, allowing you use fixes that usually would not be available for your rig. **Use this with caution and prudence**, this can royally screw up your savegames.
+
 Currently, the following automatic fixes are available:
 
 ### Automatically restores Resources changed by Fuel Switches.
