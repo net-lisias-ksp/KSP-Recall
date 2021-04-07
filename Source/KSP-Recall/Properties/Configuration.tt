@@ -119,7 +119,7 @@ namespace <#= PROJECT_NAME #>
 {
 	public static class Configuration
 	{
-		public static readonly int[] Unity = { 2019 };
+		public static readonly int[] Unity = { 2017, 2019 };
 		public static readonly int[] KSP_Min = { <#= min_major #>, <#= min_minor #>, <#= min_patch #> };
 		public static readonly int[] KSP_Max = { <#= max_major #>, <#= max_minor #>, <#= max_patch #> };
 	}
