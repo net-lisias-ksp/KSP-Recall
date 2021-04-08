@@ -305,7 +305,7 @@ namespace KSP_Recall { namespace Refunds
 			if (null == pr)
 			{
 				PartResourceDefinition prd = PartResourceLibrary.Instance.GetDefinition(RESOURCENAME);
-				this.part.Resources.Add(prd.name, 0, 1, false, false, false, false, PartResource.FlowMode.None);
+				pr = this.part.Resources.Add(prd.name, 0, 1, false, false, false, false, PartResource.FlowMode.None);
 			}
 
 			FieldInfo field = typeof(PartResource).GetField("maxAmount", BindingFlags.Instance | BindingFlags.Public);
