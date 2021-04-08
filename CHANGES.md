@@ -1,5 +1,8 @@
 # KSP-Recall :: Changes
 
+* 2021-0408: 0.1.0.2 (LisiasT) for KSP >= 1.4.1
+	+ Pretty stupid mistake on `Refunding` fixed.
+	+ Updating KSPe Light.
 * 2021-0406: 0.1.0.1 (LisiasT) for KSP >= 1.4.1
 	+ Minor revision to make life easier for Package Managers as CKAN.
 		- Will allow installing on any KSP >= 1.4.1, even by not having (yet :P) any fix for them.
