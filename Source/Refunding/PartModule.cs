@@ -169,6 +169,7 @@ namespace KSP_Recall { namespace Refunds
 
 			this.Recalculate();
 			this.UpdateResource();
+			this.NotifyResourcesChanged();
 		}
 
 		private void Recalculate()
@@ -337,6 +338,10 @@ namespace KSP_Recall { namespace Refunds
 			return r;
 		}
 #endif
+		private void NotifyResourcesChanged()
+		{
+			// Place holder. Find a way to induce KSP to save the part again.
+		}
 
 		private static readonly KSPe.Util.Log.Logger Log = KSPe.Util.Log.Logger.CreateForType<Refunding>("KSP-Recall", "Refunding");
 	}
