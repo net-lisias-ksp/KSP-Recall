@@ -60,16 +60,18 @@ namespace KSP_Recall { namespace Refunds
 			Log.dbg("Awake on {0}", HighLogic.LoadedScene);
 			if (Globals.Instance.Refunding)
 			{
-				GameEvents.onNewVesselCreated.Add(OnNewVesselCreated);
-				GameEvents.onVesselDestroy.Add(OnVesselDestroy);
-				GameEvents.onVesselWasModified.Add(OnVesselWasModified);
-				GameEvents.onVesselPartCountChanged.Add(OnVesselPartCountChanged);
-				GameEvents.OnFundsChanged.Add(OnFundsChanged);
+				//GameEvents.OnFundsChanged.Add(OnFundsChanged);
+				//GameEvents.onGameSceneSwitchRequested.Add(OnSceneSwitchRequested);
+				//GameEvents.onNewVesselCreated.Add(OnNewVesselCreated);
+				//GameEvents.onVesselLoaded.Add(OnVesselLoaded);
+				//GameEvents.onVesselDestroy.Add(OnVesselDestroy);
+				//GameEvents.onVesselWasModified.Add(OnVesselWasModified);
+				//GameEvents.onVesselPartCountChanged.Add(OnVesselPartCountChanged);
 				GameEvents.OnVesselRecoveryRequested.Add(OnVesselRecoveryRequested);
 				GameEvents.onVesselChange.Add(OnVesselChange);
 				//GameEvents.onVesselSwitching.Add(OnVesselSwitching);
 				//GameEvents.onVesselSwitchingToUnloaded.Add(OnVesselSwitching);
-				//GameEvents.onVesselGoOnRails.Add(OnVesselGoOnRails);
+				GameEvents.onVesselGoOnRails.Add(OnVesselGoOnRails);
 				//GameEvents.onVesselGoOffRails.Add(OnVesselGoOffRails);
 			}
 		}
@@ -80,22 +82,36 @@ namespace KSP_Recall { namespace Refunds
 			if (Globals.Instance.Refunding)
 			{
 				//GameEvents.onVesselGoOffRails.Add(OnVesselGoOffRails);
-				//GameEvents.onVesselGoOnRails.Add(OnVesselGoOnRails);
+				GameEvents.onVesselGoOnRails.Remove(OnVesselGoOnRails);
 				//GameEvents.onVesselSwitchingToUnloaded.Remove(OnVesselSwitching);
 				//GameEvents.onVesselSwitching.Remove(OnVesselSwitching);
 				GameEvents.onVesselChange.Remove(OnVesselChange);
 				GameEvents.OnVesselRecoveryRequested.Remove(OnVesselRecoveryRequested);
-				GameEvents.OnFundsChanged.Remove(OnFundsChanged);
-				GameEvents.onVesselPartCountChanged.Remove(OnVesselPartCountChanged);
-				GameEvents.onVesselWasModified.Remove(OnVesselWasModified);
-				GameEvents.onVesselDestroy.Add(OnVesselDestroy);
-				GameEvents.onNewVesselCreated.Remove(OnNewVesselCreated);
+				//GameEvents.onVesselPartCountChanged.Remove(OnVesselPartCountChanged);
+				//GameEvents.onVesselWasModified.Remove(OnVesselWasModified);
+				//GameEvents.onVesselDestroy.Remove(OnVesselDestroy);
+				//GameEvents.onVesselLoaded.Remove(OnVesselLoaded);
+				//GameEvents.onNewVesselCreated.Remove(OnNewVesselCreated);
+				//GameEvents.onGameSceneSwitchRequested.Remove(OnSceneSwitchRequested);
+				//GameEvents.OnFundsChanged.Remove(OnFundsChanged);
 			}
+
+			// note to myself - its of little use to calculate the resources laterly after the OnSave event is called on the part.
+			// TODO: Find a way to induce KSP to save the partsa gain after the resource is reapplied, this will ensure
+			// recovering costs on any situation. See NotifyResourcesChanged on PartModule.
+			// Right now things are working on a fickle equilibrium. I don't like this. :(
 		}
 
 		#endregion
 
 		#region Events Handlers
+
+		private void OnSceneSwitchRequested(GameEvents.FromToAction<GameScenes, GameScenes> data)
+		{
+			Log.dbg("OnSceneSwitchRequested from {0} to {1}", data.from, data.to);
+			if (GameScenes.FLIGHT != data.from) return;
+			this.ImmediateUpdateAllAndClear();
+		}
 
 		// It's terribly important to clear this on every scene change (so the 3 distincts KSPAddOns above)
 		// as only vessels Changed In or Spawned on the current scene are subject to be recalculated.
@@ -106,6 +122,13 @@ namespace KSP_Recall { namespace Refunds
 		private void OnNewVesselCreated(Vessel vessel)
 		{
 			Log.dbg("OnNewVesselCreated {0}", vessel.vesselName);
+			this.SpawnnedVessels.Add(vessel);
+		}
+
+		// This is not being called as expected. :(
+		private void OnVesselLoaded(Vessel vessel)
+		{
+			Log.dbg("OnVesselLoaded {0}", vessel.vesselName);
 			this.SpawnnedVessels.Add(vessel);
 		}
 
@@ -123,15 +146,16 @@ namespace KSP_Recall { namespace Refunds
 		private void OnVesselWasModified(Vessel vessel)
 		{
 			Log.dbg("OnVesselWasModified {0}", vessel.vesselName);
-			this.AsyncUpdate(vessel);
+			this.DelayedUpdate(vessel);
 		}
 
 		// The KSP API (https://kerbalspaceprogram.com/api/class_game_events.htm) says
 		// that OnVesselWasModified can be missed sometimes, so...
+		// Alert: This is called when the vessel spawns!!
 		private void OnVesselPartCountChanged(Vessel vessel)
 		{
 			Log.dbg("OnVesselPartCountChanged {0}", vessel.vesselName);
-			this.AsyncUpdate(vessel);
+			this.DelayedUpdate(vessel);
 		}
 
 		// We have been billed! Now we can initialise the Refunding on the vessels!
@@ -140,16 +164,7 @@ namespace KSP_Recall { namespace Refunds
 			Log.dbg("OnFundsChanged {0} due {1}", amount, reason);
 			if (!TransactionReasons.VesselRollout.Equals(reason)) return;
 
-			Vessel[] a;
-			lock (this.SpawnnedVessels) // Prevents race conditions in case we have concurrency on KSP on spawning vessels...
-			{
-				a = new Vessel[this.SpawnnedVessels.Count];
-				this.SpawnnedVessels.CopyTo(a);
-				this.SpawnnedVessels.Clear();
-			}
-
-			foreach (Vessel v in a) if (Vessel.State.ACTIVE == v.state)	// Better safe than sorry.
-				this.ImmediateUpdate(v);
+			this.ImmediateUpdateAllAndClear();
 		}
 
 		// Called by obvious reaons. The vessel is being recovered.
@@ -170,7 +185,8 @@ namespace KSP_Recall { namespace Refunds
 		private void OnVesselChange(Vessel vessel)
 		{
 			Log.dbg("OnVesselChange {0}", vessel.vesselName);
-			this.SpawnnedVessels.Add(vessel);
+
+			this.DelayedUpdate(vessel);
 		}
 
 		// Probably not needed, here for testing purposes
@@ -204,6 +220,20 @@ namespace KSP_Recall { namespace Refunds
 
 		#endregion
 
+		private void ImmediateUpdateAllAndClear()
+		{
+			Vessel[] a;
+			lock (this.SpawnnedVessels) // Prevents race conditions in case we have concurrency on KSP on spawning vessels...
+			{
+				a = new Vessel[this.SpawnnedVessels.Count];
+				this.SpawnnedVessels.CopyTo(a);
+				this.SpawnnedVessels.Clear();
+			}
+
+			foreach (Vessel v in a) if (Vessel.State.ACTIVE == v.state)	// Better safe than sorry.
+				this.ImmediateUpdate(v);
+		}
+
 		private void ImmediateUpdate(Vessel vessel)
 		{
 			foreach (Part p in vessel.Parts) if (p.Modules.Contains<Refunding>())
@@ -221,7 +251,7 @@ namespace KSP_Recall { namespace Refunds
 		private void DelayedUpdate(Vessel vessel)
 		{
 			foreach (Part p in vessel.Parts) if (p.Modules.Contains<Refunding>())
-				p.Modules.GetModule<Refunding>().AsynchronousUpdate(12);
+				p.Modules.GetModule<Refunding>().AsynchronousUpdate(50);
 		}
 
 		private void RemoveResourceWhenNeeded(Vessel vessel)
