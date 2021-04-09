@@ -257,6 +257,7 @@ namespace KSP_Recall { namespace Refunds
 		{
 			Log.dbg("Removing {0} from part {1}-{2}:{3:X}", RESOURCENAME, this.part.vessel.vesselName, this.part.partName, this.part.GetInstanceID());
 
+			if (null == this.part.Resources) return;	// Oukey, this is a bug on KSP ou just an anti-feature? :-(
 			PartResource pr = this.part.Resources.Get(RESOURCENAME);
 			if (null != pr) this.part.Resources.Remove(pr);
 		}
