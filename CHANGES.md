@@ -1,5 +1,10 @@
 # KSP-Recall :: Changes
 
+* 2021-0409: 0.1.0.3 (LisiasT) for KSP >= 1.4.1
+	+ The problem fixed on 1.0.2 was masking another problem on `Refunding` that, once fixed, regressed the over-billing problem.
+		- GameEvents related to vessels don't work as I expected.
+		- The solution was to step back a bit, and risking some over-refunding on FMRS on automatic recovery.
+		- Sorry about that.
 * 2021-0408: 0.1.0.2 (LisiasT) for KSP >= 1.4.1
 	+ Pretty stupid mistake on `Refunding` fixed.
 	+ Updating KSPe Light.

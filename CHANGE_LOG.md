@@ -1,12 +1,16 @@
 # KSP-Recall :: Change Log
 
+* 2021-0409: 0.1.0.3 (LisiasT) for KSP >= 1.4.1
+	+ The problem fixed on 1.0.2 was masking another problem on `Refunding` that, once fixed, regressed the over-billing problem.
+		- GameEvents related to vessels don't work as I expected.
+		- The solution was to step back a bit, and risking some over-refunding on FMRS on automatic recovery.
 * 2021-0408: 0.1.0.2 (LisiasT) for KSP >= 1.4.1
 	+ Pretty stupid mistake on `Refunding` fixed.
 	+ Updating KSPe Light.
 * 2021-0408: 0.1.0.1 (LisiasT) for KSP >= 1.4.1
 	+ Minor revision to make life easier for Package Managers as CKAN.
 		- Will allow installing on any KSP >= 1.4.1, even by not having (yet :P) any fix for them.
-	+ Closes Isssues:
+	+ Closes Issues:
 		- [#14](https://github.com/net-lisias-ksp/KSP-Recall/issues/14) Make Recall safe to be installed on any KSP version instead of yelling about not being compatible  
 * 2021-0404: 0.1.0.0 (LisiasT) for KSP >= 1.8.0
 	+ More versatile (and user hackable) mechanism to activate/deactivate the Fixes (i.e: a way to override the safeties checks)
