@@ -142,10 +142,13 @@ namespace KSP_Recall { namespace Refunds
 
 		float IPartCostModifier.GetModuleCost(float defaultCost, ModifierStagingSituation sit)
 		{
-			// This yet another messy hack aims to work around the issue #16
+			// This yet another messy hack aims to work around problems on refundings
 			// https://github.com/net-lisias-ksp/KSP-Recall/issues/16
-			// See the link for a rationaly for doing things this freasking way.
-			return (float)(-2 * this.costFix);
+			// See the link for a rationale for doing things this freasking way.
+			return null == this.part.Resources.Get(RESOURCENAME)
+					? 0f		// If the refunding resource is not present, there's no need for the hack
+					: (float)(-this.costFix)
+				;
 		}
 
 		ModifierChangeWhen IPartCostModifier.GetModuleCostChangeWhen()
