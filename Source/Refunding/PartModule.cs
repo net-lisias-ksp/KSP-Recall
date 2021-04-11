@@ -24,7 +24,7 @@ using System.Reflection;
 
 namespace KSP_Recall { namespace Refunds 
 {
-	public class Refunding : PartModule
+	public class Refunding : PartModule, IPartCostModifier
 	{
 		internal const string RESOURCENAME = "RefundingForKSP111x";
 		internal const string MODULECARGOPART = "ModuleCargoPart";
@@ -139,6 +139,19 @@ namespace KSP_Recall { namespace Refunds
 		#endregion
 
 		#region Part Events Handlers
+
+		float IPartCostModifier.GetModuleCost(float defaultCost, ModifierStagingSituation sit)
+		{
+			// This yet another messy hack aims to work around the issue #16
+			// https://github.com/net-lisias-ksp/KSP-Recall/issues/16
+			// See the link for a rationaly for doing things this freasking way.
+			return (float)(-2 * this.costFix);
+		}
+
+		ModifierChangeWhen IPartCostModifier.GetModuleCostChangeWhen()
+		{
+			return ModifierChangeWhen.CONSTANTLY;
+		}
 
 #if false
 		// This apparently is not needed, and we need to delay this thing anyway to avoiding initialising before
