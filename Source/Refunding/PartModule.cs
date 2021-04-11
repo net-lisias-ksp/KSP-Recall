@@ -204,7 +204,7 @@ namespace KSP_Recall { namespace Refunds
 			{
 				double cost = (null != pr.info ? (pr.amount * pr.info.unitCost) : 0); // Why some resources have no info? o.O
 				// Why this.part.vessel is NULL at this point? :/
-				//Log.dbg("CalculateResourcesCost({0},{1},{2}) => {3}", this.part.vessel.vesselName, this.part.partInfo.partName, pr.resourceName, cost);
+				//Log.dbg("CalculateResourcesCost({0},{1},{2}) => {3}", this.VesselName, this.part.partInfo.partName, pr.resourceName, cost);
 				Log.dbg("CalculateResourcesCost({0},{1}) => {2}", this.part.partInfo.name, pr.resourceName, cost);
 				r += cost;
 			}
@@ -256,7 +256,7 @@ namespace KSP_Recall { namespace Refunds
 
 		private void RemoveResourceIfAvailable()
 		{
-			Log.dbg("Removing {0} from part {1}-{2}:{3:X}", RESOURCENAME, this.part.vessel.vesselName, this.part.partName, this.part.GetInstanceID());
+			Log.dbg("Removing {0} from part {1}-{2}:{3:X}", RESOURCENAME, this.VesselName, this.part.partName, this.part.GetInstanceID());
 
 			if (null == this.part.Resources) return;	// Oukey, this is a bug on KSP ou just an anti-feature? :-(
 			PartResource pr = this.part.Resources.Get(RESOURCENAME);
@@ -295,7 +295,7 @@ namespace KSP_Recall { namespace Refunds
 					}
 			}
 
-			Log.dbg("{0}-{1}:{2:X} is {3}", this.part.vessel.vesselName, this.part.partName, this.part.GetInstanceID(), r ? "stackable" : "not stackable");
+			Log.dbg("{0}-{1}:{2:X} is {3}", this.VesselName, this.part.partName, this.part.GetInstanceID(), r ? "stackable" : "not stackable");
 			return r;
 		}
 
@@ -342,6 +342,8 @@ namespace KSP_Recall { namespace Refunds
 		{
 			// Place holder. Find a way to induce KSP to save the part again.
 		}
+
+		private string VesselName => null == this.part.vessel ? "<NO VESSEL>" : this.part.vessel.vesselName ;
 
 		private static readonly KSPe.Util.Log.Logger Log = KSPe.Util.Log.Logger.CreateForType<Refunding>("KSP-Recall", "Refunding");
 	}
