@@ -1,5 +1,9 @@
 # KSP-Recall :: Changes
 
+* 2021-0411: 0.1.0.4 (LisiasT) for KSP >= 1.4.1
+	+ Implements a Work Around for issue [#16](https://github.com/net-lisias-ksp/KSP-Recall/issues/16).
+		- O pulled this out from my hat, it's not known yet if this will work on every use case.
+		- Further testings as work in progress. Use this with caution for now.
 * 2021-0409: 0.1.0.3 (LisiasT) for KSP >= 1.4.1
 	+ The problem fixed on 1.0.2 was masking another problem on `Refunding` that, once fixed, regressed the over-billing problem.
 		- GameEvents related to vessels don't work as I expected.
