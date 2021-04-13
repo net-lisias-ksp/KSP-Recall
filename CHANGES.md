@@ -1,5 +1,7 @@
 # KSP-Recall :: Changes
 
+* 2021-0412: 0.1.0.5 (LisiasT) for KSP >= 1.4.1
+	+ Fixes the workaround implemented on 0.1.0.4
 * 2021-0411: 0.1.0.4 (LisiasT) for KSP >= 1.4.1
 	+ Implements a Work Around for issue [#16](https://github.com/net-lisias-ksp/KSP-Recall/issues/16).
 		- O pulled this out from my hat, it's not known yet if this will work on every use case.
