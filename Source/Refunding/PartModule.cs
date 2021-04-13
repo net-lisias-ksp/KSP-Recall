@@ -200,8 +200,37 @@ namespace KSP_Recall { namespace Refunds
 			double resourceCosts = this.CalculateResourcesCost();
 			double wrongCost = this.OriginalCost - resourceCosts;
 			double rightCost = this.OriginalCost + this.CalculateModulesCost() - resourceCosts;
-			this.costFix = -wrongCost + rightCost;
 
+			this.costFix = -wrongCost + rightCost ;
+
+			// Naahh...
+			// Why going through so much trouble? We already know that ModulePartInventory's IPartModifierCost is being charged twice.
+			// Check double CalculateModuleCost(PartModule) below.
+#if false	
+			if (this.part.Modules.Contains("ModuleInventoryPart"))
+			{	// Now overcomes the **Stock** double refunding on Resources from Parts inside a ModuleInventoryPart
+				Log.dbg("This part has ModuleInventoryPart.");
+				PartModule pm = this.part.Modules["ModuleInventoryPart"];
+
+				// Yet another Messy Hack to avoid locking this thing on KSP 1.11.x
+				DictionaryValueList<int,object> storedParts = null;
+				{
+					FieldInfo field = typeof(DictionaryValueList<int,object>).GetField("storedParts", BindingFlags.Instance | BindingFlags.Public);
+					storedParts = (DictionaryValueList<int, object>)field.GetValue(pm) ?? new DictionaryValueList<int, object>();
+				}
+				foreach (object storedPart in storedParts.Values)
+				{
+					ProtoPartSnapshot snapshot = null;
+					{
+						FieldInfo field = typeof(ProtoPartSnapshot).GetField("snapshot", BindingFlags.Instance | BindingFlags.Public);
+						snapshot = (ProtoPartSnapshot)field.GetValue(storedPart);
+					}
+					if (null != snapshot)
+						foreach (ProtoPartResourceSnapshot pr in snapshot.resources)
+							this.costFix =- this.CalculateResourceCost(pr);
+				}
+			}
+#endif
 			Log.dbg("Recalculate Results originalCost: {0:0.0}; resourceCosts:{1:0.0}; wrongCost:{2:0.0}; rightCost:{3:0.0}; fix:{4:0.0} ; ", this.OriginalCost, resourceCosts, wrongCost, rightCost, this.costFix);
 		}
 
@@ -217,13 +246,24 @@ namespace KSP_Recall { namespace Refunds
 		{
 			double r = 0;
 			foreach (PartResource pr in this.part.Resources) if (RESOURCENAME != pr.resourceName)
-			{
-				double cost = (null != pr.info ? (pr.amount * pr.info.unitCost) : 0); // Why some resources have no info? o.O
-				// Why this.part.vessel is NULL at this point? :/
-				//Log.dbg("CalculateResourcesCost({0},{1},{2}) => {3}", this.VesselName, this.part.partInfo.partName, pr.resourceName, cost);
-				Log.dbg("CalculateResourcesCost({0},{1}) => {2}", this.part.partInfo.name, pr.resourceName, cost);
-				r += cost;
-			}
+				r += this.CalculateResourceCost(pr);
+			return r;
+		}
+
+		private double CalculateResourceCost(PartResource pr)
+		{
+			double cost = (null != pr.info ? (pr.amount * pr.info.unitCost) : 0); // Why some resources have no info? o.O
+			// Why this.part.vessel is NULL at this point? :/
+			//Log.dbg("CalculateResourcesCost({0},{1},{2}) => {3}", this.VesselName, this.part.partInfo.partName, pr.resourceName, cost);
+			// Answer: because the part was detached from a vessel, being moved from a storage to another!
+			Log.dbg("CalculateResourcesCost({0},{1}) => {2}", this.part.partInfo.name, pr.resourceName, cost);
+			return cost;
+		}
+
+		private double CalculateResourceCost(ProtoPartResourceSnapshot pr)
+		{
+			double r = pr.amount * pr.definition.unitCost;
+			Log.dbg("CalculateResourcesCost({0},Proto:{1}) => {2}", this.part.partInfo.name, pr.resourceName, r);
 			return r;
 		}
 
@@ -232,10 +272,16 @@ namespace KSP_Recall { namespace Refunds
 			double r = 0;
 			foreach (PartModule pm in this.part.Modules) if (pm is IPartCostModifier && this.GetType() != pm.GetType())
 			{
-				float cost = ((IPartCostModifier)pm).GetModuleCost(0, ModifierStagingSituation.CURRENT);
-				Log.dbg("CalculateModulesCost({0},{1}) => {2}", this.part.partInfo.name, pm.moduleName, cost);
-				r += cost;
+				r += this.CalculateModuleCost(pm);
 			}
+			return r;
+		}
+
+		private double CalculateModuleCost(PartModule pm)
+		{
+			float r = ((IPartCostModifier)pm).GetModuleCost(0, ModifierStagingSituation.CURRENT);
+			if ("ModuleInventoryPart".Equals(pm.moduleName)) r *= -1; // Fix the OverRedunding from Stock
+			Log.dbg("CalculateModulesCost({0},{1}) => {2}", this.part.partInfo.name, pm.moduleName, r);
 			return r;
 		}
 
