@@ -1,5 +1,7 @@
 # KSP-Recall :: Change Log
 
+* 2021-0413: 0.1.0.6 (LisiasT) for KSP >= 1.4.1
+	+ Reworks the Work Around for issue [#16](https://github.com/net-lisias-ksp/KSP-Recall/issues/16), fixing the Stock's over-refunding on `ModuleInventoryPart`.
 * 2021-0412: 0.1.0.5 (LisiasT) for KSP >= 1.4.1
 	+ Fixes the workaround implemented on 0.1.0.4
 * 2021-0411: 0.1.0.4 (LisiasT) for KSP >= 1.4.1
