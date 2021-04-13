@@ -163,7 +163,7 @@ namespace KSP_Recall { namespace Refunds
 		void OnPartScaleChanged(BaseEventDetails data)
 		{
 			Log.dbg("OnPartScaleChanged");
-			this.AsynchronousFullUpdate();
+			this.AsynchronousUpdate();
 		}
 #endif
 
@@ -230,7 +230,7 @@ namespace KSP_Recall { namespace Refunds
 		private double CalculateModulesCost()
 		{
 			double r = 0;
-			foreach (PartModule pm in this.part.Modules) if (pm is IPartCostModifier)
+			foreach (PartModule pm in this.part.Modules) if (pm is IPartCostModifier && this.GetType() != pm.GetType())
 			{
 				float cost = ((IPartCostModifier)pm).GetModuleCost(0, ModifierStagingSituation.CURRENT);
 				Log.dbg("CalculateModulesCost({0},{1}) => {2}", this.part.partInfo.name, pm.moduleName, cost);
