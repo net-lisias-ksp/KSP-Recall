@@ -199,38 +199,19 @@ namespace KSP_Recall { namespace Refunds
 
 			double resourceCosts = this.CalculateResourcesCost();
 			double wrongCost = this.OriginalCost - resourceCosts;
-			double rightCost = this.OriginalCost + this.CalculateModulesCost() - resourceCosts;
+			double rightCost = this.OriginalCost + this.CalculateModulesCost();
 
-			this.costFix = -wrongCost + rightCost ;
+			this.costFix = -wrongCost + rightCost;
 
-			// Naahh...
-			// Why going through so much trouble? We already know that ModulePartInventory's IPartModifierCost is being charged twice.
-			// Check double CalculateModuleCost(PartModule) below.
-#if false	
-			if (this.part.Modules.Contains("ModuleInventoryPart"))
+			if (this.part.Modules.Contains<KerbalEVA>() && this.part.Modules.Contains("ModuleInventoryPart"))
 			{	// Now overcomes the **Stock** double refunding on Resources from Parts inside a ModuleInventoryPart
-				Log.dbg("This part has ModuleInventoryPart.");
-				PartModule pm = this.part.Modules["ModuleInventoryPart"];
-
-				// Yet another Messy Hack to avoid locking this thing on KSP 1.11.x
-				DictionaryValueList<int,object> storedParts = null;
-				{
-					FieldInfo field = typeof(DictionaryValueList<int,object>).GetField("storedParts", BindingFlags.Instance | BindingFlags.Public);
-					storedParts = (DictionaryValueList<int, object>)field.GetValue(pm) ?? new DictionaryValueList<int, object>();
-				}
-				foreach (object storedPart in storedParts.Values)
-				{
-					ProtoPartSnapshot snapshot = null;
-					{
-						FieldInfo field = typeof(ProtoPartSnapshot).GetField("snapshot", BindingFlags.Instance | BindingFlags.Public);
-						snapshot = (ProtoPartSnapshot)field.GetValue(storedPart);
-					}
-					if (null != snapshot)
-						foreach (ProtoPartResourceSnapshot pr in snapshot.resources)
-							this.costFix =- this.CalculateResourceCost(pr);
-				}
+				// See https://github.com/net-lisias-ksp/KSP-Recall/issues/16#issuecomment-820346879
+				IPartCostModifier pcm = this.part.Modules["ModuleInventoryPart"] as IPartCostModifier;
+				double fix = pcm.GetModuleCost(0, ModifierStagingSituation.CURRENT);
+				Log.dbg("This part is a Kerbal with ModuleInventoryPart. Deducting {0}", fix);
+				this.costFix =- fix;
 			}
-#endif
+
 			Log.dbg("Recalculate Results originalCost: {0:0.0}; resourceCosts:{1:0.0}; wrongCost:{2:0.0}; rightCost:{3:0.0}; fix:{4:0.0} ; ", this.OriginalCost, resourceCosts, wrongCost, rightCost, this.costFix);
 		}
 
@@ -270,7 +251,7 @@ namespace KSP_Recall { namespace Refunds
 		private double CalculateModulesCost()
 		{
 			double r = 0;
-			foreach (PartModule pm in this.part.Modules) if (pm is IPartCostModifier && this.GetType() != pm.GetType())
+			foreach (PartModule pm in this.part.Modules) if (pm is IPartCostModifier && this.GetType() != pm.GetType() && !"ModuleInventoryPart".Equals(pm.GetType().Name))
 			{
 				r += this.CalculateModuleCost(pm);
 			}
@@ -280,7 +261,11 @@ namespace KSP_Recall { namespace Refunds
 		private double CalculateModuleCost(PartModule pm)
 		{
 			float r = ((IPartCostModifier)pm).GetModuleCost(0, ModifierStagingSituation.CURRENT);
-			if ("ModuleInventoryPart".Equals(pm.moduleName)) r *= -1; // Fix the OverRedunding from Stock
+
+			// That could had been a good idea - if it had worked.
+			// But it was denying the refund of complex parts with dry cost and resources togheter, so...
+			// if ("ModuleInventoryPart".Equals(pm.moduleName)) r *= -1; // Fix the OverRedunding from Stock
+
 			Log.dbg("CalculateModulesCost({0},{1}) => {2}", this.part.partInfo.name, pm.moduleName, r);
 			return r;
 		}
@@ -318,7 +303,7 @@ namespace KSP_Recall { namespace Refunds
 
 		private void RemoveResourceIfAvailable()
 		{
-			Log.dbg("Removing {0} from part {1}-{2}:{3:X}", RESOURCENAME, this.VesselName, this.part.partName, this.part.GetInstanceID());
+			Log.dbg("Removing {0} from part {1}-{2}:{3:X}", RESOURCENAME, this.VesselName, this.part.name, this.part.GetInstanceID());
 
 			if (null == this.part.Resources) return;	// Oukey, this is a bug on KSP ou just an anti-feature? :-(
 			PartResource pr = this.part.Resources.Get(RESOURCENAME);
@@ -357,7 +342,7 @@ namespace KSP_Recall { namespace Refunds
 					}
 			}
 
-			Log.dbg("{0}-{1}:{2:X} is {3}", this.VesselName, this.part.partName, this.part.GetInstanceID(), r ? "stackable" : "not stackable");
+			Log.dbg("{0}-{1}:{2:X} is {3}", this.VesselName, this.part.name, this.part.GetInstanceID(), r ? "stackable" : "not stackable");
 			return r;
 		}
 
