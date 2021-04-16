@@ -211,6 +211,8 @@ namespace KSP_Recall { namespace Refunds
 				Log.dbg("This part is a Kerbal with ModuleInventoryPart. Deducting {0}", fix);
 				this.costFix =- fix;
 			}
+			else
+				this.costFix -= resourceCosts;
 
 			Log.dbg("Recalculate Results originalCost: {0:0.0}; resourceCosts:{1:0.0}; wrongCost:{2:0.0}; rightCost:{3:0.0}; fix:{4:0.0} ; ", this.OriginalCost, resourceCosts, wrongCost, rightCost, this.costFix);
 		}
