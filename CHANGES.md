@@ -1,5 +1,8 @@
 # KSP-Recall :: Changes
 
+* 2021-0416: 0.1.0.7 (LisiasT) for KSP >= 1.4.1
+	+ **Finally** diagnosed and fixed an issue on 	+ Reworks the issue [#16](https://github.com/net-lisias-ksp/KSP-Recall/issues/16).
+refunding Kerbals on Command Seats (or standalones)/
 * 2021-0413: 0.1.0.6 (LisiasT) for KSP >= 1.4.1
 	+ Reworks the Work Around for issue [#16](https://github.com/net-lisias-ksp/KSP-Recall/issues/16), fixing the Stock's over-refunding on `ModuleInventoryPart`.
 * 2021-0412: 0.1.0.5 (LisiasT) for KSP >= 1.4.1
