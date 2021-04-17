@@ -145,6 +145,17 @@ namespace KSP_Recall { namespace Refunds
 			// This yet another messy hack aims to work around problems on refundings
 			// https://github.com/net-lisias-ksp/KSP-Recall/issues/16
 			// See the link for a rationale for doing things this freasking way.
+			//
+			// TL;DR : **STOCK** is the one borking on refundings by ignoring this Interface
+			// Everybody else should be doing the right thing. So the Refunding stunt would end
+			// up screweing the good boys.
+			//
+			// But, and again, Stock is the one ignoring this interface. So by implementing it, 3rd
+			// parties that does The Tight Thing™ will call this, and so the Refunding resource will be
+			// counter acted o them.
+			//
+			// The net result is that only Stock (and anyone else borking on this thing) will not be counter-acted
+			// but this. :)
 			return null == this.part.Resources.Get(RESOURCENAME)
 					? 0f		// If the refunding resource is not present, there's no need for the hack
 					: (float)(-this.costFix)
@@ -211,7 +222,7 @@ namespace KSP_Recall { namespace Refunds
 				Log.dbg("This part is a Kerbal with ModuleInventoryPart. Deducting {0}", fix);
 				this.costFix =- fix;
 			}
-			else
+			else // TODO: Check if there's not a situation where Kerbals would be carrying resources themselves...
 				this.costFix -= resourceCosts;
 
 			Log.dbg("Recalculate Results originalCost: {0:0.0}; resourceCosts:{1:0.0}; wrongCost:{2:0.0}; rightCost:{3:0.0}; fix:{4:0.0} ; ", this.OriginalCost, resourceCosts, wrongCost, rightCost, this.costFix);
