@@ -304,7 +304,7 @@ namespace KSP_Recall { namespace Refunds
 			// This will prevent the cost of the Refunding from being subtracked from the cost of the Part, what would counter-attack
 			// the fix below
 			FieldInfo field = typeof(PartResource).GetField("maxAmount", BindingFlags.Instance | BindingFlags.Public);
-			field.SetValue(pr, 0d);
+			field.SetValue(pr, 0.0000001d); // This aims to keep MAS happy. See https://github.com/net-lisias-ksp/KSP-Recall/issues/18
 
 			// This effectivelly "steals back" the Funds lost by the KSP's current stunt (using the prefab's cost on recovering costs)
 			// See https://github.com/net-lisias-ksp/KSP-Recall/issues/12
