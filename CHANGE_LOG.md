@@ -1,5 +1,8 @@
 # KSP-Recall :: Change Log
 
+* 2021-0508: 0.2.0.0 (LisiasT) for KSP >= 1.4.1
+	+ Bumping version due a [mishap](https://github.com/net-lisias-ksp/KSP-Recall/issues/17) on the latest release on SpaceDock
+	+ Trying to workaround [MAS being picky](https://github.com/net-lisias-ksp/KSP-Recall/issues/18) even on hidden resources.
 * 2021-0417: 0.1.0.8 (LisiasT) for KSP >= 1.4.1
 	+ **Finally** diagnosed and fixed an issue on refunding Kerbals on Command Seats (or standalones)
 	+ Reworks the issue [#16](https://github.com/net-lisias-ksp/KSP-Recall/issues/16).
