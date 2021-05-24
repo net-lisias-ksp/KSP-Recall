@@ -97,7 +97,7 @@ namespace KSP_Recall { namespace Refunds
 			}
 
 			// note to myself - its of little use to calculate the resources laterly after the OnSave event is called on the part.
-			// TODO: Find a way to induce KSP to save the partsa gain after the resource is reapplied, this will ensure
+			// TODO: Find a way to induce KSP to save the parts gain after the resource is reapplied, this will ensure
 			// recovering costs on any situation. See NotifyResourcesChanged on PartModule.
 			// Right now things are working on a fickle equilibrium. I don't like this. :(
 		}
