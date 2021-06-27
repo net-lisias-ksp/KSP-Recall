@@ -378,18 +378,38 @@ namespace KSP_Recall { namespace Refunds
 		}
 
 #if true
+		// This crappy escuse of a code is neeed due https://github.com/net-lisias-ksp/KSP-Recall/issues/23
+		private static PartResourceDefinition PRD;
 		private PartResource RestoreResource()
 		{
 			// THIS SHOULD NOT BE CALLED when this.active is false, or it may inject a Refunding resource when none is desired.
+
+			if (null == PRD)
+				PRD = PartResourceLibrary.Instance.GetDefinition(RESOURCENAME);
+
 			if (null == this.pr)
 			{
-				PartResourceDefinition prd = PartResourceLibrary.Instance.GetDefinition(RESOURCENAME);
-				this.pr = this.part.Resources.Add(prd.name, 0, 1, false, false, false, false, PartResource.FlowMode.None);
+				this.pr = new PartResource(this.part);
+				{
+					this.pr.SetInfo(PRD);
+					this.pr.maxAmount = 1;
+					this.pr.amount = 0;
+					this.pr.flowState = true;
+					this.pr.isTweakable = PRD.isTweakable;
+					this.pr.isVisible = PRD.isVisible;
+					this.pr.hideFlow = true;
+					this.pr.flowMode = PartResource.FlowMode.None;
+				}
 			}
 
 			PartResource pr = this.part.Resources.Get(RESOURCENAME);
 			if (null == pr)
-				this.part.Resources.Add(this.pr);
+			{
+				// This gets rid of that pesky log entries like this one:
+				//	[LOG 00:02:31.256] [PartSet]: Failed to add Resource 1566956177 to Simulation PartSet:60079 as corresponding Part Mk0 Liquid Fuel Fuselage-4274492751 SimulationResource was not found.
+				this.part.Resources.dict.Add(PRD.name.GetHashCode(), this.pr);
+				pr = this.part.Resources.Get(RESOURCENAME);
+			}
 
 			this.ResetResource();
 
