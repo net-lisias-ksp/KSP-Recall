@@ -88,10 +88,14 @@ namespace KSP_Recall { namespace Refunds
 			// Always clean up the Resource on loading, as we need to get rid of reminiscents
 			// of the previous attempts. We don't want the Refunding resource on Edit Scene anyway.
 			//
-			// Additionally, clean up Parts those Refunding was inactivated by the user.
-			this.RemoveResourceIfAvailable();
+			this.ResetResource();
 
-			if (!this.active) return;
+			if (!this.active)
+			{
+				// Additionally, clean up Parts those Refunding was inactivated by the user.
+				this.RemoveResourceIfAvailable();
+				return;
+			}
 
 			// The cost of the craft is billed on launch, **after** loading the craft.
 			//
@@ -134,7 +138,9 @@ namespace KSP_Recall { namespace Refunds
 
 		private void OnDestroy()
 		{
-			Log.dbg("OnDestroy {0}", this.PartInstanceId);
+			Log.dbg("OnDestroy {0}:{1:X}", this.name, this.part.GetInstanceID());
+			/// Log.dbg("OnDestroy {0}", this.PartInstanceId); This doesn't work here.
+			this.pr = null;
 		}
 
 		#endregion
@@ -287,15 +293,11 @@ namespace KSP_Recall { namespace Refunds
 		private void UpdateResource()
 		{
 			Log.dbg("UpdateResource {0}:{1:X}", this.part.partInfo.name, this.part.GetInstanceID());
-			if (this.IsStackable()) // Giving up on handling Stackables for now. The Rails stunt didn't worked as expected...
-			{
-				this.RemoveResourceIfAvailable();
-				Log.dbg("Part is Stackable. Removed Refunding support!");
+			if (this.RemoveResourceWhenNeeded()) // Giving up on handling Stackables for now. The Rails stunt didn't worked as expected...
 				return;
-			}
 
 			// Rebuild the Refund Resource if it was destroyed by something like a Fuel Switch
-			PartResource pr = this.part.Resources.Get(RESOURCENAME) ?? this.RestoreResource();
+			PartResource pr = this.RestoreResource();
 
 			Log.dbg("Before {0} {1} {2} {3}", pr.ToString(), pr.amount, pr.maxAmount, pr.info.unitCost);
 
@@ -315,6 +317,16 @@ namespace KSP_Recall { namespace Refunds
 			Log.dbg("After {0} {1} {2} {3}", pr.ToString(), pr.amount, pr.maxAmount, pr.info.unitCost);
 		}
 
+		private void ResetResource()
+		{
+			Log.dbg("Resetting {0} on part {1}", RESOURCENAME, this.PartInstanceId);
+			if (null == this.pr) return;
+
+			FieldInfo field = typeof(PartResource).GetField("maxAmount", BindingFlags.Instance | BindingFlags.Public);
+			field.SetValue(this.pr, 1d);
+			this.pr.amount = 0;
+		}
+
 		private void RemoveResourceIfAvailable()
 		{
 			Log.dbg("Removing {0} from part {1}", RESOURCENAME, this.PartInstanceId);
@@ -325,10 +337,15 @@ namespace KSP_Recall { namespace Refunds
 		}
 
 		// Remove the Refunding Resource from parts with PartModuleCargo that can be stackable
-		internal void RemoveResourceWhenNeeded()
+		internal bool RemoveResourceWhenNeeded()
 		{
-			if (this.IsStackable())
+			bool r;
+			if (r = this.IsStackable())
+			{
+				Log.dbg("Part {0} is Stackable. Removed Refunding support!", this.PartInstanceId);
 				this.RemoveResourceIfAvailable();
+			}
+			return r;
 		}
 
 		private bool IsStackable()
@@ -374,9 +391,8 @@ namespace KSP_Recall { namespace Refunds
 			if (null == pr)
 				this.part.Resources.Add(this.pr);
 
-			FieldInfo field = typeof(PartResource).GetField("maxAmount", BindingFlags.Instance | BindingFlags.Public);
-			field.SetValue(pr, 1d);
-			pr.amount = 0;
+			this.ResetResource();
+
 			return pr;
 		}
 #else
