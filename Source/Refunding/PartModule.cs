@@ -50,7 +50,7 @@ namespace KSP_Recall { namespace Refunds
 
 		public override void OnAwake()
 		{
-			Log.dbg("OnAwake {0}:{1:X}", this.name, this.part.GetInstanceID());
+			Log.dbg("OnAwake {0}", this.PartInstanceId);
 			base.OnAwake();
 			// Here we have a problem. Some parts have the this.part.partInfo set, others don't.
 			// Don't know why, and this is worrying - TweakScale depends on this! Is this a race condition?
@@ -64,19 +64,19 @@ namespace KSP_Recall { namespace Refunds
 
 		public override void OnStart(StartState state)
 		{
-			Log.dbg("OnStart {0}:{1:X} {2} {3}", this.name, this.part.GetInstanceID(), state, this.active);
+			Log.dbg("OnStart {0} {1} {2}", this.PartInstanceId, state, this.active);
 			base.OnStart(state);
 		}
 
 		public override void OnCopy(PartModule fromModule)
 		{
-			Log.dbg("OnCopy {0}:{1:X} from {2:X}", this.name, this.part.GetInstanceID(), fromModule.part.GetInstanceID());
+			Log.dbg("OnCopy {0} from {1:X}", this.PartInstanceId, fromModule.part.GetInstanceID());
 			base.OnCopy(fromModule);
 		}
 
 		public override void OnLoad(ConfigNode node)
 		{
-			Log.dbg("OnLoad {0}:{1:X} {2}", this.name, this.part.GetInstanceID(), null != node);
+			Log.dbg("OnLoad {0} {1}", this.PartInstanceId, null != node);
 			base.OnLoad(node);
 			if (null == this.part.partInfo)
 				this.prefab = this.part;
@@ -104,7 +104,7 @@ namespace KSP_Recall { namespace Refunds
 
 		public override void OnSave(ConfigNode node)
 		{
-			Log.dbg("OnSave {0}:{1:X}", this.name, this.part.GetInstanceID());
+			Log.dbg("OnSave {0}", this.PartInstanceId);
 			base.OnSave(node);
 		}
 
@@ -116,7 +116,7 @@ namespace KSP_Recall { namespace Refunds
 		{
 			if (!this.active) return;
 			if (0 != --this.delayTicks) return;
-			Log.dbg("FixedUpdate {0}:{1:X}", this.name, this.part.GetInstanceID());
+			Log.dbg("FixedUpdate {0}", this.PartInstanceId);
 
 			switch(HighLogic.LoadedScene)
 			{
@@ -134,7 +134,7 @@ namespace KSP_Recall { namespace Refunds
 
 		private void OnDestroy()
 		{
-			Log.dbg("OnDestroy {0}:{1:X}", this.name, this.part.GetInstanceID());
+			Log.dbg("OnDestroy {0}", this.PartInstanceId);
 		}
 
 		#endregion
@@ -202,7 +202,7 @@ namespace KSP_Recall { namespace Refunds
 
 		private void Recalculate()
 		{
-			Log.dbg("Recalculate {0}:{1:X}", this.name, this.part.GetInstanceID());
+			Log.dbg("Recalculate {0}", this.PartInstanceId);
 			if (!this.active)
 			{
 				this.costFix = 0;
@@ -317,7 +317,7 @@ namespace KSP_Recall { namespace Refunds
 
 		private void RemoveResourceIfAvailable()
 		{
-			Log.dbg("Removing {0} from part {1}-{2}:{3:X}", RESOURCENAME, this.VesselName, this.part.name, this.part.GetInstanceID());
+			Log.dbg("Removing {0} from part {1}", RESOURCENAME, this.PartInstanceId);
 
 			if (null == this.part.Resources) return;	// Oukey, this is a bug on KSP ou just an anti-feature? :-(
 			PartResource pr = this.part.Resources.Get(RESOURCENAME);
@@ -356,7 +356,7 @@ namespace KSP_Recall { namespace Refunds
 					}
 			}
 
-			Log.dbg("{0}-{1}:{2:X} is {3}", this.VesselName, this.part.name, this.part.GetInstanceID(), r ? "stackable" : "not stackable");
+			Log.dbg("{0} is {1}", this.PartInstanceId, r ? "stackable" : "not stackable");
 			return r;
 		}
 
@@ -382,7 +382,7 @@ namespace KSP_Recall { namespace Refunds
 #else
 		private void RestoreResource()
 		{
-			Log.dbg("RestoreResource {0}:{1:X}", this.name, this.part.GetInstanceID());
+			Log.dbg("RestoreResource {0}", this.PartInstanceId);
 			PartResource pr = this.part.Resources.Get(RESOURCENAME);
 			Log.dbg("Before {0} {1} {2} {3}", pr.ToString(), pr.amount, pr.maxAmount, pr.info.unitCost);
 			pr.SetInfo(PartResourceLibrary.Instance.GetDefinition(RESOURCENAME));
@@ -407,6 +407,7 @@ namespace KSP_Recall { namespace Refunds
 			// Place holder. Find a way to induce KSP to save the part again.
 		}
 
+		private string PartInstanceId => string.Format("{0}-{1}:{2:X}", this.VesselName, this.part.name, this.part.GetInstanceID());
 		private string VesselName => null == this.part.vessel ? "<NO VESSEL>" : this.part.vessel.vesselName ;
 
 		private static readonly KSPe.Util.Log.Logger Log = KSPe.Util.Log.Logger.CreateForType<Refunding>("KSP-Recall", "Refunding");
