@@ -72,7 +72,7 @@ namespace KSP_Recall
 
 		private static bool checkForRefunding()
 		{
-			return (1 == KSPe.Util.KSP.Version.Current.MAJOR && 11 == KSPe.Util.KSP.Version.Current.MINOR);
+			return KSPe.Util.KSP.Version.Current >= KSPe.Util.KSP.Version.FindByVersion(1,11,0); 
 		}
 	}
 }
