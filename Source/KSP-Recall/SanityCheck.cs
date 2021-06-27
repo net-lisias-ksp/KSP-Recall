@@ -76,6 +76,7 @@ namespace KSP_Recall
 			int parts_with_driftless_count = 0;
 			int parts_with_attached_count = 0;
 			int parts_with_chillingout_count = 0;
+			int parts_with_refunding_count = 0;
 			int showstoppers_count = 0;
 
 			foreach (AvailablePart p in PartLoader.LoadedPartsList)
@@ -165,10 +166,10 @@ namespace KSP_Recall
 
 						if (containsRefunding) if (null != (due = this.checkForRefunding(prefab)))
 						{
-							Log.info("Removing {0} support for {1} ({2}) due {3}.", CHILLINGOUT_MODULE_NAME, p.name, p.title, due);
-							prefab.RemoveModule(prefab.Modules[CHILLINGOUT_MODULE_NAME]);
+							Log.info("Removing {0} support for {1} ({2}) due {3}.", REFUNDING_MODULE_NAME, p.name, p.title, due);
+							prefab.RemoveModule(prefab.Modules[REFUNDING_MODULE_NAME]);
 						}
-						else ++parts_with_chillingout_count;
+						else ++parts_with_refunding_count;
 					}
 					catch (Exception e)
 					{
@@ -186,12 +187,13 @@ namespace KSP_Recall
 #endif
 			}
 
-			Log.info("SanityCheck Concluded : {0} parts found ; {1} parts using {2} ; {3} parts using {4} ; {5} parts using {6} ; {7} parts using {8} ; {9} show stoppers detected ."
+			Log.info("SanityCheck Concluded : {0} parts found ; {1} parts using {2} ; {3} parts using {4} ; {5} parts using {6} ; {7} parts using {8} ; {9} parts using {10}, {11} show stoppers detected ."
 				, total_count
 				, parts_with_resourceful_count, RESOURCEFUL_MODULE_NAME
 				, parts_with_driftless_count, DRIFTLESS_MODULE_NAME
 				, parts_with_attached_count, ATTACHED_MODULE_NAME
 				, parts_with_chillingout_count, CHILLINGOUT_MODULE_NAME
+				, parts_with_refunding_count, REFUNDING_MODULE_NAME
 				, showstoppers_count);
 			SanityCheck.isConcluded = true;
 
