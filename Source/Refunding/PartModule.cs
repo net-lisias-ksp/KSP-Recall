@@ -44,6 +44,7 @@ namespace KSP_Recall { namespace Refunds
 		private Part prefab { get => _prefab ?? (_prefab = this.part.partInfo.partPrefab); set => _prefab = value; }
 		internal double costFix = 0;
 		private int delayTicks = 0;
+		private PartResource pr;	// Buffer to store the synthetical Part Resource (avoiding overloading the GC, see Issue #21 on GitHub.
 
 		#region KSP Life Cycle
 
@@ -363,12 +364,15 @@ namespace KSP_Recall { namespace Refunds
 		private PartResource RestoreResource()
 		{
 			// THIS SHOULD NOT BE CALLED when this.active is false, or it may inject a Refunding resource when none is desired.
-			PartResource pr = this.part.Resources.Get(RESOURCENAME);
-			if (null == pr)
+			if (null == this.pr)
 			{
 				PartResourceDefinition prd = PartResourceLibrary.Instance.GetDefinition(RESOURCENAME);
-				pr = this.part.Resources.Add(prd.name, 0, 1, false, false, false, false, PartResource.FlowMode.None);
+				this.pr = this.part.Resources.Add(prd.name, 0, 1, false, false, false, false, PartResource.FlowMode.None);
 			}
+
+			PartResource pr = this.part.Resources.Get(RESOURCENAME);
+			if (null == pr)
+				this.part.Resources.Add(this.pr);
 
 			FieldInfo field = typeof(PartResource).GetField("maxAmount", BindingFlags.Instance | BindingFlags.Public);
 			field.SetValue(pr, 1d);
