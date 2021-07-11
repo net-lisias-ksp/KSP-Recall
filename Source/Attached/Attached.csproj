@@ -44,6 +44,7 @@
     <Compile Include="EditorHelper.cs" />
     <Compile Include="PartModule.cs" />
     <Compile Include="PartPool.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\KSP-Recall\KSP-Recall.csproj">
