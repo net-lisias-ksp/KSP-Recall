@@ -67,7 +67,7 @@ namespace KSP_Recall
 
 		private static bool checkForChillingOut()
 		{
-			return (KSPe.Util.KSP.Version.Current == KSPe.Util.KSP.Version.FindByVersion(1,11,0));
+			return (KSPe.Util.KSP.Version.Current >= KSPe.Util.KSP.Version.FindByVersion(1,11,0));
 		}
 
 		private static bool checkForRefunding()
