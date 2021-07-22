@@ -215,8 +215,8 @@ namespace KSP_Recall
 
 			if ( !(1 == KSPe.Util.KSP.Version.Current.MAJOR && 9 == KSPe.Util.KSP.Version.Current.MINOR) )
 			{
-				if (!Globals.Instance.Resourceful) return MSG_KSP_NO_SUPPORTED;
-				else Log.warn(MSG_INSTALLATION_FORCED, RESOURCEFUL_MODULE_NAME);
+				if (Globals.Instance.Resourceful) Log.warn(MSG_INSTALLATION_FORCED, RESOURCEFUL_MODULE_NAME);
+				else return MSG_PART_DOES_NOT_NEED ;
 			}
 
 
@@ -241,8 +241,8 @@ namespace KSP_Recall
 				KSPe.Util.KSP.Version.Current > KSPe.Util.KSP.Version.FindByVersion(1,11,0)
 			)
 			{
-				if (!Globals.Instance.Driftless) return MSG_KSP_NO_SUPPORTED;
-				else Log.warn(MSG_INSTALLATION_FORCED, DRIFTLESS_MODULE_NAME);
+				if (Globals.Instance.Driftless) Log.warn(MSG_INSTALLATION_FORCED, DRIFTLESS_MODULE_NAME);
+				else return MSG_PART_DOES_NOT_NEED ;
 			}
 
 			return null;
@@ -254,8 +254,8 @@ namespace KSP_Recall
 
 			if ( KSPe.Util.KSP.Version.Current < KSPe.Util.KSP.Version.FindByVersion(1,8,0) )
 			{
-				if (!Globals.Instance.Attached) return MSG_KSP_NO_SUPPORTED;
-				else Log.warn(MSG_INSTALLATION_FORCED, ATTACHED_MODULE_NAME);
+				if (Globals.Instance.Attached) Log.warn(MSG_INSTALLATION_FORCED, ATTACHED_MODULE_NAME);
+				else return MSG_PART_DOES_NOT_NEED ;
 			}
 
 			return null;
@@ -267,8 +267,8 @@ namespace KSP_Recall
 
 			if ( KSPe.Util.KSP.Version.Current != KSPe.Util.KSP.Version.FindByVersion(1,11,0) )
 			{
-				if (!Globals.Instance.ChillingOut) return MSG_KSP_NO_SUPPORTED;
-				else Log.warn(MSG_INSTALLATION_FORCED, CHILLINGOUT_MODULE_NAME);
+				if (Globals.Instance.ChillingOut) Log.warn(MSG_INSTALLATION_FORCED, CHILLINGOUT_MODULE_NAME);
+				else return MSG_PART_DOES_NOT_NEED ;
 			}
 
 			return null;
@@ -280,8 +280,8 @@ namespace KSP_Recall
 
 			if ( !(1 == KSPe.Util.KSP.Version.Current.MAJOR && 11 == KSPe.Util.KSP.Version.Current.MINOR) )
 			{
-				if (!Globals.Instance.Refunding) return MSG_KSP_NO_SUPPORTED;
-				else Log.warn(MSG_INSTALLATION_FORCED, REFUNDING_MODULE_NAME);
+				if (Globals.Instance.Refunding) Log.warn(MSG_INSTALLATION_FORCED, REFUNDING_MODULE_NAME);
+				else return MSG_PART_DOES_NOT_NEED ;
 			}
 
 			if (p.name.StartsWith("kerbalEVA"))		return MSG_PART_NOT_SUPPORTED;
