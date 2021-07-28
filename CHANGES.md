@@ -1,5 +1,8 @@
 # KSP-Recall :: Changes
 
+* 2021-0728: 0.2.0.4 (LisiasT) for KSP >= 1.4.1
+	+ `ChillingOut` is not working as expected. Deactivating it.
+		- Any problems will need to be tackled out punctually. 
 * 2021-0722: 0.2.0.3 (LisiasT) for KSP >= 1.4.1
 	* Release 0.2.0.2 was issued with broken sanity checks. Fixing them.
 * 2021-0718: 0.2.0.2 (LisiasT) for KSP >= 1.4.1
