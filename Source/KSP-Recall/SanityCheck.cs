@@ -265,7 +265,10 @@ namespace KSP_Recall
 		{
 			Log.dbg("Checking {0} Sanity for {1} at {2}", CHILLINGOUT_MODULE_NAME, p.name, p.partInfo.partUrl ?? "<NO URL>");
 
-			if ( KSPe.Util.KSP.Version.Current < KSPe.Util.KSP.Version.FindByVersion(1,11,0) )
+			if ( KSPe.Util.KSP.Version.Current < KSPe.Util.KSP.Version.FindByVersion(1,11,0)
+				|| KSPe.Util.KSP.Version.Current == KSPe.Util.KSP.Version.FindByVersion(1,11,1)
+				|| KSPe.Util.KSP.Version.Current == KSPe.Util.KSP.Version.FindByVersion(1,11,2)
+			)
 			{
 				if (Globals.Instance.ChillingOut) Log.warn(MSG_INSTALLATION_FORCED, CHILLINGOUT_MODULE_NAME);
 				else return MSG_PART_DOES_NOT_NEED ;
