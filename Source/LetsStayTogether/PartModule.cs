@@ -21,6 +21,7 @@
 
 */
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace KSP_Recall { namespace StayingTogether 
 {
@@ -34,7 +35,8 @@ namespace KSP_Recall { namespace StayingTogether
 
 		#endregion
 
-		private readonly Dictionary<string,AttachNode> dict = new Dictionary<string,AttachNode>();
+		Vector3? attPos;
+		Quaternion? attRotation;
 
 		#region KSP Life Cycle
 
@@ -53,9 +55,35 @@ namespace KSP_Recall { namespace StayingTogether
 			base.OnStart(state);
 		}
 
+		public override void OnLoad(ConfigNode node)
+		{
+			Log.dbg("OnLoad {0}:{1:X} {2}", this.name, this.part.GetInstanceID(), null != node);
+			base.OnLoad(node);
+			this.attPos = null;
+			this.attRotation = null;
+		}
+
 		#endregion
 
 		#region Unity Life Cycle
+
+		private int delayTicks = 0;
+		private void FixedUpdate()
+		{
+			if (!this.active) return;
+			Log.dbg("FixedUpdate {0}", this.PartInstanceId);
+
+			switch(HighLogic.LoadedScene)
+			{
+				case GameScenes.FLIGHT:
+					this.SynchronousRestore();
+					break;
+				default:
+					break;
+			}
+
+			this.enabled = --this.delayTicks > 0;
+		}
 
 		private void OnDestroy()
 		{
@@ -70,31 +98,47 @@ namespace KSP_Recall { namespace StayingTogether
 		{
 			if (!this.active) return; // Just in case someone call it directly
 
-			this.dict.Clear();
-
-			foreach (AttachNode an in this.part.attachNodes)
 			{
-				AttachNode ann = new AttachNode();
-				ann.id = an.id;
-				ann.offset = an.offset;
-				ann.orientation = an.orientation;
-				ann.position = an.position;
-				this.dict.Add(ann.id, ann);
+				Vector3 v = this.part.transform.position;
+				this.attPos = new Vector3(v.x, v.y, v.z);
 			}
+			{
+				Quaternion q = this.part.transform.rotation;
+				this.attRotation = new Quaternion(q.x, q.y, q.z, q.w);
+			}
+		}
+
+		internal void AsynchronousRestore()
+		{
+			this.delayTicks = 2;
+			this.enabled = this.active;
 		}
 
 		internal void SynchronousRestore()
 		{
-			if (!this.active) return; // Just in case someone call it directly
+			if (!this.active ) return; // Just in case someone call it directly
+			if (null == this.attPos || null == this.attRotation) return;
 
-			foreach (AttachNode an in this.part.attachNodes) if (this.dict.ContainsKey(an.id))
-			{
-				AttachNode ann = this.dict[an.id];
-				an.id = ann.id;
-				an.offset = ann.offset;
-				an.orientation = ann.orientation;
-				an.position = ann.position;
-			}
+			Log.dbg("Restore {0}'s attPos from {1}:{2} to the restore point {3}:{3}", this.PartInstanceId, this.part.transform.position, this.part.transform.rotation, this.attPos, this.attRotation);
+			this.part.transform.SetPositionAndRotation((Vector3)this.attPos, (Quaternion)this.attRotation);
+
+			//if (null != this.attPos && !this.attPos.Equals(this.part.transform.position))
+			//{ 
+			//	Vector3 position = this.part.transform.position;
+			//	position.x = (float)(this.attPos?.x);
+			//	position.y = (float)(this.attPos?.y);
+			//	position.z = (float)(this.attPos?.z);
+			//}
+
+			//if (null != this.attRotation && !this.attRotation.Equals(this.part.transform.rotation))
+			//{
+			//	Quaternion rotation = this.part.transform.rotation;
+			//	Log.dbg("Restore {0}'s attRotation from {1} to the restore point {2}", PartInstanceId, rotation, this.attRotation);
+			//	rotation.x = (float)(this.attRotation?.x);
+			//	rotation.y = (float)(this.attRotation?.y);
+			//	rotation.z = (float)(this.attRotation?.z);
+			//	rotation.w = (float)(this.attRotation?.w);
+			//}
 		}
 
 		#endregion

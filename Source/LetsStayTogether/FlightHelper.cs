@@ -60,8 +60,7 @@ namespace KSP_Recall { namespace StayingTogether
 			Log.dbg("Awake on {0}", HighLogic.LoadedScene);
 			if (Globals.Instance.Refunding)
 			{
-				GameEvents.onVesselGoOnRails.Add(OnVesselGoOnRails);
-				GameEvents.onVesselGoOffRails.Add(OnVesselGoOffRails);
+				GameEvents.onTimeWarpRateChanged.Add(OnTimeWarpRateChanged);
 			}
 		}
 
@@ -70,8 +69,7 @@ namespace KSP_Recall { namespace StayingTogether
 			Log.dbg("OnDestroy");
 			if (Globals.Instance.Refunding)
 			{
-				GameEvents.onVesselGoOffRails.Add(OnVesselGoOffRails);
-				GameEvents.onVesselGoOnRails.Remove(OnVesselGoOnRails);
+				GameEvents.onTimeWarpRateChanged.Remove(OnTimeWarpRateChanged);
 			}
 		}
 
@@ -79,35 +77,42 @@ namespace KSP_Recall { namespace StayingTogether
 
 		#region Events Handlers
 
-		private void OnVesselGoOnRails(Vessel vessel)
+		private float lastRate = -1f; 
+		private void OnTimeWarpRateChanged()
 		{
-			Log.dbg("OnVesselGo ON Rails {0}", vessel.vesselName);
-			this.ImmediateUpdate(vessel);
-		}
+			if (this.lastRate == TimeWarp.CurrentRate) return;
 
-		// Continuing from the the OnRails stunt, when the vessel is unpacked we need to remove the Resource from
-		// the stackable parts, so they could be stackable again.
-		//
-		// Since vessels are recovered while flying or while packed, I think this stunt my stick...
-		private void OnVesselGoOffRails(Vessel vessel)
-		{
-			Log.dbg("OnVesselGo OFF Rails {0}", vessel.vesselName);
-			this.ImediateRestore(vessel);
+			this.lastRate = TimeWarp.CurrentRate;
+
+			Log.dbg("OnTimeWarpRateChanged to {0}", this.lastRate);
+			if (!HighLogic.LoadedSceneIsFlight) return;
+
+			bool start	= 1.0f != this.lastRate;
+			bool end	= 1.0f == this.lastRate;
+			if (start)		this.ImmediateUpdate();
+			else if (end)	this.AsynchronousRestore();
 		}
 
 		#endregion
 
-		private void ImmediateUpdate(Vessel vessel)
+		private void ImmediateUpdate()
 		{
-			foreach (Part p in vessel.Parts) if (p.Modules.Contains<LetsStayTogether>())
-				p.Modules.GetModule<LetsStayTogether>().SynchronousUpdate();
+			Log.dbg("ImmediateUpdate");
+
+			foreach (Vessel vessel in FlightGlobals.Vessels) if (vessel.enabled)
+				foreach (Part p in vessel.Parts) if (p.Modules.Contains<LetsStayTogether>())
+					p.Modules.GetModule<LetsStayTogether>().SynchronousUpdate();
 		}
 
-		private void ImediateRestore(Vessel vessel)
+		private void AsynchronousRestore()
 		{
-			foreach (Part p in vessel.Parts) if (p.Modules.Contains<LetsStayTogether>())
-				p.Modules.GetModule<LetsStayTogether>().SynchronousRestore();
+			Log.dbg("AsynchronousRestore");
+
+			foreach (Vessel vessel in FlightGlobals.Vessels) if (vessel.enabled)
+				foreach (Part p in vessel.Parts) if (p.Modules.Contains<LetsStayTogether>())
+					p.Modules.GetModule<LetsStayTogether>().AsynchronousRestore();
 		}
+
 		private static KSPe.Util.Log.Logger Log = KSPe.Util.Log.Logger.CreateForType<FlightHelper>("KSP-Recall", "StayingTogether-FlightHelper");
 	}
 } }
