@@ -53,14 +53,15 @@ namespace KSP_Recall { namespace StayingTogether
 		{
 			Log.dbg("OnStart {0} {1} {2}", this.PartInstanceId, state, this.active);
 			base.OnStart(state);
+
+			this.attPos = null;
+			this.attRotation = null;
 		}
 
 		public override void OnLoad(ConfigNode node)
 		{
 			Log.dbg("OnLoad {0}:{1:X} {2}", this.name, this.part.GetInstanceID(), null != node);
 			base.OnLoad(node);
-			this.attPos = null;
-			this.attRotation = null;
 		}
 
 		#endregion
@@ -71,7 +72,7 @@ namespace KSP_Recall { namespace StayingTogether
 		private void FixedUpdate()
 		{
 			if (!this.active) return;
-			Log.dbg("FixedUpdate {0}", this.PartInstanceId);
+			Log.dbg("FixedUpdate {0} ({1})", this.PartInstanceId, this.delayTicks);
 
 			switch(HighLogic.LoadedScene)
 			{
@@ -121,24 +122,6 @@ namespace KSP_Recall { namespace StayingTogether
 
 			Log.dbg("Restore {0}'s attPos from {1}:{2} to the restore point {3}:{3}", this.PartInstanceId, this.part.transform.position, this.part.transform.rotation, this.attPos, this.attRotation);
 			this.part.transform.SetPositionAndRotation((Vector3)this.attPos, (Quaternion)this.attRotation);
-
-			//if (null != this.attPos && !this.attPos.Equals(this.part.transform.position))
-			//{ 
-			//	Vector3 position = this.part.transform.position;
-			//	position.x = (float)(this.attPos?.x);
-			//	position.y = (float)(this.attPos?.y);
-			//	position.z = (float)(this.attPos?.z);
-			//}
-
-			//if (null != this.attRotation && !this.attRotation.Equals(this.part.transform.rotation))
-			//{
-			//	Quaternion rotation = this.part.transform.rotation;
-			//	Log.dbg("Restore {0}'s attRotation from {1} to the restore point {2}", PartInstanceId, rotation, this.attRotation);
-			//	rotation.x = (float)(this.attRotation?.x);
-			//	rotation.y = (float)(this.attRotation?.y);
-			//	rotation.z = (float)(this.attRotation?.z);
-			//	rotation.w = (float)(this.attRotation?.w);
-			//}
 		}
 
 		#endregion

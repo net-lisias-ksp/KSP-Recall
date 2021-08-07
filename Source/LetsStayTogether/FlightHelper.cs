@@ -83,19 +83,18 @@ namespace KSP_Recall { namespace StayingTogether
 			if (this.lastRate == TimeWarp.CurrentRate) return;
 
 			this.lastRate = TimeWarp.CurrentRate;
-
 			Log.dbg("OnTimeWarpRateChanged to {0}", this.lastRate);
 			if (!HighLogic.LoadedSceneIsFlight) return;
 
 			bool start	= 1.0f != this.lastRate;
 			bool end	= 1.0f == this.lastRate;
-			if (start)		this.ImmediateUpdate();
+			if (start)		this.ImediateUpdate();
 			else if (end)	this.AsynchronousRestore();
 		}
 
 		#endregion
 
-		private void ImmediateUpdate()
+		private void ImediateUpdate()
 		{
 			Log.dbg("ImmediateUpdate");
 
