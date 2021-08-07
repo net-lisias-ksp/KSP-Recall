@@ -221,15 +221,7 @@ namespace KSP_Recall
 
 
 			// if (0 == p.Resources.Count) return MSG_PART_DOES_NOT_NEED; Some AddOn can add Resources later, so I commented it out
-			if (p.name.StartsWith("kerbalEVA"))		return MSG_PART_NOT_SUPPORTED;
-			if (p.name.StartsWith("maleEVA"))		return MSG_PART_NOT_SUPPORTED;
-			if (p.name.StartsWith("femaleEVA"))		return MSG_PART_NOT_SUPPORTED;
-			if (p.Modules.Contains("KerbalEVA"))		return MSG_PART_NOT_SUPPORTED;
-			if (p.Modules.Contains("ModuleAsteroid"))	return MSG_PART_NOT_SUPPORTED;
-			if (p.Modules.Contains("ModuleCargoPart"))	return MSG_PART_NOT_SUPPORTED;
-			if (p.Modules.Contains("ModuleComet"))		return MSG_PART_NOT_SUPPORTED;
-
-			return null;
+			return this.checkForCommonUnsupportedParts(p);
 		}
 
 		private string checkForDriftless(Part p)
@@ -287,9 +279,14 @@ namespace KSP_Recall
 				else return MSG_PART_DOES_NOT_NEED ;
 			}
 
-			if (p.name.StartsWith("kerbalEVA"))		return MSG_PART_NOT_SUPPORTED;
-			if (p.name.StartsWith("maleEVA"))		return MSG_PART_NOT_SUPPORTED;
-			if (p.name.StartsWith("femaleEVA"))		return MSG_PART_NOT_SUPPORTED;
+			return this.checkForCommonUnsupportedParts(p);
+		}
+
+		private string checkForCommonUnsupportedParts(Part p)
+		{
+			if (p.name.StartsWith("kerbalEVA"))			return MSG_PART_NOT_SUPPORTED;
+			if (p.name.StartsWith("maleEVA"))			return MSG_PART_NOT_SUPPORTED;
+			if (p.name.StartsWith("femaleEVA"))			return MSG_PART_NOT_SUPPORTED;
 			if (p.Modules.Contains("KerbalEVA"))		return MSG_PART_NOT_SUPPORTED;
 			if (p.Modules.Contains("ModuleAsteroid"))	return MSG_PART_NOT_SUPPORTED;
 			if (p.Modules.Contains("ModuleCargoPart"))	return MSG_PART_NOT_SUPPORTED;
