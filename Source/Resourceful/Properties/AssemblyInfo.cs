@@ -25,4 +25,4 @@ using System.Runtime.CompilerServices;
 //[assembly: AssemblyDelaySign(false)]
 //[assembly: AssemblyKeyFile("")]
 [assembly: KSPAssemblyDependency("KSPe.Light.Recall", 2, 3)]
-[assembly: KSPAssemblyDependency("KSP-Recall", KSP_Recall.Version.major, KSP_Recall.Version.minor, KSP_Recall.Version.patch)]
+//[assembly: KSPAssemblyDependency("KSP-Recall", KSP_Recall.Version.major, KSP_Recall.Version.minor, KSP_Recall.Version.patch)]
