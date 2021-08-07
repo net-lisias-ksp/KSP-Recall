@@ -71,6 +71,8 @@ cp NOTICE "./GameData/$TARGETDIR"
 #    deploy_gamedata $GD_PRIORITY $dll
 #done
 
+echo Deploying to ${KSP_DEV}
+
 for dll in $DLLS ; do
     deploy_dev $dll
     deploy $dll
