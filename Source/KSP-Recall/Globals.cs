@@ -36,6 +36,7 @@ namespace KSP_Recall
 		public readonly bool Driftless;
 		public readonly bool Refunding;
 		public readonly bool Resourceful;
+		public readonly bool LetsStayTogether;
 
 		private Globals()
 		{
@@ -49,6 +50,7 @@ namespace KSP_Recall
 				this.Driftless = cn.GetValue<bool>("Driftless");
 				this.Refunding = cn.GetValue<bool>("Refunding");
 				this.Resourceful = cn.GetValue<bool>("Resourceful");
+				this.LetsStayTogether = cn.GetValue<bool>("LetsStayTogether");
 			}
 			catch (Exception)
 			{
@@ -57,6 +59,7 @@ namespace KSP_Recall
 				this.Driftless = false;
 				this.Refunding = false;
 				this.Resourceful = false;
+				this.LetsStayTogether = false;
 			}
 		}
 	}

@@ -36,6 +36,7 @@ namespace KSP_Recall
 			if (checkForAttached())		tags.Add("KSPRECALL-ATTACHED");
 			if (checkForChillingOut())	tags.Add("KSPRECALL-CHILLINGOUT");
 			if (checkForRefunding())	tags.Add("KSPRECALL-REFUNDING");
+			if (checkForStayingTogether())	tags.Add("KSPRECALL-STAYINGTOGETHER");
 
 			return tags.ToArray();
 		}
@@ -73,6 +74,11 @@ namespace KSP_Recall
 		private static bool checkForRefunding()
 		{
 			return KSPe.Util.KSP.Version.Current >= KSPe.Util.KSP.Version.FindByVersion(1,11,0); 
+		}
+
+		private static bool checkForStayingTogether()
+		{
+			return KSPe.Util.KSP.Version.Current >= KSPe.Util.KSP.Version.FindByVersion(1,12,0); 
 		}
 	}
 }
