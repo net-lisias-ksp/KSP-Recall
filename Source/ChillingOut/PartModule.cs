@@ -107,10 +107,12 @@ namespace KSP_Recall { namespace ChillingOut
 			if (!HighLogic.LoadedSceneIsFlight) return;
 			if (this.vessel.missionTime > DELTA) this.enabled = false; // We are not needed anymore
 
-			this.part.temperature = 0;
-			this.part.skinTemperature = 0;
-			this.part.skinUnexposedTemperature = 0;
-			this.part.skinUnexposedExternalTemp = 0;
+			double t = this.GetTemperature();
+			this.part.temperature = 
+				this.part.skinTemperature =
+				this.part.skinUnexposedTemperature =
+				this.part.skinUnexposedExternalTemp =
+					t;
 		}
 
 		private void OnDestroy()
@@ -128,6 +130,20 @@ namespace KSP_Recall { namespace ChillingOut
 
 		private void deinit()
 		{
+		}
+
+		public double GetTemperature()
+		{
+			Vector3d position = this.part.vessel.GetWorldPos3D(); // I hope this is right?
+			CelestialBody body = this.part.vessel.mainBody; // I hope this is right?
+
+			// Brute force, half baked, local temperature calculation.
+			double zeroAltitude = body.position.magnitude - body.Radius;
+			double currentAltitude = position.magnitude - zeroAltitude;
+
+			if (body.atmosphere && (currentAltitude < body.atmosphereDepth))
+				return body.GetTemperature(currentAltitude);
+			return PhysicsGlobals.SpaceTemperature;
 		}
 
 		private static readonly KSPe.Util.Log.Logger Log = KSPe.Util.Log.Logger.CreateForType<ChillingOut>("KSP-Recall", "ChillingOut");
