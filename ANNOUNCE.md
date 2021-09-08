@@ -1,46 +1,36 @@
 ## ANNOUNCE
 
-[KSP Recall 0.1.0.0](https://github.com/net-lisias-ksp/KSP-Recall/releases/tag/RELEASE%2F0.1.0.0) is on the Wild, featuring:
+[KSP Recall 0.2.0.6](https://github.com/net-lisias-ksp/KSP-Recall/releases/tag/RELEASE%2F0.2.0.6) is on the Wild, featuring:
 
-* More versatile (and user hackable) mechanism to activate/deactivate the Fixes (i.e: a way to override the safeties checks)
-* Allowing the inactivation of the fixes to be persisted on the craft file and savegame, so you can deactivate a fix on some parts and keep them on others on a craft by craft basis
-	+ Will allow the user to safely keep playing until a new version with a fix/workaround implemented is not released when things goes south.
-* Reenabling support for parts with `ModuleCargoPart`
-	+ Not all Stackable parts will not be refunded yet.
-* More reliable and robust Game Event handling.
-* Compatibility with resource changing Add'Ons (as fuel switches) enhanced.
+Fixes for the already published fixes:
 
-From 0.1.0.0 and newer, **every fix** can be deactivated on a given part, without affecting the other ones. This change is persisted on the craft file and on the savegame, so you can even deactivate a fix on a part on a craft and not do it on another craft. For people willing to write patches, the name of the attribute is `active`.
+- [#26](https://github.com/net-lisias-ksp/KSP-Recall/issues/26) Kerbal going on EVA on Kerbin without helmet instantly dies
+- [#25](https://github.com/net-lisias-ksp/KSP-Recall/issues/25) ChillingOut apparently is screwing up KSPIE
 
-The user can also force his/her hand on how and where the fixes is installed by editing `GameData/999_KSP-Recall/KSP-Recall.cfg`. Changing this file will overrule the default installation decisions KSP-Recall does on startup, allowing you use fixes that usually would not be available for your rig. **Use this with caution and prudence**, this can royally screw up your savegames.
+Both issues were related to the same feature, `ChillingOut`, besides having different causes. In both cases, less than ideal implementations ended up causing undesired collateral effects.
 
-A new module, `Refunding`, as well a new "Resource" was introduced for KSP 1.11, to counter attack the miscalculation mentioned above.
+Thanks to @ss8913 and @rawhide_k for [their](https://forum.kerbalspaceprogram.com/index.php?/topic/192048-18/&do=findComment&comment=4010273) [reports](https://forum.kerbalspaceprogram.com/index.php?/topic/192048-18/&do=findComment&comment=4010617).
 
-When recovering the craft, the badly calculated refunds will still be there, but an additional Resource called "Refunding" will be present ~~stealing~~ giving back the losses.
+### About the Future
 
-![](https://user-images.githubusercontent.com/64334/109741166-49a36080-7bab-11eb-8b15-1fe0741f53d4.png)
+Given the current state of affairs on Forum, I think the best line of action for KSP-Recall is to stop pursuing work-arounds for KSP 1.12.x and let others do the job.
 
-Users of **EVERY** add'on that implements`IPartCostModifier` and are running on KSP 1.11.x **NEED** to install KSP-Recall - or your Career will be seriously hindered.
+So I decided that no KSP 1.12.x specific bugs will be handled anymore by KSP-Recall as it's becoming increasingly harder to diagnose and code fixes relying only on [Clean Room Design](https://en.wikipedia.org/wiki/Clean_room_design) approaches, and recent events suggest that trying different methods can be legally risky (even by, at least in theory, being perfectly legal on USA, Europe and most other countries). 
 
-Affected (known) add'ons are:
+The current Workarounds will be actively maintained and eventual workarounds for KSP versions up to 1.11.2 (including very old ones, as 1.2.2 and 1.3.1 - I'm still playing on 1.7.3!!) can be considered - mainly because these codebases are very well known already and there's no one else considering supporting them.
 
-+ [Darth Pointer's Pay to Play](https://github.com/DarthPointer/PayToPlay/)
-+ [FreeThinker's Interstellar Fuel Switch](https://github.com/sswelm/KSP-Interstellar-Extended/)
-+ [allista's Cargo Accelerators](https://github.com/allista/CargoAccelerators)
-+ [All Angel 125 Add'Ons that uses WildBlueTools](https://github.com/Angel-125/WildBlueTools/)
-+ [Nathan Kell's Modular Fuel System](https://github.com/NathanKell/ModularFuelSystem/) (and Real Fuels)
-+ [IgorZ's Kerbal Inventory System](https://github.com/ihsoft/KIS)
-+ [KOS](https://github.com/KSP-KOS/KOS)
-+ [Kerbalism](https://github.com/Kerbalism/Kerbalism)
-+ [And many, many others](https://github.com/search?o=desc&p=3&q=IPartCostModifier&s=indexed&type=Code) - perhaps Squad's own modules (who knows?)
+There're alternatives for KSP-Recall available on Forum for KSP 1.12.x users, so this is not exactly a settle back - it can be even an improvement, as some of the alternatives are willing to go trought paths I'm not.
 
+As usual, anything going wrong or weird can still be reported here: if it's something on KSP-Recall, **it will be fixed**. If it affects some older KSP version still in use, we can study a workaround or perhaps a fix (these versions will not change for sure anymore!).
+
+For problems on KSP 1.12.x, at least some preliminary diagnosing can be carry out, making easier for some third-party to code a fix. But no implementation will be carried out.
 
 - - - 
 
 This Release will be published using the following Schedule:
 
 * GitHub, reaching manual installers and users of KSP-AVC first. Right now.
-* CurseForge, by this Sunday between noon and dusk (GMT-3)
-* SpaceDock (and CKAN users), by this Sunday's night (GMT-3)
+* CurseForge, by this Wednesday night (GMT-3) - I hope
+* SpaceDock (and CKAN users), by this Thursday's night (GMT-3) - with luck
 
 The reasoning is to gradually distribute the Release to easily monitor the deployment and cope with eventual mishaps.
