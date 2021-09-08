@@ -1,5 +1,12 @@
 # KSP-Recall :: Change Log
 
+* 2021-0907: 0.2.0.6 (LisiasT) for KSP >= 1.4.1
+	+ Refreshing [ModuleManager WatchDog](https://github.com/net-lisias-ksp/ModuleManagerWatchDog) binaries to 1.0.1.1
+	+ Bug fixes.
+	+ Closes issues:
+		- [#28](https://github.com/net-lisias-ksp/KSP-Recall/issues/28) Refresh the ModuleManagerWatchDog DLL
+		- [#26](https://github.com/net-lisias-ksp/KSP-Recall/issues/26) Kerbal going on EVA on Kerbin without helmet instantly dies
+		- [#25](https://github.com/net-lisias-ksp/KSP-Recall/issues/25) ChillingOut apparently is screwing up KSPIE
 * 2021-0818: 0.2.0.5 (LisiasT) for KSP >= 1.4.1
 	+ Updating KSPe.Light.Recall
 	+ Minor fixes and/or optimisations.
