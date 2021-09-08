@@ -35,6 +35,8 @@ namespace KSP_Recall { namespace ChillingOut
 
 		#endregion
 
+		[KSPField(isPersistant = true, guiActive = false, guiActiveEditor = false)]
+		private long spawnTime = -1;
 
 		#region KSP Life Cycle
 
@@ -49,6 +51,11 @@ namespace KSP_Recall { namespace ChillingOut
 		{
 			Log.dbg("OnStart {0}:{1:X} {2} {3}", this.name, this.part.GetInstanceID(), state, this.active);
 			base.OnStart(state);
+			if (HighLogic.LoadedSceneIsFlight && this.spawnTime < 0)
+			{
+				this.spawnTime = System.DateTime.Now.Ticks;
+				Log.dbg("Spawned at {0}", this.spawnTime);
+			}
 		}
 
 		public override void OnCopy(PartModule fromModule)
@@ -105,7 +112,9 @@ namespace KSP_Recall { namespace ChillingOut
 		private void FixedUpdate()
 		{
 			if (!HighLogic.LoadedSceneIsFlight) return;
-			if (this.vessel.missionTime > DELTA) this.enabled = false; // We are not needed anymore
+			if (this.spawnTime < 0) return;
+			TimeSpan ts = new TimeSpan(DateTime.Now.Ticks - this.spawnTime);
+			if (ts.TotalMilliseconds > DELTA) this.enabled = false; // We are not needed anymore
 
 			double t = this.GetTemperature();
 			this.part.temperature = 
@@ -113,6 +122,7 @@ namespace KSP_Recall { namespace ChillingOut
 				this.part.skinUnexposedTemperature =
 				this.part.skinUnexposedExternalTemp =
 					t;
+			Log.dbg("FixedUpdated for {0}:{1:X}", this.name, this.part.GetInstanceID());
 		}
 
 		private void OnDestroy()
@@ -123,7 +133,7 @@ namespace KSP_Recall { namespace ChillingOut
 		#endregion
 
 
-		private const float DELTA = 1.0f;	// 1 second
+		private readonly long DELTA = 1000 ;	// 1 second
 		private void init()
 		{
 		}
