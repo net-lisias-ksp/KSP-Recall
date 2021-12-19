@@ -65,6 +65,11 @@ namespace KSP_Recall
 			return false; 
 		}
 
+		private static bool checkForAttachedOnEditor()
+		{
+			return (KSPe.Util.KSP.Version.Current >= KSPe.Util.KSP.Version.FindByVersion(1,9,0));
+		}
+
 		private static bool checkForChillingOut()
 		{
 			return (KSPe.Util.KSP.Version.Current == KSPe.Util.KSP.Version.FindByVersion(1,11,0));

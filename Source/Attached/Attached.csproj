@@ -31,12 +31,15 @@
     <Reference Include="System" />
     <Reference Include="Assembly-CSharp">
       <HintPath>..\..\..\..\..\..\LIB\managed\1.4.1\Assembly-CSharp.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine">
       <HintPath>..\..\..\..\..\..\LIB\managed\1.4.1\UnityEngine.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="KSPe.Light.Recall">
       <HintPath>..\..\..\..\..\..\LIB\plugins\KSPe.Light.Recall.dll</HintPath>
+      <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -50,6 +53,7 @@
     <ProjectReference Include="..\KSP-Recall\KSP-Recall.csproj">
       <Project>{40E7A5F2-C30E-43E9-B345-51971959149F}</Project>
       <Name>KSP-Recall</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
