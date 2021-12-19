@@ -1,11 +1,10 @@
 ﻿/*
-	This file is part of KSP-Recall
-	(C) 2020-2021 Lisias T : http://lisias.net <support@lisias.net>
+	This file is part of Attached, a component of KSP-Recall
+		© 2020-2021 Lisias T : http://lisias.net <support@lisias.net>
 
 	KSP-Recall is double licensed, as follows:
-
-	* SKL 1.0 : https://ksp.lisias.net/SKL-1_0.txt
-	* GPL 2.0 : https://www.gnu.org/licenses/gpl-2.0.txt
+		* SKL 1.0 : https://ksp.lisias.net/SKL-1_0.txt
+		* GPL 2.0 : https://www.gnu.org/licenses/gpl-2.0.txt
 
 	And you are allowed to choose the License that better suit your needs.
 
@@ -36,6 +35,7 @@ namespace KSP_Recall
 			if (checkForAttached())		tags.Add("KSPRECALL-ATTACHED");
 			if (checkForChillingOut())	tags.Add("KSPRECALL-CHILLINGOUT");
 			if (checkForRefunding())	tags.Add("KSPRECALL-REFUNDING");
+			if (checkForAttachedOnEditor())	tags.Add("KSPRECALL-ATTACHED-ON-EDITOR");
 
 			return tags.ToArray();
 		}
@@ -57,11 +57,10 @@ namespace KSP_Recall
 		{
 			//return (KSPe.Util.KSP.Version.Current >= KSPe.Util.KSP.Version.FindByVersion(1,9,0));
 
-			// Gave up on tackling this down on Recall. I didn't managed to zero in the exact point in which
-			// the attach nodes are being reverted to prefab on the KSP 1.11.x VAB/SPH, so I decided to
-			// brute force my way (again) on TweakScale - a less than ideal solution, as I was hoping to
-			// implement something that could be resusable by third-parties too. :(
-			// The not so bad news is that the change doesn't breaks the add'ons on previous KSP versions, so...
+			// I misundertood the problem - the original problem plaguing KSP >= 1.9 only happens on the Editor
+			// It's completely unrelated to the Resources problem.
+			//
+			// I will keep this code alive, however, it may be useful for someone if some 3rd-Party misbehave.
 			return false; 
 		}
 
