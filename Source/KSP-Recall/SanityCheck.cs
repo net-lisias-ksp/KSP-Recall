@@ -36,6 +36,7 @@ namespace KSP_Recall
 		private const string ATTACHED_MODULE_NAME = "Attached";
 		private const string CHILLINGOUT_MODULE_NAME = "ChillingOut";
 		private const string REFUNDING_MODULE_NAME = "RefundingForKSP111x";
+		private const string ATTACHEDONEDITOR_MODULE_NAME = "AttachedOnEditor";
 
 		internal static bool isConcluded = false;
 
@@ -76,6 +77,7 @@ namespace KSP_Recall
 			int parts_with_attached_count = 0;
 			int parts_with_chillingout_count = 0;
 			int parts_with_refunding_count = 0;
+			int parts_with_attachedoneditor_count = 0;
 			int showstoppers_count = 0;
 
 			foreach (AvailablePart p in PartLoader.LoadedPartsList)
@@ -97,6 +99,7 @@ namespace KSP_Recall
 					bool containsAttached = false;
 					bool containsChillingOut = false;
 					bool containsRefunding = false;
+					bool containsAttachedOnEditor = false;
 					Exception culprit = null;
 					
 					prefab = p.partPrefab; // Reaching the prefab here in the case another Mod recreates it from zero. If such hypothecical mod recreates the whole part, we're doomed no matter what.
@@ -111,6 +114,7 @@ namespace KSP_Recall
 							containsAttached = prefab.Modules.Contains(ATTACHED_MODULE_NAME);
 							containsChillingOut = prefab.Modules.Contains(CHILLINGOUT_MODULE_NAME);
 							containsRefunding = prefab.Modules.Contains(REFUNDING_MODULE_NAME);
+							containsAttachedOnEditor = prefab.Modules.Contains(ATTACHEDONEDITOR_MODULE_NAME);
 							++total_count;
 							break;  // Yeah. This while stunt was done just to be able to do this. All the rest is plain clutter! :D 
 						}
@@ -169,6 +173,13 @@ namespace KSP_Recall
 							prefab.RemoveModule(prefab.Modules[REFUNDING_MODULE_NAME]);
 						}
 						else ++parts_with_refunding_count;
+
+						if (containsAttachedOnEditor) if (null != (due = this.checkForAttachedOnEditor(prefab)))
+						{
+							Log.info("Removing {0} support for {1} ({2}) due {3}.", ATTACHEDONEDITOR_MODULE_NAME, p.name, p.title, due);
+							prefab.RemoveModule(prefab.Modules[ATTACHEDONEDITOR_MODULE_NAME]);
+						}
+						else ++parts_with_attachedoneditor_count;
 					}
 					catch (Exception e)
 					{
@@ -275,6 +286,19 @@ namespace KSP_Recall
 			if ( KSPe.Util.KSP.Version.Current < KSPe.Util.KSP.Version.FindByVersion(1,11,0) )
 			{
 				if (Globals.Instance.Refunding) Log.warn(MSG_INSTALLATION_FORCED, REFUNDING_MODULE_NAME);
+				else return MSG_PART_DOES_NOT_NEED ;
+			}
+
+			return this.checkForCommonUnsupportedParts(p);
+		}
+
+		private string checkForAttachedOnEditor(Part p)
+		{
+			Log.dbg("Checking {0} Sanity for {1} at {2}", ATTACHEDONEDITOR_MODULE_NAME, p.name, p.partInfo.partUrl ?? "<NO URL>");
+
+			if ( KSPe.Util.KSP.Version.Current < KSPe.Util.KSP.Version.FindByVersion(1,9,0) )
+			{
+				if (Globals.Instance.AttachedOnEditor) Log.warn(MSG_INSTALLATION_FORCED, ATTACHEDONEDITOR_MODULE_NAME);
 				else return MSG_PART_DOES_NOT_NEED ;
 			}
 

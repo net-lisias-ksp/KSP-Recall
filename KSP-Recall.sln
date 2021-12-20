@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Resourceful", "Source\Resou
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Source\Tests\Tests.csproj", "{F3E6624A-9F1C-492A-93F0-9BB2E23CD6A6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AttachedOnEditor", "Source\AttachedOnEditor\AttachedOnEditor.csproj", "{2662DCCB-9576-47B0-91B0-088ED3B274DF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,6 +55,10 @@ Global
 		{F3E6624A-9F1C-492A-93F0-9BB2E23CD6A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F3E6624A-9F1C-492A-93F0-9BB2E23CD6A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F3E6624A-9F1C-492A-93F0-9BB2E23CD6A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2662DCCB-9576-47B0-91B0-088ED3B274DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2662DCCB-9576-47B0-91B0-088ED3B274DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2662DCCB-9576-47B0-91B0-088ED3B274DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2662DCCB-9576-47B0-91B0-088ED3B274DF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		Policies = $0

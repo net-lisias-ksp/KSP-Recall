@@ -35,6 +35,7 @@ namespace KSP_Recall
 		public readonly bool Driftless;
 		public readonly bool Refunding;
 		public readonly bool Resourceful;
+		public readonly bool AttachedOnEditor;
 
 		private Globals()
 		{
@@ -57,6 +58,9 @@ namespace KSP_Recall
 
 				try					{ this.Resourceful = cn.GetValue<bool>("Resourceful"); }
 				catch (Exception)	{ this.Resourceful = false; }
+
+				try { this.AttachedOnEditor = cn.GetValue<bool>("AttachedOnEditor"); }
+				catch (Exception) {  this.AttachedOnEditor = false; }
 			}
 			catch (Exception)
 			{
@@ -65,6 +69,7 @@ namespace KSP_Recall
 				this.Driftless = false;
 				this.Refunding = false;
 				this.Resourceful = false;
+				this.AttachedOnEditor = false;
 			}
 		}
 	}
