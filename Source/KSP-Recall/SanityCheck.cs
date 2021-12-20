@@ -249,7 +249,7 @@ namespace KSP_Recall
 				else return MSG_PART_DOES_NOT_NEED ;
 			}
 
-			return null;
+			return this.checkForCommonUnsupportedParts(p);
 		}
 
 		private string checkForChillingOut(Part p)
@@ -265,7 +265,7 @@ namespace KSP_Recall
 				else return MSG_PART_DOES_NOT_NEED ;
 			}
 
-			return null;
+			return this.checkForCommonUnsupportedParts(p);
 		}
 
 		private string checkForRefunding(Part p)
