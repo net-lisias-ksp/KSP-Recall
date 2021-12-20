@@ -59,8 +59,8 @@ namespace KSP_Recall
 				try					{ this.Resourceful = cn.GetValue<bool>("Resourceful"); }
 				catch (Exception)	{ this.Resourceful = false; }
 
-				try { this.AttachedOnEditor = cn.GetValue<bool>("AttachedOnEditor"); }
-				catch (Exception) {  this.AttachedOnEditor = false; }
+				try					{ this.AttachedOnEditor = cn.GetValue<bool>("AttachedOnEditor"); }
+				catch (Exception)	{ this.AttachedOnEditor = false; }
 			}
 			catch (Exception)
 			{
