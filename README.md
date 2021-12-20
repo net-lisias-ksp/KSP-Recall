@@ -37,15 +37,17 @@ It aims to need minimal coupling with existent code, as well to be selectively i
 
 Currently, the following fixes are available once installed:
 
+* Parked crafts (even without wheels) drifting the Heading randomly on KSP >= 1.8
+	+ Crafts with wheels also drifts, but due a different problem - still to be tackled down.
+	+ This was discussed [here](https://forum.kerbalspaceprogram.com/index.php?/topic/179030-ksp-141-tweakscale-under-lisias-management-24321-2020-00804/&do=findComment&comment=3836931).
 * Resources being reset to prefab when a part has his Resources changed by an Add'On (as TweakScale) (i.e., by Alt+Click a part, or by using symmetry) on KSP 1.9.x . 
 	+ [KSP 1.9.x resets resources to prefab while cloning parts](https://github.com/net-lisias-ksp/KSP-Recall/issues/1)
 		- This solution aims to be reusable to any Add'On that have the same problem with a simple two liner.
 	+ Some Add'Ons that supports TweakScale by using `Scale_Redist.dll` are also fixed by collateral effect.
 * Losing Resources' amount settings when cloning parts (Alt+Click) on KSP 1.9.x
 	+ As described [here](https://forum.kerbalspaceprogram.com/index.php?/topic/193875-*).
-* Parked crafts (even without wheels) drifting the Heading randomly on KSP >= 1.8
-	+ Crafts with wheels also drifts, but due a different problem - still to be tackled down.
-	+ This was discussed [here](https://forum.kerbalspaceprogram.com/index.php?/topic/179030-ksp-141-tweakscale-under-lisias-management-24321-2020-00804/&do=findComment&comment=3836931).
+* Editor mangling Surface Attached Parts' position when loading crafts.
+	+ This was (properly this time) discussed [here](https://forum.kerbalspaceprogram.com/index.php?/topic/179030-130/&do=findComment&comment=4066415). 
 * I.C.A. (Instantaneous Craft Annihilation) on KSP 1.11.0 when launching or switching back to vessels with some older parts, when the vessel is over a static with collider (does not happens when the craft is directly over the PQS ground)
 * Seamless fix for Add'Ons that [implements `IPastCostModifier` running on KSP 1.11.x](https://github.com/net-lisias-ksp/KSP-Recall/issues/12)
 	+ [Darth Pointer's Pay to Play](https://github.com/DarthPointer/PayToPlay/)
@@ -56,7 +58,10 @@ Currently, the following fixes are available once installed:
 	+ [IgorZ's Kerbal Inventory System](https://github.com/ihsoft/KIS)
 	+ [KOS](https://github.com/KSP-KOS/KOS)
 	+ [Kerbalism](https://github.com/Kerbalism/Kerbalism)
-	+ [And many, many others](https://github.com/search?o=desc&p=3&q=IPartCostModifier&s=indexed&type=Code) - perhaps Squad's own modules (who knows?)
+	+ [And many, many others](https://github.com/search?o=desc&p=3&q=IPartCostModifier&s=indexed&type=Code), including Squad's own modules (see bug [#26988](https://bugs.kerbalspaceprogram.com/issues/26988)):
+		- PartStatsUpgradeModule
+		- ModulePartVariants
+		- ModuleProceduralFairings 
 * More to come as a Needed to Code basis.
 
 Fixes not needed on the current KSP instalment **are not applied**. So it's safe to just install KSP-Recall on anything you have (besides wasting a tiny little bit more time on the loading).
