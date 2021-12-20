@@ -43,11 +43,20 @@ namespace KSP_Recall
 				UrlDir.UrlConfig urlc = GameDatabase.Instance.GetConfigs("KSP-Recall")[0];
 				ConfigNodeWithSteroids cn = ConfigNodeWithSteroids.from(urlc.config.GetNode("INSTALLED"));
 
-				this.Attached = cn.GetValue<bool>("Attached");
-				this.ChillingOut = cn.GetValue<bool>("ChillingOut");
-				this.Driftless = cn.GetValue<bool>("Driftless");
-				this.Refunding = cn.GetValue<bool>("Refunding");
-				this.Resourceful = cn.GetValue<bool>("Resourceful");
+				try					{ this.Attached = cn.GetValue<bool>("Attached"); }
+				catch (Exception)	{ this.Attached = false; }
+
+				try					{ this.ChillingOut = cn.GetValue<bool>("ChillingOut"); }
+				catch (Exception)	{ this.ChillingOut = false; }
+
+				try					{ this.Driftless = cn.GetValue<bool>("Driftless"); }
+				catch (Exception)	{ this.Driftless = false; }
+
+				try					{ this.Refunding = cn.GetValue<bool>("Refunding"); }
+				catch (Exception)	{ this.Refunding = false; }
+
+				try					{ this.Resourceful = cn.GetValue<bool>("Resourceful"); }
+				catch (Exception)	{ this.Resourceful = false; }
 			}
 			catch (Exception)
 			{
