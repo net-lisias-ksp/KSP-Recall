@@ -48,6 +48,7 @@ Currently, the following fixes are available once installed:
 	+ As described [here](https://forum.kerbalspaceprogram.com/index.php?/topic/193875-*).
 * Editor mangling Surface Attached Parts' position when loading crafts.
 	+ This was (properly this time) discussed [here](https://forum.kerbalspaceprogram.com/index.php?/topic/179030-130/&do=findComment&comment=4066415). 
+	+ Currently working only for KSP 1.9.x
 * I.C.A. (Instantaneous Craft Annihilation) on KSP 1.11.0 when launching or switching back to vessels with some older parts, when the vessel is over a static with collider (does not happens when the craft is directly over the PQS ground)
 * Seamless fix for Add'Ons that [implements `IPastCostModifier` running on KSP 1.11.x](https://github.com/net-lisias-ksp/KSP-Recall/issues/12)
 	+ [Darth Pointer's Pay to Play](https://github.com/DarthPointer/PayToPlay/)
