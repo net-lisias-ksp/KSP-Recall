@@ -289,6 +289,8 @@ namespace KSP_Recall
 				else return MSG_PART_DOES_NOT_NEED ;
 			}
 
+			if (p.Modules.Contains("ModuleCargoPart"))	return MSG_PART_NOT_SUPPORTED;
+
 			return this.checkForCommonUnsupportedParts(p);
 		}
 
@@ -312,7 +314,6 @@ namespace KSP_Recall
 			if (p.name.StartsWith("femaleEVA"))			return MSG_PART_NOT_SUPPORTED;
 			if (p.Modules.Contains("KerbalEVA"))		return MSG_PART_NOT_SUPPORTED;
 			if (p.Modules.Contains("ModuleAsteroid"))	return MSG_PART_NOT_SUPPORTED;
-			if (p.Modules.Contains("ModuleCargoPart"))	return MSG_PART_NOT_SUPPORTED;
 			if (p.Modules.Contains("ModuleComet"))		return MSG_PART_NOT_SUPPORTED;
 
 			return null;
