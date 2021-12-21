@@ -47,6 +47,7 @@ namespace KSP_Recall { namespace AttachedOnEditor
 		{
 			Log.dbg("OnCopy {0}:{1:X} from {2:X}", this.name, this.part.GetInstanceID(), fromModule.part.GetInstanceID());
 			base.OnCopy(fromModule);
+			this.RememberOriginalModule(fromModule);
 		}
 
 		public override void OnLoad(ConfigNode node)
@@ -91,6 +92,12 @@ namespace KSP_Recall { namespace AttachedOnEditor
 		{
 			Log.dbg("RestoreCurrentRadialAttachments from {0} to {1}", this.part.partTransform.position, this.originalPos);
 			this.part.partTransform.position = this.originalPos;
+		}
+
+		private void RememberOriginalModule(PartModule originalModule)
+		{
+			Log.dbg("RememberOriginalModule from {0}", originalModule.part.partTransform.position, this.originalPos);
+			this.originalPos = originalModule.part.partTransform.position;
 		}
 
 		private static readonly KSPe.Util.Log.Logger Log = KSPe.Util.Log.Logger.CreateForType<AttachedOnEditor>("KSP-Recall", "AttachedOnEditor");
