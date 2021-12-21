@@ -83,11 +83,13 @@ namespace KSP_Recall { namespace AttachedOnEditor
 		private UnityEngine.Vector3 originalPos;
 		private void PreserveCurrentRadialAttachments()
 		{
+			Log.dbg("PreserveCurrentRadialAttachments from {0} to {1}", this.originalPos, this.part.partTransform.position);
 			this.originalPos = this.part.partTransform.position;
 		}
 
 		private void RestoreCurrentRadialAttachments()
 		{
+			Log.dbg("RestoreCurrentRadialAttachments from {0} to {1}", this.part.partTransform.position, this.originalPos);
 			this.part.partTransform.position = this.originalPos;
 		}
 
