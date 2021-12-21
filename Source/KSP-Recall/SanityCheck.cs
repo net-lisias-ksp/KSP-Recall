@@ -197,13 +197,14 @@ namespace KSP_Recall
 #endif
 			}
 
-			Log.info("SanityCheck Concluded : {0} parts found ; {1} parts using {2} ; {3} parts using {4} ; {5} parts using {6} ; {7} parts using {8} ; {9} parts using {10}, {11} show stoppers detected ."
+			Log.info("SanityCheck Concluded : {0} parts found ; {1} parts using {2} ; {3} parts using {4} ; {5} parts using {6} ; {7} parts using {8} ; {9} parts using {10}, {11} parts using {12}, {13} show stoppers detected ."
 				, total_count
 				, parts_with_resourceful_count, RESOURCEFUL_MODULE_NAME
 				, parts_with_driftless_count, DRIFTLESS_MODULE_NAME
 				, parts_with_attached_count, ATTACHED_MODULE_NAME
 				, parts_with_chillingout_count, CHILLINGOUT_MODULE_NAME
 				, parts_with_refunding_count, REFUNDING_MODULE_NAME
+				, parts_with_attachedoneditor_count, ATTACHEDONEDITOR_MODULE_NAME
 				, showstoppers_count);
 			SanityCheck.isConcluded = true;
 
@@ -215,7 +216,7 @@ namespace KSP_Recall
 
 		private const string MSG_INSTALLATION_FORCED = "Installation of {0} forced on KSP-Recall.cfg. Proceed with caution!";
 
-		private const string MSG_KSP_NO_SUPPORTED = "your KSP version doesn't need it.";
+		private const string MSG_KSP_NO_SUPPORTED = "your KSP version doesn't support it.";
 		private const string MSG_PART_DOES_NOT_NEED = "this part doesn't need it.";
 		private const string MSG_PART_NOT_SUPPORTED = "this part is not supported.";
 
@@ -302,6 +303,11 @@ namespace KSP_Recall
 			{
 				if (Globals.Instance.AttachedOnEditor) Log.warn(MSG_INSTALLATION_FORCED, ATTACHEDONEDITOR_MODULE_NAME);
 				else return MSG_PART_DOES_NOT_NEED ;
+			}
+
+			if ( KSPe.Util.KSP.Version.Current >= KSPe.Util.KSP.Version.FindByVersion(1,10,0) )
+			{
+				return MSG_KSP_NO_SUPPORTED ;
 			}
 
 			return this.checkForCommonUnsupportedParts(p);

@@ -66,7 +66,11 @@ namespace KSP_Recall
 
 		private static bool checkForAttachedOnEditor()
 		{
-			return (KSPe.Util.KSP.Version.Current >= KSPe.Util.KSP.Version.FindByVersion(1,9,0));
+			return
+				(KSPe.Util.KSP.Version.Current >= KSPe.Util.KSP.Version.FindByVersion(1,9,0))
+				&&
+				(KSPe.Util.KSP.Version.Current < KSPe.Util.KSP.Version.FindByVersion(1,10,0))
+				;
 		}
 
 		private static bool checkForChillingOut()

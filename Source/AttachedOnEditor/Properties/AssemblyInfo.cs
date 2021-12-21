@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 // Information about this assembly is defined by the following attributes. 
 // Change them to the values specific to your project.
 
-[assembly: AssemblyTitle("KSP-Recall :: Attached On Editor")]
+[assembly: AssemblyTitle("KSP-Recall :: Attached On Editor for KSP 1.9.x")]
 [assembly: AssemblyDescription("<TBD>")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany(KSP_Recall.LegalMamboJambo.Company)]
