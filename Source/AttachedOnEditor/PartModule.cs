@@ -93,6 +93,7 @@ namespace KSP_Recall { namespace AttachedOnEditor
 
 		private void RestoreCurrentRadialAttachments()
 		{
+			if (UnityEngine.Vector3.zero == this.originalPos) return; // hack to prevent the UpgradePipeline to screw us up when loading crafts still without AttachedOnEditor
 			Log.dbg("RestoreCurrentRadialAttachments {0}:{1:X} from {2} to {3}", this.name, this.part.GetInstanceID(), this.part.partTransform.position, this.originalPos);
 
 			// That's thing thing: Copies from Radial Symmetries are fine (believe it if you can)
