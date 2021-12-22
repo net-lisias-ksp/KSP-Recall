@@ -68,8 +68,6 @@ namespace KSP_Recall
 		{
 			return
 				(KSPe.Util.KSP.Version.Current >= KSPe.Util.KSP.Version.FindByVersion(1,9,0))
-				&&
-				(KSPe.Util.KSP.Version.Current < KSPe.Util.KSP.Version.FindByVersion(1,10,0))
 				;
 		}
 

@@ -305,11 +305,6 @@ namespace KSP_Recall
 				else return MSG_PART_DOES_NOT_NEED ;
 			}
 
-			if ( KSPe.Util.KSP.Version.Current >= KSPe.Util.KSP.Version.FindByVersion(1,10,0) )
-			{
-				return MSG_KSP_NO_SUPPORTED ;
-			}
-
 			return this.checkForCommonUnsupportedParts(p);
 		}
 
