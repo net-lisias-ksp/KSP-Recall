@@ -1,5 +1,10 @@
 # KSP-Recall :: Changes
 
+* 2021-1221: 0.2.1.3 (LisiasT) for KSP >= 1.4.1
+	+ Implements a missing Use Case from Issue #32, handled on #34
+	+ Lifts the ban for KSP >= 1.10, the thing is known to work on everything since KSP 1.9
+	+ Works the issues:
+		- [#34](https://github.com/net-lisias-ksp/KSP-Recall/issues/34) **NEW** Misbehaviour on KSP introduced by AttachedOnEditor
 * 2021-1221: 0.2.1.2 (LisiasT) for KSP >= 1.4.1
 	+ Rework of issue #32.
 	+ Closes issues:
