@@ -33,6 +33,7 @@ namespace KSP_Recall { namespace AttachedOnEditor
 
 		#endregion
 
+		private bool isCopy = false;
 
 		#region KSP Life Cycle
 
@@ -41,11 +42,13 @@ namespace KSP_Recall { namespace AttachedOnEditor
 			Log.dbg("OnAwake {0}:{1:X}", this.name, this.part.GetInstanceID());
 			base.OnAwake();
 			this.active = Globals.Instance.AttachedOnEditor;
+			this.isCopy = false;
 		}
 
 		public override void OnCopy(PartModule fromModule)
 		{
 			Log.dbg("OnCopy {0}:{1:X} from {2:X}", this.name, this.part.GetInstanceID(), fromModule.part.GetInstanceID());
+			this.isCopy = true;
 			base.OnCopy(fromModule);
 			this.RememberOriginalModule(fromModule);
 		}
@@ -84,20 +87,26 @@ namespace KSP_Recall { namespace AttachedOnEditor
 		private UnityEngine.Vector3 originalPos;
 		private void PreserveCurrentRadialAttachments()
 		{
-			Log.dbg("PreserveCurrentRadialAttachments from {0} to {1}", this.originalPos, this.part.partTransform.position);
+			Log.dbg("PreserveCurrentRadialAttachments {0}:{1:X} from {2} to {3}", this.name, this.part.GetInstanceID(), this.originalPos, this.part.partTransform.position);
 			this.originalPos = this.part.partTransform.position;
 		}
 
 		private void RestoreCurrentRadialAttachments()
 		{
-			Log.dbg("RestoreCurrentRadialAttachments from {0} to {1}", this.part.partTransform.position, this.originalPos);
+			Log.dbg("RestoreCurrentRadialAttachments {0}:{1:X} from {2} to {3}", this.name, this.part.GetInstanceID(), this.part.partTransform.position, this.originalPos);
+
+			// That's thing thing: Copies from Radial Symmetries are fine (believe it if you can)
+			// We are having problems with Mirror Symmetry copies and with "original" parts only...
+			if (this.isCopy && SymmetryMethod.Radial == EditorLogic.fetch.symmetryMethod && 0 != this.part.symmetryCounterparts.Count) return;
+
 			this.part.partTransform.position = this.originalPos;
 		}
 
 		private void RememberOriginalModule(PartModule originalModule)
 		{
-			Log.dbg("RememberOriginalModule from {0}", originalModule.part.partTransform.position, this.originalPos);
-			this.originalPos = originalModule.part.partTransform.position;
+			Log.dbg("RememberOriginalModule {0}:{1:X} from {2} to {3} using {4}", this.name, this.part.GetInstanceID(), this.originalPos, originalModule.part.partTransform.position, EditorLogic.fetch.symmetryMethod);
+			UnityEngine.Vector3 pos = originalModule.part.partTransform.position;
+			this.originalPos = pos;
 		}
 
 		private static readonly KSPe.Util.Log.Logger Log = KSPe.Util.Log.Logger.CreateForType<AttachedOnEditor>("KSP-Recall", "AttachedOnEditor");
