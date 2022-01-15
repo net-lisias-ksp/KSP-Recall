@@ -1,6 +1,6 @@
 ﻿/*
 	This file is part of Attached, a component of KSP-Recall
-		© 2020-2021 Lisias T : http://lisias.net <support@lisias.net>
+		© 2020-2022 Lisias T : http://lisias.net <support@lisias.net>
 
 	KSP-Recall is double licensed, as follows:
 		* SKL 1.0 : https://ksp.lisias.net/SKL-1_0.txt

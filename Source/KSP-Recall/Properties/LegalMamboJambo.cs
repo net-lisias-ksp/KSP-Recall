@@ -1,6 +1,6 @@
 ﻿/*
 	This file is part of Attached, a component of KSP-Recall
-		© 2020-2021 Lisias T : http://lisias.net <support@lisias.net>
+		© 2020-2022 Lisias T : http://lisias.net <support@lisias.net>
 
 	KSP-Recall is double licensed, as follows:
 		* SKL 1.0 : https://ksp.lisias.net/SKL-1_0.txt
@@ -25,7 +25,7 @@ namespace KSP_Recall
 	public static class LegalMamboJambo
 	{
 		public const string Company = "L Aerospace KSP Division";
-		public const string Copyight = "© 2020-2021 LisiasT";
+		public const string Copyight = "© 2020-2022 LisiasT";
 		public const string Product = "KSP_Recall";
 		public const string Trademark = "KSP-Recall";
 	}
