@@ -127,6 +127,6 @@ namespace KSP_Recall { namespace Attached
 			Pool.ATTACHMENTS.Restore(this.part);
 		}
 
-		private static readonly KSPe.Util.Log.Logger Log = KSPe.Util.Log.Logger.CreateForType<Attached>("KSP-Recall", "Attached");
+		private static readonly KSPe.Util.Log.Logger Log = KSPe.Util.Log.Logger.CreateForType<Attached>("KSP-Recall", "Attached", 0);
 	}
 } }

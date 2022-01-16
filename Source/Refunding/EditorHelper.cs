@@ -56,6 +56,6 @@ namespace KSP_Recall { namespace Refunds
 
 		#endregion
 
-		private static KSPe.Util.Log.Logger Log = KSPe.Util.Log.Logger.CreateForType<EditorHelper>("KSP-Recall", "Refunding-EditorHelper");
+		private static KSPe.Util.Log.Logger Log = KSPe.Util.Log.Logger.CreateForType<EditorHelper>("KSP-Recall", "Refunding-EditorHelper", 0);
 	}
 } }

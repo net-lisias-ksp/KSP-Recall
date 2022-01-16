@@ -127,6 +127,6 @@ namespace KSP_Recall { namespace Resourcefull
 			Pool.RESOURCES.Restore(this.part);
 		}
 
-		private static readonly KSPe.Util.Log.Logger Log = KSPe.Util.Log.Logger.CreateForType<Resourceful>("KSP-Recall", "Resourceful");
+		private static readonly KSPe.Util.Log.Logger Log = KSPe.Util.Log.Logger.CreateForType<Resourceful>("KSP-Recall", "Resourceful", 0);
 	}
 } }

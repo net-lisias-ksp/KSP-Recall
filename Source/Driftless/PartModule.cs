@@ -142,6 +142,6 @@ namespace KSP_Recall { namespace Driftless
 			this.rb = null;
 		}
 
-		private static readonly KSPe.Util.Log.Logger Log = KSPe.Util.Log.Logger.CreateForType<Driftless>("KSP-Recall", "Driftless");
+		private static readonly KSPe.Util.Log.Logger Log = KSPe.Util.Log.Logger.CreateForType<Driftless>("KSP-Recall", "Driftless", 0);
 	}
 } }

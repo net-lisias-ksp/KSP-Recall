@@ -110,6 +110,6 @@ namespace KSP_Recall { namespace AttachedOnEditor
 			this.originalPos = pos;
 		}
 
-		private static readonly KSPe.Util.Log.Logger Log = KSPe.Util.Log.Logger.CreateForType<AttachedOnEditor>("KSP-Recall", "AttachedOnEditor");
+		private static readonly KSPe.Util.Log.Logger Log = KSPe.Util.Log.Logger.CreateForType<AttachedOnEditor>("KSP-Recall", "AttachedOnEditor", 0);
 	}
 } }

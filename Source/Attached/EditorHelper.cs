@@ -83,6 +83,6 @@ namespace KSP_Recall { namespace Attached
 			return false;
 		}
 
-		private static KSPe.Util.Log.Logger Log = KSPe.Util.Log.Logger.CreateForType<Attached>("KSP-Recall", "Attached-EditorHelper");
+		private static KSPe.Util.Log.Logger Log = KSPe.Util.Log.Logger.CreateForType<Attached>("KSP-Recall", "Attached-EditorHelper", 0);
 	}
 } }

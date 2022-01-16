@@ -259,6 +259,6 @@ namespace KSP_Recall { namespace Refunds
 				p.Modules.GetModule<Refunding>().RemoveResourceWhenNeeded();
 		}
 
-		private static KSPe.Util.Log.Logger Log = KSPe.Util.Log.Logger.CreateForType<FlightHelper>("KSP-Recall", "Refunding-FlightHelper");
+		private static KSPe.Util.Log.Logger Log = KSPe.Util.Log.Logger.CreateForType<FlightHelper>("KSP-Recall", "Refunding-FlightHelper", 0);
 	}
 } }

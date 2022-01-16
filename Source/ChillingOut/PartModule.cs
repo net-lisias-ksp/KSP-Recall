@@ -155,6 +155,6 @@ namespace KSP_Recall { namespace ChillingOut
 			return PhysicsGlobals.SpaceTemperature;
 		}
 
-		private static readonly KSPe.Util.Log.Logger Log = KSPe.Util.Log.Logger.CreateForType<ChillingOut>("KSP-Recall", "ChillingOut");
+		private static readonly KSPe.Util.Log.Logger Log = KSPe.Util.Log.Logger.CreateForType<ChillingOut>("KSP-Recall", "ChillingOut", 0);
 	}
 } }

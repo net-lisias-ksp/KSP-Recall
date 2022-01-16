@@ -83,6 +83,6 @@ namespace KSP_Recall { namespace Resourcefull
 			return false;
 		}
 
-		private static KSPe.Util.Log.Logger Log = KSPe.Util.Log.Logger.CreateForType<Resourceful>("KSP-Recall", "Resoureful-EditorHelper");
+		private static KSPe.Util.Log.Logger Log = KSPe.Util.Log.Logger.CreateForType<Resourceful>("KSP-Recall", "Resoureful-EditorHelper", 0);
 	}
 } }
