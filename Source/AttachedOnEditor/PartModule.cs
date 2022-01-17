@@ -31,6 +31,9 @@ namespace KSP_Recall { namespace AttachedOnEditor
 		[UI_Toggle(disabledText = "Disabled", enabledText = "Enabled", scene = UI_Scene.Editor)]
 		public bool active = false;
 
+		[KSPField(isPersistant = true, guiActive = false, guiActiveEditor = false)]
+		private UnityEngine.Vector3 originalPos;
+
 		#endregion
 
 
@@ -52,7 +55,7 @@ namespace KSP_Recall { namespace AttachedOnEditor
 			Log.dbg("OnCopy {0} from {1:X}", this.PartInstanceId, fromModule.part.GetInstanceID());
 			this.isCopy = true;
 			base.OnCopy(fromModule);
-			this.RememberOriginalModule(fromModule);
+			this.RestoreCurrentRadialAttachments();
 		}
 
 		public override void OnLoad(ConfigNode node)
@@ -77,6 +80,7 @@ namespace KSP_Recall { namespace AttachedOnEditor
 
 		#endregion
 
+
 		#region Unity Life Cycle
 
 		private void OnDestroy()
@@ -86,7 +90,7 @@ namespace KSP_Recall { namespace AttachedOnEditor
 
 		#endregion
 
-		private UnityEngine.Vector3 originalPos;
+
 		private void PreserveCurrentRadialAttachments()
 		{
 			Log.dbg("PreserveCurrentRadialAttachments {0} from {2} to {3}", this.PartInstanceId, this.originalPos, this.part.partTransform.position);
