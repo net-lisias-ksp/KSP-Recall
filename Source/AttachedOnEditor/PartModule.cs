@@ -33,13 +33,15 @@ namespace KSP_Recall { namespace AttachedOnEditor
 
 		#endregion
 
+
 		private bool isCopy = false;
+
 
 		#region KSP Life Cycle
 
 		public override void OnAwake()
 		{
-			Log.dbg("OnAwake {0}:{1:X}", this.name, this.part.GetInstanceID());
+			Log.dbg("OnAwake {0}", this.PartInstanceId);
 			base.OnAwake();
 			this.active = Globals.Instance.AttachedOnEditor;
 			this.isCopy = false;
@@ -47,7 +49,7 @@ namespace KSP_Recall { namespace AttachedOnEditor
 
 		public override void OnCopy(PartModule fromModule)
 		{
-			Log.dbg("OnCopy {0}:{1:X} from {2:X}", this.name, this.part.GetInstanceID(), fromModule.part.GetInstanceID());
+			Log.dbg("OnCopy {0} from {1:X}", this.PartInstanceId, fromModule.part.GetInstanceID());
 			this.isCopy = true;
 			base.OnCopy(fromModule);
 			this.RememberOriginalModule(fromModule);
@@ -55,20 +57,20 @@ namespace KSP_Recall { namespace AttachedOnEditor
 
 		public override void OnLoad(ConfigNode node)
 		{
-			Log.dbg("OnLoad {0}:{1:X} {2}", this.name, this.part.GetInstanceID(), null != node);
+			Log.dbg("OnLoad {0} {1}", this.PartInstanceId, null != node);
 			base.OnLoad(node);
 			this.PreserveCurrentRadialAttachments();
 		}
 
 		public override void OnSave(ConfigNode node)
 		{
-			Log.dbg("OnSave {0}:{1:X} {2}", this.name, this.part.GetInstanceID(), null != node);
+			Log.dbg("OnSave {0} {1}", this.PartInstanceId, null != node);
 			base.OnSave(node);
 		}
 
 		public override void OnStart(StartState state)
 		{
-			Log.dbg("OnStart {0}:{1:X} {2} {3}", this.name, this.part.GetInstanceID(), state, this.active);
+			Log.dbg("OnStart {0} {1} {2}", this.PartInstanceId, state, this.active);
 			if (this.active && HighLogic.LoadedSceneIsEditor) this.RestoreCurrentRadialAttachments();
 			base.OnStart(state);
 		}
@@ -79,7 +81,7 @@ namespace KSP_Recall { namespace AttachedOnEditor
 
 		private void OnDestroy()
 		{
-			Log.dbg("OnDestroy {0}:{1:X}", this.name, this.part.GetInstanceID());
+			Log.dbg("OnDestroy {0}", this.PartInstanceId);
 		}
 
 		#endregion
@@ -87,14 +89,14 @@ namespace KSP_Recall { namespace AttachedOnEditor
 		private UnityEngine.Vector3 originalPos;
 		private void PreserveCurrentRadialAttachments()
 		{
-			Log.dbg("PreserveCurrentRadialAttachments {0}:{1:X} from {2} to {3}", this.name, this.part.GetInstanceID(), this.originalPos, this.part.partTransform.position);
+			Log.dbg("PreserveCurrentRadialAttachments {0} from {2} to {3}", this.PartInstanceId, this.originalPos, this.part.partTransform.position);
 			this.originalPos = this.part.partTransform.position;
 		}
 
 		private void RestoreCurrentRadialAttachments()
 		{
 			if (UnityEngine.Vector3.zero == this.originalPos) return; // hack to prevent the UpgradePipeline to screw us up when loading crafts still without AttachedOnEditor
-			Log.dbg("RestoreCurrentRadialAttachments {0}:{1:X} from {2} to {3}", this.name, this.part.GetInstanceID(), this.part.partTransform.position, this.originalPos);
+			Log.dbg("RestoreCurrentRadialAttachments {0} from {1} to {2}", this.PartInstanceId, this.part.partTransform.position, this.originalPos);
 
 			// That's thing thing: Copies from Radial Symmetries are fine (believe it if you can)
 			// We are having problems with Mirror Symmetry copies and with "original" parts only...
@@ -105,10 +107,13 @@ namespace KSP_Recall { namespace AttachedOnEditor
 
 		private void RememberOriginalModule(PartModule originalModule)
 		{
-			Log.dbg("RememberOriginalModule {0}:{1:X} from {2} to {3} using {4}", this.name, this.part.GetInstanceID(), this.originalPos, originalModule.part.partTransform.position, EditorLogic.fetch.symmetryMethod);
+			Log.dbg("RememberOriginalModule {0} from {1} to {2} using {3}", this.PartInstanceId, this.originalPos, originalModule.part.partTransform.position, EditorLogic.fetch.symmetryMethod);
 			UnityEngine.Vector3 pos = originalModule.part.partTransform.position;
 			this.originalPos = pos;
 		}
+
+		private string PartInstanceId => string.Format("{0}-{1}:{2:X}", this.VesselName, this.part.name, this.part.GetInstanceID());
+		private string VesselName => null == this.part.vessel ? "<NO VESSEL>" : this.part.vessel.vesselName ;
 
 		private static readonly KSPe.Util.Log.Logger Log = KSPe.Util.Log.Logger.CreateForType<AttachedOnEditor>("KSP-Recall", "AttachedOnEditor", 0);
 	}
