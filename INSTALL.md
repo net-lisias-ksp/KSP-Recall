@@ -9,7 +9,7 @@ Aims to fix Stock misbehaviours the most seamlessly as possible.
 To install, place the GameData folder inside your Kerbal Space Program folder:
 
 * **REMOVE ANY OLD VERSIONS OF THE PRODUCT BEFORE INSTALLING**, including any other fork:
-	+ Delete `<KSP_ROOT>/GameData/000_KSP-Recall`
+	+ Delete `<KSP_ROOT>/GameData/999_KSP-Recall`
 * Extract the package's `GameData/` folder into your KSP's as follows:
 	+ `<PACKAGE>/GameData/000_KSP-Recall/*` --> `<KSP_ROOT>/GameData/000_KSP-Recall`
 		- Overwrite any preexisting file.
