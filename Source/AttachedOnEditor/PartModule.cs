@@ -34,6 +34,9 @@ namespace KSP_Recall { namespace AttachedOnEditor
 		[KSPField(isPersistant = true, guiActive = false, guiActiveEditor = false)]
 		private UnityEngine.Vector3 originalPos;
 
+		[KSPField(isPersistant = true, guiActive = false, guiActiveEditor = false)]
+		private bool correctlyInitialised = false;
+
 		#endregion
 
 
@@ -62,7 +65,7 @@ namespace KSP_Recall { namespace AttachedOnEditor
 		{
 			Log.dbg("OnLoad {0} {1}", this.PartInstanceId, null != node);
 			base.OnLoad(node);
-			this.PreserveCurrentRadialAttachments();
+			if (!this.correctlyInitialised) this.PreserveCurrentRadialAttachments();
 		}
 
 		public override void OnSave(ConfigNode node)
@@ -95,11 +98,12 @@ namespace KSP_Recall { namespace AttachedOnEditor
 		{
 			Log.dbg("PreserveCurrentRadialAttachments {0} from {2} to {3}", this.PartInstanceId, this.originalPos, this.part.partTransform.position);
 			this.originalPos = this.part.partTransform.position;
+			this.correctlyInitialised = true;
 		}
 
 		private void RestoreCurrentRadialAttachments()
 		{
-			if (UnityEngine.Vector3.zero == this.originalPos) return; // hack to prevent the UpgradePipeline to screw us up when loading crafts still without AttachedOnEditor
+			if (!this.correctlyInitialised) return; // hack to prevent the UpgradePipeline to screw us up when loading crafts still without AttachedOnEditor
 			Log.dbg("RestoreCurrentRadialAttachments {0} from {1} to {2}", this.PartInstanceId, this.part.partTransform.position, this.originalPos);
 
 			// That's thing thing: Copies from Radial Symmetries are fine (believe it if you can)
