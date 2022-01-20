@@ -51,14 +51,15 @@ namespace KSP_Recall { namespace AttachedOnEditor
 			base.OnAwake();
 			this.active = Globals.Instance.AttachedOnEditor;
 			this.isCopy = false;
+			this.ActivateMe();
 		}
 
 		public override void OnCopy(PartModule fromModule)
 		{
 			Log.dbg("OnCopy {0} from {1:X}", this.PartInstanceId, fromModule.part.GetInstanceID());
-			this.isCopy = true;
 			base.OnCopy(fromModule);
-			this.RestoreCurrentRadialAttachments();
+			this.isCopy = true;
+			this.ActivateMe();
 		}
 
 		public override void OnLoad(ConfigNode node)
@@ -86,6 +87,23 @@ namespace KSP_Recall { namespace AttachedOnEditor
 
 		#region Unity Life Cycle
 
+		private void Update()
+		{
+			this.enabled = false;
+			if (!this.active) return;
+
+			switch(HighLogic.LoadedScene)
+			{
+				case GameScenes.FLIGHT:
+					break;
+				case GameScenes.EDITOR:
+					this.RestoreCurrentRadialAttachments();
+					break;
+				default:
+					break;
+			}
+		}
+
 		private void OnDestroy()
 		{
 			Log.dbg("OnDestroy {0}", this.PartInstanceId);
@@ -94,9 +112,14 @@ namespace KSP_Recall { namespace AttachedOnEditor
 		#endregion
 
 
+		private void ActivateMe()
+		{
+			this.active = Globals.Instance.AttachedOnEditor;
+		}
+
 		private void PreserveCurrentRadialAttachments()
 		{
-			Log.dbg("PreserveCurrentRadialAttachments {0} from {2} to {3}", this.PartInstanceId, this.originalPos, this.part.partTransform.position);
+			Log.dbg("PreserveCurrentRadialAttachments {0} from {1} to {2}", this.PartInstanceId, this.originalPos, this.part.partTransform.position);
 			this.originalPos = this.part.partTransform.position;
 			this.correctlyInitialised = true;
 		}
