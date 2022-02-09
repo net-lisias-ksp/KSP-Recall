@@ -48,6 +48,6 @@ The following file layout must be present after installation:
 
 * [Module Manager Watch Dog](https://github.com/net-lisias-ksp/ModuleManagerWatchDog/releases)
 	+ Included
-	+ Licensed to TweakScale under [SKL 1.0](https://ksp.lisias.net/SKL-1_0.txt)
+	+ Licensed to KSP-Recall under [SKL 1.0](https://ksp.lisias.net/SKL-1_0.txt)
 * Module Manager 4.0.2 or later
 	+ **NOT** Included

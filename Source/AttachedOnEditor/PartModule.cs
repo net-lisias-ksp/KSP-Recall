@@ -47,6 +47,7 @@ namespace KSP_Recall { namespace AttachedOnEditor
 
 		public override void OnAwake()
 		{
+			this.part.GetInstanceID();	// Force generating the InstanceId
 			Log.dbg("OnAwake {0}", this.PartInstanceId);
 			base.OnAwake();
 			this.active = Globals.Instance.AttachedOnEditor;
@@ -106,7 +107,7 @@ namespace KSP_Recall { namespace AttachedOnEditor
 
 		private void OnDestroy()
 		{
-			Log.dbg("OnDestroy {0}", this.PartInstanceId);
+			Log.dbg("OnDestroy {0}", this.part.partName);	// Get Instance ID borks on OnDestroy...
 		}
 
 		#endregion
