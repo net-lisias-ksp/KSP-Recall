@@ -67,6 +67,13 @@ namespace KSP_Recall { namespace AttachedOnEditor
 		{
 			Log.dbg("OnLoad {0} {1}", this.PartInstanceId, null != node);
 			base.OnLoad(node);
+
+			if (this.isMerge() || this.isSubAssembly())
+			{
+				Log.dbg("OnLoad under merge/subassembly.");
+				return;
+			}
+
 			if (!this.correctlyInitialised) this.PreserveCurrentRadialAttachments();
 		}
 
@@ -74,6 +81,8 @@ namespace KSP_Recall { namespace AttachedOnEditor
 		{
 			Log.dbg("OnSave {0} {1}", this.PartInstanceId, null != node);
 			base.OnSave(node);
+			if (HighLogic.LoadedSceneIsEditor)
+				this.PreserveCurrentRadialAttachments(); // Updates the value, in case anyone else had changed it!
 		}
 
 		public override void OnStart(StartState state)
@@ -127,6 +136,7 @@ namespace KSP_Recall { namespace AttachedOnEditor
 
 		private void RestoreCurrentRadialAttachments()
 		{
+//			return;	// Hard deactivate this.
 			if (!this.correctlyInitialised) return; // hack to prevent the UpgradePipeline to screw us up when loading crafts still without AttachedOnEditor
 			Log.dbg("RestoreCurrentRadialAttachments {0} from {1} to {2}", this.PartInstanceId, this.part.partTransform.position, this.originalPos);
 
@@ -142,6 +152,34 @@ namespace KSP_Recall { namespace AttachedOnEditor
 			Log.dbg("RememberOriginalModule {0} from {1} to {2} using {3}", this.PartInstanceId, this.originalPos, originalModule.part.partTransform.position, EditorLogic.fetch.symmetryMethod);
 			UnityEngine.Vector3 pos = originalModule.part.partTransform.position;
 			this.originalPos = pos;
+		}
+
+		private bool isMerge() {
+			// Void KSP.UI.Screens.CraftBrowserDialog.onButtonMerge()
+			System.Diagnostics.StackTrace st = new System.Diagnostics.StackTrace();
+			foreach (System.Diagnostics.StackFrame frame in st.GetFrames())
+			{
+				string classname = frame.GetMethod().DeclaringType.Name;
+				string methodname = frame.GetMethod().ToString();
+				//Log.dbg("isMerge {0} {1}", classname, methodname);
+				if ("CraftBrowserDialog".Equals(classname) && "Void onButtonMerge()".Equals(methodname))
+					return true;
+			}
+			return false;
+		}
+
+		private bool isSubAssembly() {
+			// Void ShipConstruction.CreateConstructFromTemplate(ShipTemplate, Callback`1[ShipConstruct])
+			System.Diagnostics.StackTrace st = new System.Diagnostics.StackTrace();
+			foreach (System.Diagnostics.StackFrame frame in st.GetFrames())
+			{
+				string classname = frame.GetMethod().DeclaringType.Name;
+				string methodname = frame.GetMethod().ToString();
+				//Log.dbg("isSubAssembly {0} {1}", classname, methodname);
+				if ("ShipConstruction".Equals(classname) && "Void CreateConstructFromTemplate(ShipTemplate, Callback`1[ShipConstruct])".Equals(methodname))
+					return true;
+			}
+			return false;
 		}
 
 		private string PartInstanceId => string.Format("{0}-{1}:{2:X}", this.VesselName, this.part.name, this.part.GetInstanceID());
