@@ -7,6 +7,9 @@
 		- NCS Adapter
 		- And probably more to come, including from 3rd parties
 	+ The WorkAround is to avoid using these part as root on SubAssemblies.
+	+ For more information:
+		- [Got a bug with a subassembly here](https://forum.kerbalspaceprogram.com/index.php?/topic/206784-got-a-bug-with-a-subassembly-here/#comment-4090098) on Forum
+		- [Issue \#34 on GitHub](https://github.com/net-lisias-ksp/KSP-Recall/issues/34#issuecomment-1034483251)
 * KSP 1.11 also introduced another bug, this one about a miscalculation on recovering costs when a craft is recovered.
 	+ A new Module `Refunding` and a *Meta Resource* called `RefundingForKSP111x` was created to handle this.
 	+ Not all Stackable parts are being correctly refunded at this moment. 
