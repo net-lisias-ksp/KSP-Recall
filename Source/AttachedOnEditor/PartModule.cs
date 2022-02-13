@@ -43,7 +43,7 @@ namespace KSP_Recall { namespace AttachedOnEditor
 
 		#endregion
 
-		private const int MODULE_VERSION = 2;
+		private const int MODULE_VERSION = 3;
 		private bool isCopy = false;
 
 		private bool initialised => MODULE_VERSION == this.moduleVersion;
@@ -72,8 +72,11 @@ namespace KSP_Recall { namespace AttachedOnEditor
 		{
 			Log.dbg("OnLoad {0} {1}", this.PartInstanceId, null != node);
 			base.OnLoad(node);
-			if (MODULE_VERSION != this.moduleVersion && this.correctlyInitialised)
-				this.moduleVersion = MODULE_VERSION;	// Salvage any previsouly saved values
+			if (this.correctlyInitialised && this.moduleVersion < MODULE_VERSION)
+			{	// Salvage any previsouly saved values
+				this.PreserveCurrentAttachmentNodes();
+				this.moduleVersion = MODULE_VERSION;
+			}
 
 			if (this.isMerge() || this.isSubAssembly())
 			{
@@ -81,7 +84,7 @@ namespace KSP_Recall { namespace AttachedOnEditor
 				//return;
 			}
 
-			if (!this.initialised) this.PreserveCurrentRadialAttachments();
+			if (!this.initialised) this.PreserveAttachments();
 		}
 
 		public override void OnSave(ConfigNode node)
@@ -89,14 +92,14 @@ namespace KSP_Recall { namespace AttachedOnEditor
 			Log.dbg("OnSave {0} {1}", this.PartInstanceId, null != node);
 			base.OnSave(node);
 			if (HighLogic.LoadedSceneIsEditor)
-				this.PreserveCurrentRadialAttachments(); // Updates the value, in case anyone else had changed it!
-														// But only on Editor, otherwise we would screw up crafts under stress on Flight!!!
+				this.PreserveAttachments();		// Updates the values, in case anyone else had changed it!
+												// But only on Editor, otherwise we would screw up crafts under stress on Flight!!!
 		}
 
 		public override void OnStart(StartState state)
 		{
 			Log.dbg("OnStart {0} {1} {2}", this.PartInstanceId, state, this.active);
-			if (this.active && HighLogic.LoadedSceneIsEditor) this.RestoreCurrentRadialAttachments();
+			if (this.active && HighLogic.LoadedSceneIsEditor) this.RestoreAttachments();
 			base.OnStart(state);
 		}
 
@@ -115,7 +118,7 @@ namespace KSP_Recall { namespace AttachedOnEditor
 				case GameScenes.FLIGHT:
 					break;
 				case GameScenes.EDITOR:
-					this.RestoreCurrentRadialAttachments();
+					this.RestoreAttachments();
 					break;
 				default:
 					break;
@@ -135,17 +138,32 @@ namespace KSP_Recall { namespace AttachedOnEditor
 			this.active = Globals.Instance.AttachedOnEditor;
 		}
 
+		private void PreserveCurrentAttachmentNodes()
+		{
+			Log.dbg("PreserveCurrentAttachmentPoints for {0}", this.PartInstanceId);
+		}
+
 		private void PreserveCurrentRadialAttachments()
 		{
 			Log.dbg("PreserveCurrentRadialAttachments {0} from {1} to {2}", this.PartInstanceId, this.originalPos, this.part.partTransform.position);
 			this.originalPos = this.part.partTransform.position;
+		}
+
+		private void PreserveAttachments()
+		{
+			this.PreserveCurrentAttachmentNodes();
+			this.PreserveCurrentRadialAttachments();
 			this.moduleVersion = MODULE_VERSION;
+		}
+
+		private void RestoreCurrentAttachmentNodes()
+		{
+			if (!this.initialised) return; // hack to prevent the UpgradePipeline to screw us up when loading crafts still without AttachedOnEditor
+			Log.dbg("RestoreCurrentAttachmentPoints {0} from {1} to {2}", this.PartInstanceId, this.part.partTransform.position, this.originalPos);
 		}
 
 		private void RestoreCurrentRadialAttachments()
 		{
-//			return;	// Hard deactivate this.
-			if (!this.initialised) return; // hack to prevent the UpgradePipeline to screw us up when loading crafts still without AttachedOnEditor
 			Log.dbg("RestoreCurrentRadialAttachments {0} from {1} to {2}", this.PartInstanceId, this.part.partTransform.position, this.originalPos);
 
 			// That's thing thing: Copies from Radial Symmetries are fine (believe it if you can)
@@ -155,11 +173,11 @@ namespace KSP_Recall { namespace AttachedOnEditor
 			this.part.partTransform.position = this.originalPos;
 		}
 
-		private void RememberOriginalModule(PartModule originalModule)
+		private void RestoreAttachments()
 		{
-			Log.dbg("RememberOriginalModule {0} from {1} to {2} using {3}", this.PartInstanceId, this.originalPos, originalModule.part.partTransform.position, EditorLogic.fetch.symmetryMethod);
-			UnityEngine.Vector3 pos = originalModule.part.partTransform.position;
-			this.originalPos = pos;
+			if (!this.initialised) return; // hack to prevent the UpgradePipeline to screw us up when loading crafts still without AttachedOnEditor
+			this.RestoreCurrentAttachmentNodes();
+			this.RestoreCurrentRadialAttachments();
 		}
 
 		private bool isMerge() {
