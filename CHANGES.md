@@ -1,5 +1,9 @@
 # KSP-Recall :: Changes
 
+* 2022-0214: 0.2.2.0 (LisiasT) for KSP >= 1.4.1 PRE-RELEASE
+	+ Implements another missing use case, handled on #34
+	+ Works the issues:
+		- [#34](https://github.com/net-lisias-ksp/KSP-Recall/issues/34) **NEW** Misbehaviour on KSP introduced by AttachedOnEditor
 * 2022-0211: 0.2.1.4 (LisiasT) for KSP >= 1.4.1
 	+ Implements a missing use case, handled on #34
 	+ Works the issues:

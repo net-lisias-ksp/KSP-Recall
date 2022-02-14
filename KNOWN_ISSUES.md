@@ -1,12 +1,10 @@
 # KSP-Recall :: Known Issues
 
 * A new problem was found, affecting Editor since KSP 1.9, where some parts are triggering a strange misbehaviour when you Alt+Click a part for a duplicate, when Loading a craft for Merge or when loading a SubAssembly
-	+ It't not known, at this point, what's causing the problem - but how and when is determined: some parts, when being the root of a SubAssembly, horribly misplaced the attached parts when TweakScaled (or changed by any other add'on that changes the part position)
-	+ Currently, the following Stock parts are known to trigger the problem:
-		- Stack Separators (Decouplers work fine!)  
-		- NCS Adapter
-		- And probably more to come, including from 3rd parties
-	+ The WorkAround is to avoid using these part as root on SubAssemblies.
+	+ It was determined that when Parts **without** `ModulePartVariant` is the root of the SubAssembly, the parts attached to it **must have** the `ModulePartVariant` otherwise the problem will be triggered
+	+ I realised that the problem is that the Positions on the Attachment Nodes are not being initialised by the vanilla Parts - apparently the initialisation was moved to the `ModulePartVariant` module.
+		- This may be the reason Squad choose to shove prefab back into the craft when loading it from the Editor, as apparently they didn't were able to pinpoint the cause of the misbehaviour...
+	+ Problem: I solved the problem for SubAssemblies and Craft files saved **after** installing the newest Release of KSP-Recall, but didn't managed to cook a way to salvage the pre-existent ones.	 
 	+ For more information:
 		- [Got a bug with a subassembly here](https://forum.kerbalspaceprogram.com/index.php?/topic/206784-got-a-bug-with-a-subassembly-here/#comment-4090098) on Forum
 		- [Issue \#34 on GitHub](https://github.com/net-lisias-ksp/KSP-Recall/issues/34#issuecomment-1034483251)
