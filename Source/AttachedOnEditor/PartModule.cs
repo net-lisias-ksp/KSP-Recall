@@ -23,8 +23,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-using UnityEngine;
-
 namespace KSP_Recall { namespace AttachedOnEditor
 {
 	public class AttachedOnEditor : PartModule
@@ -43,6 +41,9 @@ namespace KSP_Recall { namespace AttachedOnEditor
 		[KSPField(isPersistant = true, guiActive = false, guiActiveEditor = false)]
 		private UnityEngine.Vector3 originalPos;
 
+		[KSPField(isPersistant = true, guiActive = false, guiActiveEditor = false)]
+		private UnityEngine.Quaternion originalRotation;
+
 		[System.Obsolete("AttachedOnEditor.correctlyInitialised is deprecated and will be removed soon.")]
 		[KSPField(isPersistant = true, guiActive = false, guiActiveEditor = false)]
 		private bool correctlyInitialised = false;
@@ -54,7 +55,7 @@ namespace KSP_Recall { namespace AttachedOnEditor
 
 		#endregion
 
-		private const int MODULE_VERSION = 3;
+		private const int MODULE_VERSION = 4;
 		private bool isCopy = false;
 
 		private bool initialised => MODULE_VERSION == this.moduleVersion;
@@ -87,7 +88,8 @@ namespace KSP_Recall { namespace AttachedOnEditor
 			if (this.correctlyInitialised && this.moduleVersion < MODULE_VERSION)
 			{	// Salvage any previsouly saved values
 				Log.dbg("Older version {0} detected. Migrating to {1}", this.moduleVersion, MODULE_VERSION);
-				this.PreserveCurrentAttachmentNodes();
+				if (this.moduleVersion < MODULE_VERSION-1) this.PreserveCurrentAttachmentNodes();
+				if (this.moduleVersion < MODULE_VERSION) this.originalRotation = this.part.partTransform.rotation;
 				this.moduleVersion = MODULE_VERSION;
 			}
 
@@ -167,16 +169,17 @@ namespace KSP_Recall { namespace AttachedOnEditor
 			}
 		}
 
-		private void PreserveCurrentRadialAttachments()
+		private void PreserveCurrentAttachments()
 		{
-			Log.dbg("PreserveCurrentRadialAttachments {0} from {1} to {2}", this.PartInstanceId, this.originalPos, this.part.partTransform.position);
+			Log.dbg("PreserveCurrentAttachments {0} from {1} to {2}", this.PartInstanceId, this.originalPos, this.part.partTransform.position);
 			this.originalPos = this.part.partTransform.position;
+			this.originalRotation = this.part.partTransform.rotation;
 		}
 
 		private void PreserveAttachments()
 		{
 			this.PreserveCurrentAttachmentNodes();
-			this.PreserveCurrentRadialAttachments();
+			this.PreserveCurrentAttachments();
 			this.moduleVersion = MODULE_VERSION;
 		}
 
@@ -188,20 +191,21 @@ namespace KSP_Recall { namespace AttachedOnEditor
 				this.part.attachNodes[i].position = this.originalAttachNodePos[i];
 		}
 
-		private void RestoreCurrentRadialAttachments()
+		private void RestoreCurrentAttachments()
 		{
-			Log.dbg("RestoreCurrentRadialAttachments {0} from {1} to {2}", this.PartInstanceId, this.part.partTransform.position, this.originalPos);
+			Log.dbg("RestoreCurrentAttachments {0} from {1} to {2}", this.PartInstanceId, this.part.partTransform.position, this.originalPos);
 
 			if (this.isCopy) return;
 
 			this.part.partTransform.position = this.originalPos;
+			this.part.partTransform.rotation = this.originalRotation;
 		}
 
 		private void RestoreAttachments()
 		{
 			if (!this.initialised) return; // hack to prevent the UpgradePipeline to screw us up when loading crafts still without AttachedOnEditor
 			this.RestoreCurrentAttachmentNodes();
-			this.RestoreCurrentRadialAttachments();
+			this.RestoreCurrentAttachments();
 		}
 
 		private bool isMerge() {
@@ -242,12 +246,12 @@ namespace KSP_Recall { namespace AttachedOnEditor
 			}
 		}
 
-		private Vector3 parseVector3(string vector3)
+		private UnityEngine.Vector3 parseVector3(string vector3)
 		{
 			if ('(' != vector3[0] || ')' != vector3[vector3.Length-1]) throw new InvalidCastException(String.Format("{0} is not a UnityEngine.Vector3!", vector3));
 			string v = vector3.Substring(1, vector3.Length-2);
 			string[] l = v.Split(',');
-			return new Vector3(float.Parse(l[0]), float.Parse(l[1]), float.Parse(l[2]));
+			return new UnityEngine.Vector3(float.Parse(l[0]), float.Parse(l[1]), float.Parse(l[2]));
 		}
 
 		private void SaveTo(ConfigNode node)
