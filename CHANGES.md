@@ -1,8 +1,11 @@
 # KSP-Recall :: Changes
 
+* 2022-0228: 0.2.2.2 (LisiasT) for KSP >= 1.4.1
+	+ Reworks:
+		- [#35](https://github.com/net-lisias-ksp/KSP-Recall/issues/35) AttachedOnEditor is not working for SubAssemblies.
 * 2022-0219: 0.2.2.1 (LisiasT) for KSP >= 1.4.1
 	+ Formally closes issues:
-		- [#35](https://github.com/net-lisias-ksp/KSP-Recall/issues/34) AttachedOnEditor is not working for SubAssemblies.
+		- [#35](https://github.com/net-lisias-ksp/KSP-Recall/issues/35) AttachedOnEditor is not working for SubAssemblies.
 		- [#34](https://github.com/net-lisias-ksp/KSP-Recall/issues/34) **NEW** Misbehaviour on KSP introduced by AttachedOnEditor
 * 2022-0214: 0.2.2.0 (LisiasT) for KSP >= 1.4.1 PRE-RELEASE
 	+ Implements another missing use case, handled on #34
