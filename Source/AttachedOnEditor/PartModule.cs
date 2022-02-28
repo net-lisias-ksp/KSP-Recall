@@ -192,9 +192,7 @@ namespace KSP_Recall { namespace AttachedOnEditor
 		{
 			Log.dbg("RestoreCurrentRadialAttachments {0} from {1} to {2}", this.PartInstanceId, this.part.partTransform.position, this.originalPos);
 
-			// That's thing thing: Copies from Radial Symmetries are fine (believe it if you can)
-			// We are having problems with Mirror Symmetry copies and with "original" parts only...
-			if (this.isCopy && SymmetryMethod.Radial == EditorLogic.fetch.symmetryMethod && 0 != this.part.symmetryCounterparts.Count) return;
+			if (this.isCopy) return;
 
 			this.part.partTransform.position = this.originalPos;
 		}
