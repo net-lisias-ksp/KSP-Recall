@@ -1,5 +1,8 @@
 # KSP-Recall :: Changes
 
+* 2022-0308: 0.2.2.3 (LisiasT) for KSP >= 1.4.1
+	+ Allows patching `AttachedOnEditor` on every compatible part, no matter it has `TweakScale` installed or not.
+		- Needed because a TweakScaled part borks when attached to another without it. 
 * 2022-0228: 0.2.2.2 (LisiasT) for KSP >= 1.4.1
 	+ Reworks:
 		- [#35](https://github.com/net-lisias-ksp/KSP-Recall/issues/35) AttachedOnEditor is not working for SubAssemblies.
