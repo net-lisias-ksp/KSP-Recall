@@ -52,10 +52,11 @@ namespace KSP_Recall { namespace AttachedOnEditor
 		private int moduleVersion = 0;
 
 		private List<UnityEngine.Vector3> originalAttachNodePos = new List<UnityEngine.Vector3>();
+		private List<int> originalAttachNodeSize = new List<int>();
 
 		#endregion
 
-		private const int MODULE_VERSION = 4;
+		private const int MODULE_VERSION = 5;
 		private bool isCopy = false;
 
 		private bool initialised => MODULE_VERSION == this.moduleVersion;
@@ -162,10 +163,12 @@ namespace KSP_Recall { namespace AttachedOnEditor
 			Log.dbg("PreserveCurrentAttachmentPoints for {0} hasAttachNodes? {1}", this.PartInstanceId, null != this.part.attachNodes);
 
 			this.originalAttachNodePos.Clear();
+			this.originalAttachNodeSize.Clear();
 			for (int i = 0; i < this.part.attachNodes.Count; ++i)
 			{
 				AttachNode an = this.part.attachNodes[i];
 				this.originalAttachNodePos.Insert(i, an.position);
+				this.originalAttachNodeSize.Insert(i, an.size);
 			}
 		}
 
@@ -188,7 +191,10 @@ namespace KSP_Recall { namespace AttachedOnEditor
 			if (!this.initialised) return; // hack to prevent the UpgradePipeline to screw us up when loading crafts still without AttachedOnEditor
 			Log.dbg("RestoreCurrentAttachmentPoints for {0}", this.PartInstanceId);
 			for(int i = 0; i < this.originalAttachNodePos.Count; ++i)
+			{
 				this.part.attachNodes[i].position = this.originalAttachNodePos[i];
+				this.part.attachNodes[i].size = this.originalAttachNodeSize[i];
+			}
 		}
 
 		private void RestoreCurrentAttachments()
@@ -238,11 +244,21 @@ namespace KSP_Recall { namespace AttachedOnEditor
 
 		private void LoadFrom(ConfigNode node)
 		{
-			string[] list = node.GetValues("originalAttachNodePos");
-			for(int i = 0; i < list.Length; ++i)
 			{
-				UnityEngine.Vector3 v = this.parseVector3(list[i]);
-				this.originalAttachNodePos.Insert(i, v);
+				string[] list = node.GetValues("originalAttachNodePos");
+				for(int i = 0; i < list.Length; ++i)
+				{
+					UnityEngine.Vector3 v = this.parseVector3(list[i]);
+					this.originalAttachNodePos.Insert(i, v);
+				}
+			}
+			{
+				string[] list = node.GetValues("originalAttachNodeSize");
+				for(int i = 0; i < list.Length; ++i)
+				{
+					int v = int.Parse(list[i]);
+					this.originalAttachNodeSize.Insert(i, v);
+				}
 			}
 		}
 
@@ -257,7 +273,10 @@ namespace KSP_Recall { namespace AttachedOnEditor
 		private void SaveTo(ConfigNode node)
 		{
 			for(int i = 0; i < this.originalAttachNodePos.Count; ++i)
+			{
 				node.AddValue("originalAttachNodePos", this.originalAttachNodePos[i].ToString());
+				node.AddValue("originalAttachNodeSize", this.originalAttachNodeSize[i].ToString());
+			}
 		}
 
 		[ConditionalAttribute("DEBUG")]
