@@ -44,10 +44,6 @@ namespace KSP_Recall { namespace AttachedOnEditor
 		[KSPField(isPersistant = true, guiActive = false, guiActiveEditor = false)]
 		private UnityEngine.Quaternion originalRotation;
 
-		[System.Obsolete("AttachedOnEditor.correctlyInitialised is deprecated and will be removed soon.")]
-		[KSPField(isPersistant = true, guiActive = false, guiActiveEditor = false)]
-		private bool correctlyInitialised = false;
-
 		[KSPField(isPersistant = true, guiActive = false, guiActiveEditor = false)]
 		private int moduleVersion = 0;
 
@@ -86,7 +82,7 @@ namespace KSP_Recall { namespace AttachedOnEditor
 		{
 			Log.dbg("OnLoad {0} {1}", this.PartInstanceId, null != node);
 			base.OnLoad(node);
-			if (this.correctlyInitialised && this.moduleVersion < MODULE_VERSION)
+			if (this.moduleVersion < MODULE_VERSION)
 			{	// Salvage any previsouly saved values
 				Log.dbg("Older version {0} detected. Migrating to {1}", this.moduleVersion, MODULE_VERSION);
 				if (this.moduleVersion < MODULE_VERSION-1) this.PreserveCurrentAttachmentNodes();
