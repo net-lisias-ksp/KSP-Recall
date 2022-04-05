@@ -7,10 +7,11 @@ Aims to fix Stock misbehaviours the most seamlessly as possible, trying hard to 
 
 ## In a Hurry
 
+* [Discussions](https://github.com/net-lisias-ksp/KSP-Recall/discussions)
+* [Issue Tracker](https://github.com/net-lisias-ksp/KSP-Recall/issues)
 * [Latest Release](https://github.com/net-lisias-ksp/KSP-Recall/releases)
 	+ [Binaries](https://github.com/net-lisias-ksp/KSP-Recall/tree/Archive)
 * [Source](https://github.com/net-lisias-ksp/KSP-Recall)
-* [Issue Tracker](https://github.com/net-lisias-ksp/KSP-Recall/issues)
 * Documentation	
 	+ [Homepage](http://ksp.lisias.net/add-ons/KSP-Recall) on L Aerospace KSP Division
 	+ [Project's README](https://github.com/net-lisias-ksp/KSP-Recall/blob/master/README.md)
@@ -21,6 +22,7 @@ Aims to fix Stock misbehaviours the most seamlessly as possible, trying hard to 
 * Official Distribution Sites:
 	+ [Homepage](http://ksp.lisias.net/add-ons/KSP-Recall) on L Aerospace
 	+ [Source and Binaries](https://github.com/net-lisias-ksp/KSP-Recall) on GitHub.
+	+ [KSP's Forum Thread](https://forum.kerbalspaceprogram.com/index.php?/topic/192048-*)
 
 
 ## Description
