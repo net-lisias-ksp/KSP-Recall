@@ -47,8 +47,10 @@ namespace KSP_Recall { namespace AttachedOnEditor
 		[KSPField(isPersistant = true, guiActive = false, guiActiveEditor = false)]
 		private int moduleVersion = 0;
 
-		private List<UnityEngine.Vector3> originalAttachNodePos = new List<UnityEngine.Vector3>();
-		private List<int> originalAttachNodeSize = new List<int>();
+		private readonly List<UnityEngine.Vector3> originalAttachNodePos = new List<UnityEngine.Vector3>();
+		private readonly List<int> originalAttachNodeSize = new List<int>();
+		private readonly List<UnityEngine.Vector3> originalAttachNodeOrientation = new List<UnityEngine.Vector3>();
+		private readonly List<UnityEngine.Vector3> originalAttachNodeOffset = new List<UnityEngine.Vector3>();
 
 		#endregion
 
@@ -160,11 +162,15 @@ namespace KSP_Recall { namespace AttachedOnEditor
 
 			this.originalAttachNodePos.Clear();
 			this.originalAttachNodeSize.Clear();
+			this.originalAttachNodeOrientation.Clear();
+			this.originalAttachNodeOffset.Clear();
 			for (int i = 0; i < this.part.attachNodes.Count; ++i)
 			{
 				AttachNode an = this.part.attachNodes[i];
 				this.originalAttachNodePos.Insert(i, an.position);
 				this.originalAttachNodeSize.Insert(i, an.size);
+				this.originalAttachNodeOrientation.Insert(i, an.orientation);
+				this.originalAttachNodeOffset.Insert(i, an.offset);
 			}
 		}
 
@@ -190,6 +196,8 @@ namespace KSP_Recall { namespace AttachedOnEditor
 			{
 				this.part.attachNodes[i].position = this.originalAttachNodePos[i];
 				this.part.attachNodes[i].size = this.originalAttachNodeSize[i];
+				this.part.attachNodes[i].orientation = this.originalAttachNodeOrientation[i];
+				this.part.attachNodes[i].offset = this.originalAttachNodeOffset[i];
 			}
 		}
 
@@ -256,6 +264,22 @@ namespace KSP_Recall { namespace AttachedOnEditor
 					this.originalAttachNodeSize.Insert(i, v);
 				}
 			}
+			{
+				string[] list = node.GetValues("originalAttachNodeOrientation");
+				for(int i = 0; i < list.Length; ++i)
+				{
+					UnityEngine.Vector3 v = this.parseVector3(list[i]);
+					this.originalAttachNodeOrientation.Insert(i, v);
+				}
+			}
+			{
+				string[] list = node.GetValues("originalAttachNodeOffset");
+				for(int i = 0; i < list.Length; ++i)
+				{
+					UnityEngine.Vector3 v = this.parseVector3(list[i]);
+					this.originalAttachNodeOffset.Insert(i, v);
+				}
+			}
 		}
 
 		private UnityEngine.Vector3 parseVector3(string vector3)
@@ -272,6 +296,8 @@ namespace KSP_Recall { namespace AttachedOnEditor
 			{
 				node.AddValue("originalAttachNodePos", this.originalAttachNodePos[i].ToString());
 				node.AddValue("originalAttachNodeSize", this.originalAttachNodeSize[i].ToString());
+				node.AddValue("originalAttachNodeOrientation", this.originalAttachNodeOrientation[i].ToString());
+				node.AddValue("originalAttachNodeOffset", this.originalAttachNodeOffset[i].ToString());
 			}
 		}
 
