@@ -37,30 +37,40 @@ namespace KSP_Recall
 		public readonly bool Resourceful;
 		public readonly bool AttachedOnEditor;
 
+		public readonly bool ProceduralPartsAttachmentNodes;
+
 		private Globals()
 		{
 			try
 			{
 				UrlDir.UrlConfig urlc = GameDatabase.Instance.GetConfigs("KSP-Recall")[0];
-				ConfigNodeWithSteroids cn = ConfigNodeWithSteroids.from(urlc.config.GetNode("INSTALLED"));
+				{
+					ConfigNodeWithSteroids cn = ConfigNodeWithSteroids.from(urlc.config.GetNode("INSTALLED"));
 
-				try					{ this.Attached = cn.GetValue<bool>("Attached"); }
-				catch (Exception)	{ this.Attached = false; }
+					try					{ this.Attached = cn.GetValue<bool>("Attached"); }
+					catch (Exception)	{ this.Attached = false; }
 
-				try					{ this.ChillingOut = cn.GetValue<bool>("ChillingOut"); }
-				catch (Exception)	{ this.ChillingOut = false; }
+					try					{ this.ChillingOut = cn.GetValue<bool>("ChillingOut"); }
+					catch (Exception)	{ this.ChillingOut = false; }
 
-				try					{ this.Driftless = cn.GetValue<bool>("Driftless"); }
-				catch (Exception)	{ this.Driftless = false; }
+					try					{ this.Driftless = cn.GetValue<bool>("Driftless"); }
+					catch (Exception)	{ this.Driftless = false; }
 
-				try					{ this.Refunding = cn.GetValue<bool>("Refunding"); }
-				catch (Exception)	{ this.Refunding = false; }
+					try					{ this.Refunding = cn.GetValue<bool>("Refunding"); }
+					catch (Exception)	{ this.Refunding = false; }
 
-				try					{ this.Resourceful = cn.GetValue<bool>("Resourceful"); }
-				catch (Exception)	{ this.Resourceful = false; }
+					try					{ this.Resourceful = cn.GetValue<bool>("Resourceful"); }
+					catch (Exception)	{ this.Resourceful = false; }
 
-				try					{ this.AttachedOnEditor = cn.GetValue<bool>("AttachedOnEditor"); }
-				catch (Exception)	{ this.AttachedOnEditor = false; }
+					try					{ this.AttachedOnEditor = cn.GetValue<bool>("AttachedOnEditor"); }
+					catch (Exception)	{ this.AttachedOnEditor = false; }
+				}
+				{
+					ConfigNodeWithSteroids cn = ConfigNodeWithSteroids.from(urlc.config.GetNode("INTERVENTIONS"));
+
+					try					{ this.ProceduralPartsAttachmentNodes = cn.GetValue<bool>("ProceduralPartsAttachmentNodes"); }
+					catch (Exception)	{ this.ProceduralPartsAttachmentNodes = false; }
+				}
 			}
 			catch (Exception)
 			{
@@ -70,6 +80,7 @@ namespace KSP_Recall
 				this.Refunding = false;
 				this.Resourceful = false;
 				this.AttachedOnEditor = false;
+				this.ProceduralPartsAttachmentNodes = false;
 			}
 		}
 	}
