@@ -36,6 +36,8 @@ namespace KSP_Recall
 			if (checkForChillingOut())	tags.Add("KSPRECALL-CHILLINGOUT");
 			if (checkForRefunding())	tags.Add("KSPRECALL-REFUNDING");
 			if (checkForAttachedOnEditor())	tags.Add("KSPRECALL-ATTACHED-ON-EDITOR");
+			if (checkForProceduralPartsAttachmentNodes())
+										tags.Add("KSPRECALL-PROCEDURALPARTS-AN");
 
 			return tags.ToArray();
 		}
@@ -79,6 +81,13 @@ namespace KSP_Recall
 		private static bool checkForRefunding()
 		{
 			return KSPe.Util.KSP.Version.Current >= KSPe.Util.KSP.Version.FindByVersion(1,11,0); 
+		}
+
+		private static bool checkForProceduralPartsAttachmentNodes()
+		{
+			return KSPe.Util.SystemTools.Assembly.Finder.ExistsByName("ProceduralParts")
+				&& KSPe.Util.SystemTools.Assembly.Finder.ExistsByName("Scale")
+				;
 		}
 	}
 }
