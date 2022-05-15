@@ -1,5 +1,11 @@
 # KSP-Recall :: Change Log
 
+* 2022-0514: 0.2.2.4 (LisiasT) for KSP >= 1.4.1
+	+ Closes issues:
+		- [#41](https://github.com/net-lisias-ksp/KSP-Recall/issues/41) Investigate a possible (bad) iteraction with Procedural Parts (RO) V2.3.0
+		- [#40](https://github.com/net-lisias-ksp/KSP-Recall/issues/40) Unhappy interaction with Deep Freeze?
+		- [#37](https://github.com/net-lisias-ksp/KSP-Recall/issues/37) Check about a missing use-case on AttachedOnEditor
+		- [#21](https://github.com/net-lisias-ksp/KSP-Recall/issues/21) Update KSPe.Light for KSPe
 * 2022-0308: 0.2.2.3 (LisiasT) for KSP >= 1.4.1
 	+ Allows patching `AttachedOnEditor` on every compatible part, no matter it has `TweakScale` installed or not.
 		- Needed because a TweakScaled part borks when attached to another without it. 
