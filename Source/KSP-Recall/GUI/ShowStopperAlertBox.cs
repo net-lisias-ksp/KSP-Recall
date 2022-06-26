@@ -29,14 +29,14 @@ namespace KSP_Recall.GUI
 
 The KSP.log is listing every compromised part(s) on your installment, look for lines with '[KSP_Recall] ERROR: ' on the log line. Be aware that the parts being reported are not the culprits, but the Screaming Victims. There's no possible automated fix for these.";
 
-        private static readonly string AMSG = @"call for help on the KSP Recall thread on the Forum (KSP will close). We will help you on diagnosing the Add'On that is troubling you. Publish your KSP.log on some file share service and mention it on the post";
+        private static readonly string AMSG = @"call for help on the KSP Recall Support page (KSP will close).";
 
         internal static void Show(int failure_count)
         {
             KSPe.Common.Dialogs.ShowStopperAlertBox.Show(
                 string.Format(MSG, failure_count),
                 AMSG,
-                () => { Application.OpenURL("https://forum.kerbalspaceprogram.com/index.php?/topic/192048-*"); Application.Quit(); }
+                () => { Application.OpenURL("https://github.com/net-lisias-ksp/KSP-Recall/discussions/48"); Application.Quit(); }
             );
             Log.detail("\"Houston, we have a Problem!\" was displayed");
         }
