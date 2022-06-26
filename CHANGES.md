@@ -1,5 +1,11 @@
 # KSP-Recall :: Changes
 
+* 2022-0626: 0.3.0.0 (LisiasT) for KSP >= 1.4.1
+	+ Prevents a race condition with Making History on Main Menu on heavily loaded rigs. 
+	+ Updates ModuleManagerWatchDog to 1.1.0.1
+	+ Updates KSPe.Light.Recall to 2.4.1.16 due the [Proton fix](https://github.com/net-lisias-ksp/KSPe/issues/31).
+	+ Closes issues:
+		- [#45](https://github.com/net-lisias-ksp/KSP-Recall/issues/45) Move the Sanity Checks) out of the Main Menu startup
 * 2022-0514: 0.2.2.4 (LisiasT) for KSP >= 1.4.1
 	+ Closes issues:
 		- [#41](https://github.com/net-lisias-ksp/KSP-Recall/issues/41) Investigate a possible (bad) iteraction with Procedural Parts (RO) V2.3.0
