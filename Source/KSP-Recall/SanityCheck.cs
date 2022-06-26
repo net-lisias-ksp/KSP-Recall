@@ -52,7 +52,6 @@ namespace KSP_Recall
 			Log.detail("Switching scene from {0} to {1}.", data.from, data.to);
 			GameEvents.onGameSceneSwitchRequested.Remove(this.OnGameSceneSwitchRequested);
 			this.ExecuteSanityChecks();
-			showstoppers_count++;
 		}
 
 		private void ExecuteSanityChecks()
