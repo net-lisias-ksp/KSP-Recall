@@ -22,15 +22,15 @@
 using System;
 using System.Collections;
 
+using KSPe.Annotations;
+
 using UnityEngine;
 
 namespace KSP_Recall
 {
-	[KSPAddon(KSPAddon.Startup.MainMenu, true)]
+	[KSPAddon(KSPAddon.Startup.Instantly, true)]
 	internal class SanityCheck : MonoBehaviour
 	{
-		private static readonly int WAIT_ROUNDS = 120; // @60fps, would render 2 secs.
-
 		private const string RESOURCEFUL_MODULE_NAME = "Resourceful";
 		private const string DRIFTLESS_MODULE_NAME = "Driftless";
 		private const string ATTACHED_MODULE_NAME = "Attached";
@@ -39,37 +39,26 @@ namespace KSP_Recall
 		private const string ATTACHEDONEDITOR_MODULE_NAME = "AttachedOnEditor";
 
 		internal static bool isConcluded = false;
+		internal static int showstoppers_count = 0;
 
+		[UsedImplicitly]
 		private void Start()
 		{
-			StartCoroutine("SanityCheckCoroutine");
+			GameEvents.onGameSceneSwitchRequested.Add(this.OnGameSceneSwitchRequested);
 		}
 
-		private IEnumerator SanityCheckCoroutine()
+		private void OnGameSceneSwitchRequested(GameEvents.FromToAction<GameScenes, GameScenes> data)
+		{
+			Log.detail("Switching scene from {0} to {1}.", data.from, data.to);
+			GameEvents.onGameSceneSwitchRequested.Remove(this.OnGameSceneSwitchRequested);
+			this.ExecuteSanityChecks();
+			showstoppers_count++;
+		}
+
+		private void ExecuteSanityChecks()
 		{
 			SanityCheck.isConcluded = false;
 			Log.info("SanityCheck: Started");
-
-			{  // Toe Stomping Fest prevention
-				for (int i = WAIT_ROUNDS; i >= 0 && null == PartLoader.LoadedPartsList; --i)
-				{
-					yield return null;
-					if (0 == i) Log.warn("Timeout waiting for PartLoader.LoadedPartsList!!");
-				}
-	
-				 // I Don't know if this is needed, but since I don't know that this is not needed,
-				 // I choose to be safe than sorry!
-				{
-					int last_count = int.MinValue;
-					for (int i = WAIT_ROUNDS; i >= 0; --i)
-					{
-						if (last_count == PartLoader.LoadedPartsList.Count) break;
-						last_count = PartLoader.LoadedPartsList.Count;
-						yield return null;
-						if (0 == i) Log.warn("Timeout waiting for PartLoader.LoadedPartsList.Count!!");
-					}
-				}
-			}
 
 			int total_count = 0;
 			int parts_with_resourceful_count = 0;
@@ -78,59 +67,32 @@ namespace KSP_Recall
 			int parts_with_chillingout_count = 0;
 			int parts_with_refunding_count = 0;
 			int parts_with_attachedoneditor_count = 0;
-			int showstoppers_count = 0;
 
 			foreach (AvailablePart p in PartLoader.LoadedPartsList)
 			{
-				for (int i = WAIT_ROUNDS; i >= 0 && (null == p.partPrefab || null == p.partPrefab.Modules); --i)
-				{
-					yield return null;
-					if (0 == i) Log.error("Timeout waiting for {0}.prefab.Modules!!", p.name);
-				}
-			  
 				Part prefab;
 				{ 
-					// Historically, we had problems here.
-					// However, that co-routine stunt appears to have solved it.
-					// But we will keep this as a ghinea-pig in the case the problem happens again.
-					int retries = WAIT_ROUNDS;
 					bool containsResourceful = false;
 					bool containsDriftless = false;
 					bool containsAttached = false;
 					bool containsChillingOut = false;
 					bool containsRefunding = false;
 					bool containsAttachedOnEditor = false;
-					Exception culprit = null;
-					
-					prefab = p.partPrefab; // Reaching the prefab here in the case another Mod recreates it from zero. If such hypothecical mod recreates the whole part, we're doomed no matter what.
-					
-					while (retries > 0)
-					{ 
-						bool should_yield = false;
-						try 
-						{
-							containsResourceful = prefab.Modules.Contains(RESOURCEFUL_MODULE_NAME);
-							containsDriftless = prefab.Modules.Contains(DRIFTLESS_MODULE_NAME);
-							containsAttached = prefab.Modules.Contains(ATTACHED_MODULE_NAME);
-							containsChillingOut = prefab.Modules.Contains(CHILLINGOUT_MODULE_NAME);
-							containsRefunding = prefab.Modules.Contains(REFUNDING_MODULE_NAME);
-							containsAttachedOnEditor = prefab.Modules.Contains(ATTACHEDONEDITOR_MODULE_NAME);
-							++total_count;
-							break;  // Yeah. This while stunt was done just to be able to do this. All the rest is plain clutter! :D 
-						}
-						catch (Exception e)
-						{
-							culprit = e;
-							--retries;
-							should_yield = true;
-						}
-						if (should_yield) // This stunt is needed as we can't yield from inside a try-catch!
-							yield return null;
-					}
 
-					if (0 == retries)
+					prefab = p.partPrefab; // Reaching the prefab here in the case another Mod recreates it from zero. If such hypothecical mod recreates the whole part, we're doomed no matter what.
+					try 
 					{
-						Log.error("Exception on {0}.prefab.Modules.Contains: {1}", p.name, culprit);
+						containsResourceful = prefab.Modules.Contains(RESOURCEFUL_MODULE_NAME);
+						containsDriftless = prefab.Modules.Contains(DRIFTLESS_MODULE_NAME);
+						containsAttached = prefab.Modules.Contains(ATTACHED_MODULE_NAME);
+						containsChillingOut = prefab.Modules.Contains(CHILLINGOUT_MODULE_NAME);
+						containsRefunding = prefab.Modules.Contains(REFUNDING_MODULE_NAME);
+						containsAttachedOnEditor = prefab.Modules.Contains(ATTACHEDONEDITOR_MODULE_NAME);
+						++total_count;
+					}
+					catch (Exception e)
+					{
+						Log.error("Exception on {0}.prefab.Modules.Contains: {1}", p.name, e.Message);
 						Log.detail("{0}", prefab.Modules);
 						continue;
 					}
@@ -207,11 +169,6 @@ namespace KSP_Recall
 				, parts_with_attachedoneditor_count, ATTACHEDONEDITOR_MODULE_NAME
 				, showstoppers_count);
 			SanityCheck.isConcluded = true;
-
-			if (showstoppers_count > 0)
-			{
-				GUI.ShowStopperAlertBox.Show(showstoppers_count);
-			}
 		}
 
 		private const string MSG_INSTALLATION_FORCED = "Installation of {0} forced on KSP-Recall.cfg. Proceed with caution!";
@@ -229,7 +186,6 @@ namespace KSP_Recall
 				if (Globals.Instance.Resourceful) Log.warn(MSG_INSTALLATION_FORCED, RESOURCEFUL_MODULE_NAME);
 				else return MSG_PART_DOES_NOT_NEED ;
 			}
-
 
 			// if (0 == p.Resources.Count) return MSG_PART_DOES_NOT_NEED; Some AddOn can add Resources later, so I commented it out
 			return this.checkForCommonUnsupportedParts(p);
@@ -318,6 +274,17 @@ namespace KSP_Recall
 			if (p.Modules.Contains("ModuleComet"))		return MSG_PART_NOT_SUPPORTED;
 
 			return null;
+		}
+	}
+
+	[KSPAddon(KSPAddon.Startup.MainMenu, true)]
+	internal class SanityCheckResults :MonoBehaviour
+	{
+		[UsedImplicitly]
+		private void Start()
+		{
+			if (SanityCheck.showstoppers_count > 0)
+				GUI.ShowStopperAlertBox.Show(SanityCheck.showstoppers_count);
 		}
 	}
 }
