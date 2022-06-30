@@ -1,5 +1,10 @@
 # KSP-Recall :: Changes
 
+* 2022-0630: 0.3.0.1 (LisiasT) for KSP >= 1.4.1
+	+ Fixes a **huge** brain fart of mine from 0.2.2.4 #facePalm
+	+ Closes issues:
+		- [#52](https://github.com/net-lisias-ksp/KSP-Recall/issues/52) REPORT: Diagnosing the GoAHead Issue
+		- [#49](https://github.com/net-lisias-ksp/KSP-Recall/issues/49) ArgumentOutOfRangeException causes saving to break and makes my save file unplayable
 * 2022-0626: 0.3.0.0 (LisiasT) for KSP >= 1.4.1
 	+ Prevents a race condition with Making History on Main Menu on heavily loaded rigs. 
 	+ Updates ModuleManagerWatchDog to 1.1.0.1
