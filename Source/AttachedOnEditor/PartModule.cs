@@ -54,7 +54,7 @@ namespace KSP_Recall { namespace AttachedOnEditor
 
 		#endregion
 
-		private const int MODULE_VERSION = 5;
+		private const int MODULE_VERSION = 6;
 		private bool isCopy = false;
 
 		private bool initialised => MODULE_VERSION == this.moduleVersion;
@@ -84,13 +84,6 @@ namespace KSP_Recall { namespace AttachedOnEditor
 		{
 			Log.dbg("OnLoad {0} {1}", this.PartInstanceId, null != node);
 			base.OnLoad(node);
-			if (this.moduleVersion < MODULE_VERSION)
-			{	// Salvage any previsouly saved values
-				Log.dbg("Older version {0} detected. Migrating to {1}", this.moduleVersion, MODULE_VERSION);
-				if (this.moduleVersion < MODULE_VERSION-1) this.PreserveCurrentAttachmentNodes();
-				if (this.moduleVersion < MODULE_VERSION) this.originalRotation = this.part.partTransform.rotation;
-				this.moduleVersion = MODULE_VERSION;
-			}
 
 			if (this.isMerge() || this.isSubAssembly())
 			{
@@ -98,8 +91,13 @@ namespace KSP_Recall { namespace AttachedOnEditor
 				//return;
 			}
 
-			if (!this.initialised) this.PreserveAttachments();
-			this.LoadFrom(node);
+			if (!this.initialised)
+			{
+				Log.detail("Module data oudated or absent. I was expecting {0} but found {1} instead!", this.moduleVersion, MODULE_VERSION);
+				this.PreserveAttachments();
+			}
+			else
+				this.LoadFrom(node);
 		}
 
 		public override void OnSave(ConfigNode node)
@@ -248,6 +246,7 @@ namespace KSP_Recall { namespace AttachedOnEditor
 
 		private void LoadFrom(ConfigNode node)
 		{
+			Log.dbg("LoadFrom (ConfigNode) {0}", this.PartInstanceId);
 			{
 				string[] list = node.GetValues("originalAttachNodePos");
 				for(int i = 0; i < list.Length; ++i)
@@ -292,6 +291,7 @@ namespace KSP_Recall { namespace AttachedOnEditor
 
 		private void SaveTo(ConfigNode node)
 		{
+			Log.dbg("SaveTo (ConfigNode) {0}", this.PartInstanceId);
 			for(int i = 0; i < this.originalAttachNodePos.Count; ++i)
 			{
 				node.AddValue("originalAttachNodePos", this.originalAttachNodePos[i].ToString());
