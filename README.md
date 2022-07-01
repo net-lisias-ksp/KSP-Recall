@@ -94,16 +94,16 @@ Right now, this is what it's known to the date:
 
 * Interstellar Fuel Switch
 	+ Works without KSP-Recall.
-	+ It's coded it's own Resource Management, so it's imune to KSP 1.9 "bruteness".
+	+ It coded its own Resource Management, so it's imune to KSP 1.9 "bruteness".
 * Firespitter
 	+ I detected no problems on it
 * Anything that supports (or it's supported by) TweakScale
 	+ TweakScale already handles KSP-Recall, so anything that makes use of `Scale_Redist` is already covered
-	+ Modular Fuel Tanks is one of that Add'Ons, as long nobody shoves its on parts that already have another Fuel Switch.
-* B9 Parts Switch should work. As longe there're no other Fuel Switch installed on the same part.
+	+ Modular Fuel Tanks is one of that Add'Ons, as long nobody shoves it on parts that already have another Fuel Switch.
+* B9 Parts Switch should work. As long there're no other Fuel Switch installed on the same part.
 * Other fuel switches:
 	+ As long the OnEditorVesselModified is fired on each change (or one of the Custom Events from Recall, see below), it should work fine.
-	+ Please report on this thread anything that you thing is wrong. I'm fixing them as I'm aware of them.
+	+ Please report on this [Forum Thread](thread) or [Discussion](https://github.com/net-lisias-ksp/KSP-Recall/discussions) anything that you thing is wrong. I'm fixing them as I'm aware of them. If you are absolutely sure it's a bug, file a [bug report](https://github.com/net-lisias-ksp/KSP-Recall/issues).
 
 ### Crafts at rest changes drifts the Heading by their own
 
