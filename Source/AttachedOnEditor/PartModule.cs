@@ -93,7 +93,7 @@ namespace KSP_Recall { namespace AttachedOnEditor
 
 			if (!this.initialised)
 			{
-				Log.detail("Module data oudated or absent. I was expecting {0} but found {1} instead!", this.moduleVersion, MODULE_VERSION);
+				Log.detail("Module data oudated or absent. I was expecting {0} but found {1} instead!", MODULE_VERSION, this.moduleVersion);
 				this.PreserveAttachments();
 			}
 			else
