@@ -6,7 +6,7 @@
 
 	* WTFPL - http://www.wtfpl.net
 		* Everyone is permitted to copy and distribute verbatim or modified
- 		    copies of this license document, and changing it is allowed as long
+			copies of this license document, and changing it is allowed as long
 			as the name is changed.
 
 	THIE FILE is distributed in the hope that it will be useful,
@@ -25,7 +25,7 @@ namespace KSP_Recall
 {
 	public static class Log
 	{
-		private static readonly Logger log = Logger.CreateForType<Startup>();
+		private static readonly Logger log = Logger.CreateForType<Startup>("KSP-Recall");
 
 		internal static void force(string msg, params object[] @params)
 		{
