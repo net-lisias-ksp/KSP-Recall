@@ -18,6 +18,6 @@ echo $FILE
 clean
 cd GameData
 
-zip -r $FILE ./$PACKAGE/* -x ".*"
+zip -r $FILE ./999_$PACKAGE/* -x ".*"
 zip -d $FILE "__MACOSX/*" "**/.DS_Store"
 cd $pwd
