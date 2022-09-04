@@ -69,7 +69,7 @@ namespace KSP_Recall
 		private static bool checkForAttachedOnEditor()
 		{
 			return
-				(KSPe.Util.KSP.Version.Current >= KSPe.Util.KSP.Version.FindByVersion(1,9,0))
+				(KSPe.Util.KSP.Version.Current >= KSPe.Util.KSP.Version.FindByVersion(1,4,3))
 				;
 		}
 
