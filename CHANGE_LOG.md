@@ -1,5 +1,7 @@
 # KSP-Recall :: Change Log
 
+* 2022-0908: 0.3.0.3 (LisiasT) for KSP >= 1.4.1
+	+ Updating the Sanity Check to prevent an annoying "Proceed with caution" warning.
 * 2022-0904: 0.3.0.2 (LisiasT) for KSP >= 1.4.1
 	+ After some weeks of denying, it was **finally** realised that `AttachedOnEditor` is needed downto KSP 1.4.3 - on the very first `ModulePartVariant` implementation.
 		- What a crap of a code they published, damn!
