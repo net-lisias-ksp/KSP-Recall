@@ -254,7 +254,7 @@ namespace KSP_Recall
 		{
 			Log.dbg("Checking {0} Sanity for {1} at {2}", ATTACHEDONEDITOR_MODULE_NAME, p.name, p.partInfo.partUrl ?? "<NO URL>");
 
-			if ( KSPe.Util.KSP.Version.Current < KSPe.Util.KSP.Version.FindByVersion(1,9,0) )
+			if ( KSPe.Util.KSP.Version.Current < KSPe.Util.KSP.Version.FindByVersion(1,4,3) )
 			{
 				if (Globals.Instance.AttachedOnEditor) Log.warn(MSG_INSTALLATION_FORCED, ATTACHEDONEDITOR_MODULE_NAME);
 				else return MSG_PART_DOES_NOT_NEED ;
