@@ -1,13 +1,16 @@
 # KSP-Recall :: Change Log
 
+* 2022-0908: 0.3.0.3 (LisiasT) for KSP >= 1.4.1
+	+ Updating the Sanity Check to prevent an annoying "Proceed with caution" warning.
 * 2022-0904: 0.3.0.2 (LisiasT) for KSP >= 1.4.1
-	+ After some weeks of denying, it was **finally** realised that `AttachedOnEditor` is needed downoto KSP 1.4.3 - on the very first `ModulePartVariant` implementation.
-		- What a crap of a code they published, damn! 	+ Fixes a small brain fart of mine on the [INSTALL.md](https://github.com/net-lisias-ksp/KSP-Recall/blob/master/INSTALL.md) file.
+	+ After some weeks of denying, it was **finally** realised that `AttachedOnEditor` is needed downto KSP 1.4.3 - on the very first `ModulePartVariant` implementation.
+		- What a crap of a code they published, damn!
+ 	+ Fixes a small brain fart of mine on the [INSTALL.md](https://github.com/net-lisias-ksp/KSP-Recall/blob/master/INSTALL.md) file.
 	+ Updates KSPe.Light to the latest release (2.4.2.1 at this time)
 	+ Closes issues:
 		- [#55](https://github.com/net-lisias-ksp/KSP-Recall/issues/55) The KSP Editor is screwing things since 1.4.3
 		- [#50](https://github.com/net-lisias-ksp/KSP-Recall/issues/50) Not sure how to install 0.3.0.0
-			- Thanks to []@tomtheisen](https://github.com/tomtheisen) for the heads up!
+			- Thanks to [@tomtheisen](https://github.com/tomtheisen) for the heads up!
 * 2022-0630: 0.3.0.1 (LisiasT) for KSP >= 1.4.1
 	+ Fixes a **huge** brain fart of mine from 0.2.2.4 #facePalm
 	+ Closes issues:
