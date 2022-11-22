@@ -31,6 +31,16 @@ namespace KSP_Recall
 	[KSPAddon(KSPAddon.Startup.Instantly, true)]
 	internal class SanityCheck : MonoBehaviour
 	{
+		private class FatalException : System.Exception
+		{
+			public FatalException(string message) : base(message) { }
+		}
+
+		private class NonFatalException : System.Exception
+		{
+			public NonFatalException(string message) : base(message) { }
+		}
+
 		private const string RESOURCEFUL_MODULE_NAME = "Resourceful";
 		private const string DRIFTLESS_MODULE_NAME = "Driftless";
 		private const string ATTACHED_MODULE_NAME = "Attached";
@@ -45,6 +55,32 @@ namespace KSP_Recall
 		private void Start()
 		{
 			GameEvents.onGameSceneSwitchRequested.Add(this.OnGameSceneSwitchRequested);
+
+			try
+			{
+				// No need to do this check if KSPe is installed!
+				if (!KSPe.Util.SystemTools.Assembly.Finder.ExistsByName("KSPe"))	this.checkPwd();
+			}
+			catch (NonFatalException e)
+			{
+				GUI.NonFatalAlertBox.Show(e.Message);
+			}
+			catch (FatalException e)
+			{
+				GUI.FatalAlertBox.Show(e.Message);
+			}
+		}
+
+		private void checkPwd()
+		{
+			string origin = KSPe.IO.Path.Origin();
+			string approot = KSPe.IO.Path.AppRoot();
+			string pwd = System.IO.Directory.GetCurrentDirectory();
+			if (!pwd.EndsWith(KSPe.IO.Path.DirectorySeparatorStr))
+				pwd += KSPe.IO.Path.DirectorySeparatorStr;
+			if (!origin.Equals(approot)) throw new FatalException("Your 'Origin' doesn't match KSP's 'Application Root'!");
+			if (!pwd.Equals(approot)) throw new NonFatalException("Your 'pwd' doesn't match KSP's 'Application Root'!");
+			if (!pwd.Equals(origin)) throw new NonFatalException("Your 'pwd' doesn't match KSP's 'Origin'!");
 		}
 
 		private void OnGameSceneSwitchRequested(GameEvents.FromToAction<GameScenes, GameScenes> data)

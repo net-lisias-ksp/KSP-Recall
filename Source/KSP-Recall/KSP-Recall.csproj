@@ -65,6 +65,8 @@
     <Compile Include="ModuleManagerSupport.cs" />
     <Compile Include="Properties\LegalMamboJambo.cs" />
     <Compile Include="Globals.cs" />
+    <Compile Include="GUI\FatalAlertBox.cs" />
+    <Compile Include="GUI\NonFatalAlertBox.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\Version.tt">

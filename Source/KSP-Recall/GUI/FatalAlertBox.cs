@@ -23,22 +23,22 @@ using UnityEngine;
 
 namespace KSP_Recall.GUI
 {
-	internal static class ShowStopperAlertBox
+	internal static class FatalAlertBox
 	{
-		private static readonly string MSG = @"Unfortunately KSP Recall got {0} Exceptions while checking the sanity of your instalment. It's not safe to continue, this will probably corrupt your savegames!
+		private static readonly string MSG = @"KSP Recall detected an unrecoverable problem!
 
-The KSP.log is listing every compromised part(s) on your installment, look for lines with '[KSP_Recall] ERROR: ' on the log line. Be aware that the parts being reported are not the culprits, but the Screaming Victims. There's no possible automated fix for these.";
+{0}";
 
-		private static readonly string AMSG = @"call for help on the KSP Recall Support page (KSP will close).";
+		private static readonly string AMSG = @"close KSP and open KSP Recall's Support page, and ask for help";
 
-		internal static void Show(int failure_count)
+		internal static void Show(string message)
 		{
 			KSPe.Common.Dialogs.ShowStopperAlertBox.Show(
-				string.Format(MSG, failure_count),
+				string.Format(MSG, message),
 				AMSG,
 				() => { Application.OpenURL("https://ksp.lisias.net/add-ons/KSP-Recall/Support"); Application.Quit(); }
 			);
-			Log.detail("\"Houston, we have a Problem!\" about {0} fatal failures detected was displayed", failure_count);
+			Log.force("\"Houston, we have a problem!\" about \"{0}\" was displayed", message);
 		}
 	}
 }
