@@ -1,5 +1,12 @@
 # KSP-Recall :: Changes
 
+* 2022-1122: 0.3.0.4 (LisiasT) for KSP >= 1.4.1
+	+ Adds a check for the `pwd` problem that started to happen when people tried to get rid of the PD-Launcher in an unfortunate way. 
+		- Check [this](https://forum.kerbalspaceprogram.com/index.php?/topic/210419-get-rid-of-the-stupid-launcher-nobody-likes-them-and-they-do-nothing-but-ruin-the-gaming-experience/) for the whole history.
+		- Additional links (**do not** try them, they cause this problem!)
+			- [Forum](https://forum.kerbalspaceprogram.com/index.php?/topic/210409-how-to-bypass-the-new-launcher-added-in-update-1124-steam/) 
+			- [Reddit](https://www.reddit.com/r/KerbalSpaceProgram/comments/ym04gx/solution_for_broken_mods_caused_by_the_launcher/)
+	+ Updates to the latest KSPe.Light.
 * 2022-0908: 0.3.0.3 (LisiasT) for KSP >= 1.4.1
 	+ Updating the Sanity Check to prevent an annoying "Proceed with caution" warning.
 * 2022-0904: 0.3.0.2 (LisiasT) for KSP >= 1.4.1
