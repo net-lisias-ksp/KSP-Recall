@@ -38,7 +38,7 @@ The KSP.log is listing every compromised part(s) on your installment, look for l
 				AMSG,
 				() => { Application.OpenURL("https://ksp.lisias.net/add-ons/KSP-Recall/Support"); Application.Quit(); }
 			);
-			Log.detail("\"Houston, we have a Problem!\" about {0} fatal failures detected was displayed", failure_count);
+			Log.force("\"Houston, we have a Problem!\" about {0} fatal failures detected was displayed", failure_count);
 		}
 	}
 }
