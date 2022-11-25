@@ -1,5 +1,7 @@
 # KSP-Recall :: Change Log
 
+* 2022-1123: 0.3.0.6 (LisiasT) for KSP >= 1.4.1
+	+ Better diagnosing messages.
 * 2022-1123: 0.3.0.5 (LisiasT) for KSP >= 1.4.1
 	+ Adds a check for the `pwd` problem that started to happen when people tried to get rid of the PD-Launcher in an unfortunate way. 
 		- Check [this](https://forum.kerbalspaceprogram.com/index.php?/topic/210419-get-rid-of-the-stupid-launcher-nobody-likes-them-and-they-do-nothing-but-ruin-the-gaming-experience/) for the whole history.
