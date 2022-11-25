@@ -84,9 +84,21 @@ namespace KSP_Recall
 			string pwd = System.IO.Directory.GetCurrentDirectory();
 			if (!pwd.EndsWith(KSPe.IO.Path.DirectorySeparatorStr))
 				pwd += KSPe.IO.Path.DirectorySeparatorStr;
-			if (!origin.Equals(approot)) throw new FatalException("Your 'Origin' doesn't match KSP's 'Application Root'!");
-			if (!pwd.Equals(approot)) throw new NonFatalException("Your 'pwd' doesn't match KSP's 'Application Root'!");
-			if (!pwd.Equals(origin)) throw new NonFatalException("Your 'pwd' doesn't match KSP's 'Origin'!");
+			if (!origin.Equals(approot))
+			{
+				Log.error("origin != Application Root! -- origin={0} ; AppRot={1}", origin, approot);
+				throw new FatalException("Your 'Origin' doesn't match KSP's 'Application Root'!");
+			}
+			if (!pwd.Equals(approot))
+			{
+				Log.error("pwd != Application Root! -- pwd={0} ; AppRot={1}", pwd, approot);
+				throw new NonFatalException("Your 'pwd' doesn't match KSP's 'Application Root'!");
+			}
+			if (!pwd.Equals(origin))
+			{
+				Log.error("pwd != origin! -- pwd={0} ; origin={1}", pwd, approot);
+				throw new NonFatalException("Your 'pwd' doesn't match KSP's 'Origin'!");
+			}
 		}
 
 		private void OnGameSceneSwitchRequested(GameEvents.FromToAction<GameScenes, GameScenes> data)
