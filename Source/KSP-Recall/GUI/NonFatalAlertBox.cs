@@ -25,13 +25,13 @@ namespace KSP_Recall.GUI
 {
 	internal static class NonFatalAlertBox
 	{
-		private static readonly string MSG = @"THIS INSTALLATION IS UNSUPPORTED!
+		private static readonly string MSG = @"THIS INSTALLATION IS NOT FULLY SUPPORTED!
 
 {0}
 
-It's better to close KSP and ask for help on Forum. Some Add'On Authors will may not support you without fixing this problem.";
+It's better to close KSP and ask for help on Forum, as some Add'On Authors may not support you without this problem fixed.";
 		internal static void Show(string message) {
-			KSPe.Common.Dialogs.ShowStopperAlertBox.Show(
+			KSPe.Common.Dialogs.ErrorAlertBox.Show(
 				string.Format(MSG, message)
 			);
 			Log.force("\"Houston, we have a problem!\" about \"{0}\" was displayed", message);
