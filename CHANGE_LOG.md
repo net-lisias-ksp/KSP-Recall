@@ -1,5 +1,10 @@
 # KSP-Recall :: Change Log
 
+* 2022-1126: 0.3.0.7 (LisiasT) for KSP >= 1.4.1
+	+ Fixing a naïve approach on checking the `pwd`.
+		- Thanks to Fellow Kerbonaut [TurtleMountain](https://forum.kerbalspaceprogram.com/index.php?/profile/223946-turtlemountain/) for the [report](https://forum.kerbalspaceprogram.com/index.php?/topic/192048-143/&do=findComment&comment=4202553) and help on the [diagnose](https://forum.kerbalspaceprogram.com/index.php?/topic/192048-143/&do=findComment&comment=4202776)!
+		- Also thanks to [HebaruSan](https://forum.kerbalspaceprogram.com/index.php?/profile/156657-hebarusan/) for the brainstorming while investigating the matter
+		- And my apologies to the CKAN guys for the [trouble](https://forum.kerbalspaceprogram.com/index.php?/topic/192048-143/&do=findComment&comment=4202777).
 * 2022-1123: 0.3.0.6 (LisiasT) for KSP >= 1.4.1
 	+ Better diagnosing messages.
 * 2022-1123: 0.3.0.5 (LisiasT) for KSP >= 1.4.1
