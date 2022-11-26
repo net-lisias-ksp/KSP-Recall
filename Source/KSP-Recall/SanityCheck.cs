@@ -83,6 +83,10 @@ namespace KSP_Recall
 			string approot = KSPe.IO.Path.AppRoot();
 			string pwd = KSPe.IO.Directory.GetCurrentDirectory();	// See https://github.com/net-lisias-ksp/KSPe/issues/37#issuecomment-1327960782
 																	// for the reason why this is not the ideal solution!
+			Log.detail("origin is  {0}", origin);
+			Log.detail("approot is {0}", approot);
+			Log.detail("pwd is     {0}", pwd);
+
 			if (!pwd.EndsWith(KSPe.IO.Path.DirectorySeparatorStr))
 				pwd += KSPe.IO.Path.DirectorySeparatorStr;
 			if (!origin.Equals(approot))
