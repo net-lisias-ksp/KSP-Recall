@@ -9,7 +9,7 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany(KSP_Recall.LegalMamboJambo.Company)]
 [assembly: AssemblyProduct(KSP_Recall.LegalMamboJambo.Product)]
-[assembly: AssemblyCopyright(KSP_Recall.LegalMamboJambo.Copyight)]
+[assembly: AssemblyCopyright(KSP_Recall.LegalMamboJambo.Copyright)]
 [assembly: AssemblyTrademark(KSP_Recall.LegalMamboJambo.Trademark)]
 [assembly: AssemblyCulture("")]
 
