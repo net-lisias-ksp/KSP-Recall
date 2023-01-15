@@ -1,5 +1,8 @@
 # KSP-Recall :: Change Log
 
+* 2023-0115: 0.3.0.8 (LisiasT) for KSP >= 1.4.1
+	+ Updates the thing to KSP 1.12.5
+	+ Updates `KSPe.Light` with bugfixes and support for 1.12.5
 * 2022-1126: 0.3.0.7 (LisiasT) for KSP >= 1.4.1
 	+ Fixing a naïve approach on checking the `pwd`.
 		- Thanks to Fellow Kerbonaut [TurtleMountain](https://forum.kerbalspaceprogram.com/index.php?/profile/223946-turtlemountain/) for the [report](https://forum.kerbalspaceprogram.com/index.php?/topic/192048-143/&do=findComment&comment=4202553) and help on the [diagnose](https://forum.kerbalspaceprogram.com/index.php?/topic/192048-143/&do=findComment&comment=4202776)!
