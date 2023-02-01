@@ -1,5 +1,7 @@
 # KSP-Recall :: Change Log
 
+* 2023-0201: 0.3.0.10 (LisiasT) for KSP >= 1.4.1
+	+ Shoves back `Resourceful` and `AttachedFromEditor` into B9PS's SAS after some carnage in the field
 * 2023-0128: 0.3.0.9 (LisiasT) for KSP >= 1.4.1
 	+ Preventing `Resourceful` and `AttachedFromEditor` from being patched into parts using B9PartSwitch, as they don't need them.
 	+ Updates `KSPe.Light` with more bugfixes
