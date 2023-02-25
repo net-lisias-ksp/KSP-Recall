@@ -1,5 +1,10 @@
 # KSP-Recall :: Change Log
 
+* 2023-0225: 0.3.0.11 (LisiasT) for KSP >= 1.4.1
+	+ Rework `Refunding` to use `decimal` when handling currency to minimize losses due inaccuracies related to float point math.
+		- Kudos to [GoAhead](https://forum.kerbalspaceprogram.com/index.php?/profile/179049-goahead/) for the heads up! 
+	+ Closes issue:
+		- [#60](https://github.com/net-lisias-ksp/KSP-Recall/issues/60) Weird Misbehaviour on Interstellar Technologies
 * 2023-0201: 0.3.0.10 (LisiasT) for KSP >= 1.4.1
 	+ Shoves back `Resourceful` and `AttachedFromEditor` into B9PS's SAS after some carnage in the field
 * 2023-0128: 0.3.0.9 (LisiasT) for KSP >= 1.4.1
