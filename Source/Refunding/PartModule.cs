@@ -19,6 +19,7 @@
 	along with KSP-Recall. If not, see <https://www.gnu.org/licenses/>.
 
 */
+using System;
 using System.Reflection;
 
 namespace KSP_Recall { namespace Refunds 
@@ -35,13 +36,13 @@ namespace KSP_Recall { namespace Refunds
 		public bool active = false;
 
 		[KSPField(isPersistant = true, guiActive = false, guiActiveEditor = false)]
-		public double OriginalCost = 0f;
+		public string OriginalCost = "0";
 
 		#endregion
 
 		private Part _prefab = null;
 		private Part prefab { get => _prefab ?? (_prefab = this.part.partInfo.partPrefab); set => _prefab = value; }
-		internal double costFix = 0;
+		internal decimal costFix = 0;
 		private int delayTicks = 0;
 		private PartResource pr;	// Buffer to store the synthetical Part Resource (avoiding overloading the GC, see Issue #21 on GitHub.
 
@@ -164,7 +165,7 @@ namespace KSP_Recall { namespace Refunds
 			// but this. :)
 			return null == this.part.Resources.Get(RESOURCENAME)
 					? 0f		// If the refunding resource is not present, there's no need for the hack
-					: (float)(-this.costFix)
+					: Convert.ToSingle(-this.costFix)
 				;
 		}
 
@@ -213,10 +214,10 @@ namespace KSP_Recall { namespace Refunds
 				this.costFix = 0;
 				return;
 			}
-
-			double resourceCosts = this.CalculateResourcesCost();
-			double wrongCost = this.OriginalCost - resourceCosts;
-			double rightCost = this.OriginalCost + this.CalculateModulesCost();
+			decimal originalCost = decimal.TryParse(this.OriginalCost, out originalCost) ? originalCost : 0;
+			decimal resourceCosts = Convert.ToDecimal(this.CalculateResourcesCost());
+			decimal wrongCost = originalCost - resourceCosts;
+			decimal rightCost = originalCost + this.CalculateModulesCost();
 
 			this.costFix = -wrongCost + rightCost;
 
@@ -224,35 +225,35 @@ namespace KSP_Recall { namespace Refunds
 			{	// Now overcomes the **Stock** double refunding on Resources from Parts inside a ModuleInventoryPart
 				// See https://github.com/net-lisias-ksp/KSP-Recall/issues/16#issuecomment-820346879
 				IPartCostModifier pcm = this.part.Modules["ModuleInventoryPart"] as IPartCostModifier;
-				double fix = pcm.GetModuleCost(0, ModifierStagingSituation.CURRENT);
+				decimal fix = Convert.ToDecimal(pcm.GetModuleCost(0, ModifierStagingSituation.CURRENT));
 				Log.dbg("This part is a Kerbal with ModuleInventoryPart. Deducting {0}", fix);
-				this.costFix =- fix;
+				this.costFix = -fix;
 			}
 			else // TODO: Check if there's not a situation where Kerbals would be carrying resources themselves...
 				this.costFix -= resourceCosts;
 
-			Log.dbg("Recalculate Results originalCost: {0:0.0}; resourceCosts:{1:0.0}; wrongCost:{2:0.0}; rightCost:{3:0.0}; fix:{4:0.0} ; ", this.OriginalCost, resourceCosts, wrongCost, rightCost, this.costFix);
+			Log.dbg("Recalculate Results originalCost: {0}; resourceCosts:{1:0.0}; wrongCost:{2:0.0}; rightCost:{3:0.0}; fix:{4:0.0} ; ", this.OriginalCost, resourceCosts, wrongCost, rightCost, this.costFix);
 		}
 
 		private void CalculateOriginalCost()
 		{
-			double r = this.part.partInfo.cost;
+			decimal r = Convert.ToDecimal(this.part.partInfo.cost);
 			r += this.CalculateResourcesCost();
 			r += this.CalculateModulesCost();
-			this.OriginalCost = r;
+			this.OriginalCost = r.ToString();
 		}
 
-		private double CalculateResourcesCost()
+		private decimal CalculateResourcesCost()
 		{
-			double r = 0;
+			decimal r = 0;
 			foreach (PartResource pr in this.part.Resources) if (RESOURCENAME != pr.resourceName)
 				r += this.CalculateResourceCost(pr);
 			return r;
 		}
 
-		private double CalculateResourceCost(PartResource pr)
+		private decimal CalculateResourceCost(PartResource pr)
 		{
-			double cost = (null != pr.info ? (pr.amount * pr.info.unitCost) : 0); // Why some resources have no info? o.O
+			decimal cost = (null != pr.info ? Convert.ToDecimal(pr.amount) * Convert.ToDecimal(pr.info.unitCost) : 0M); // Why some resources have no info? o.O
 			// Why this.part.vessel is NULL at this point? :/
 			//Log.dbg("CalculateResourcesCost({0},{1},{2}) => {3}", this.VesselName, this.part.partInfo.partName, pr.resourceName, cost);
 			// Answer: because the part was detached from a vessel, being moved from a storage to another!
@@ -260,16 +261,16 @@ namespace KSP_Recall { namespace Refunds
 			return cost;
 		}
 
-		private double CalculateResourceCost(ProtoPartResourceSnapshot pr)
+		private decimal CalculateResourceCost(ProtoPartResourceSnapshot pr)
 		{
-			double r = pr.amount * pr.definition.unitCost;
+			decimal r = Convert.ToDecimal(pr.amount) * Convert.ToDecimal(pr.definition.unitCost);
 			Log.dbg("CalculateResourcesCost({0},Proto:{1}) => {2}", this.part.partInfo.name, pr.resourceName, r);
 			return r;
 		}
 
-		private double CalculateModulesCost()
+		private decimal CalculateModulesCost()
 		{
-			double r = 0;
+			decimal r = 0;
 			foreach (PartModule pm in this.part.Modules) if (pm is IPartCostModifier && this.GetType() != pm.GetType() && !"ModuleInventoryPart".Equals(pm.GetType().Name))
 			{
 				r += this.CalculateModuleCost(pm);
@@ -277,9 +278,9 @@ namespace KSP_Recall { namespace Refunds
 			return r;
 		}
 
-		private double CalculateModuleCost(PartModule pm)
+		private decimal CalculateModuleCost(PartModule pm)
 		{
-			float r = ((IPartCostModifier)pm).GetModuleCost(0, ModifierStagingSituation.CURRENT);
+			decimal r = Convert.ToDecimal(((IPartCostModifier)pm).GetModuleCost(0, ModifierStagingSituation.CURRENT));
 
 			// That could had been a good idea - if it had worked.
 			// But it was denying the refund of complex parts with dry cost and resources togheter, so...
@@ -311,7 +312,7 @@ namespace KSP_Recall { namespace Refunds
 			// This effectivelly "steals back" the Funds lost by the KSP's current stunt (using the prefab's cost on recovering costs)
 			// See https://github.com/net-lisias-ksp/KSP-Recall/issues/12
 			field = typeof(PartResource).GetField("amount", BindingFlags.Instance | BindingFlags.Public);
-			field.SetValue(pr, this.costFix);
+			field.SetValue(pr, Convert.ToSingle(this.costFix));
 
 			Log.dbg("After {0} {1} {2} {3}", pr.ToString(), pr.amount, pr.maxAmount, pr.info.unitCost);
 		}
@@ -424,7 +425,7 @@ namespace KSP_Recall { namespace Refunds
 			Log.dbg("After {0} {1} {2} {3}", pr.ToString(), pr.amount, pr.maxAmount, pr.info.unitCost);
 		}
 
-		private PartResourceDefinition CreateCustomResourceDef(double unitCost)
+		private PartResourceDefinition CreateCustomResourceDef(decimal unitCost)
 		{
 			PartResourceDefinition prd = PartResourceLibrary.Instance.GetDefinition(RESOURCENAME);
 			Log.dbg("ConfigNode Source: {0}", prd.Config.ToString());
