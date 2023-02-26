@@ -159,7 +159,7 @@ namespace KSP_Recall { namespace Refunds
 			//
 			// But, and again, Stock is the one ignoring this interface. So by implementing it, 3rd
 			// parties that does The Tight Thing™ will call this, and so the Refunding resource will be
-			// counter acted o them.
+			// counter acted for them.
 			//
 			// The net result is that only Stock (and anyone else borking on this thing) will not be counter-acted
 			// but this. :)
@@ -312,8 +312,21 @@ namespace KSP_Recall { namespace Refunds
 			// This effectivelly "steals back" the Funds lost by the KSP's current stunt (using the prefab's cost on recovering costs)
 			// See https://github.com/net-lisias-ksp/KSP-Recall/issues/12
 			field = typeof(PartResource).GetField("amount", BindingFlags.Instance | BindingFlags.Public);
-			field.SetValue(pr, Convert.ToSingle(this.costFix));
-
+			{
+				// Mitigates the squashing effect caused by the iPartCostModifier being a float.
+				// See https://github.com/net-lisias-ksp/KSP-Recall/issues/60
+				float squashedCostFix = 0;
+				decimal effectiveCostFix = this.costFix;
+				int i = 10; // 10 interactions max.
+				do
+				{
+					squashedCostFix = Convert.ToSingle(effectiveCostFix);
+					effectiveCostFix += (effectiveCostFix - Convert.ToDecimal(squashedCostFix));
+					--i;
+					Log.dbg("Attempt {0} to minimizing the float squashing effect: effective={1} ; real={2}", i, effectiveCostFix, this.costFix);
+				} while (i > 0 && (effectiveCostFix < this.costFix));
+				field.SetValue(pr, Convert.ToSingle(effectiveCostFix));
+			}
 			Log.dbg("After {0} {1} {2} {3}", pr.ToString(), pr.amount, pr.maxAmount, pr.info.unitCost);
 		}
 

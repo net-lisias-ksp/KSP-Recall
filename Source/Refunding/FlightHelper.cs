@@ -166,12 +166,13 @@ namespace KSP_Recall { namespace Refunds
 			this.ImmediateUpdateAllAndClear();
 		}
 
-		// Called by obvious reaons. The vessel is being recovered.
-		// Note: Perhaps this is not needed anymore due the previous Events being handled!
 		private void OnVesselRecoveryRequested(Vessel vessel)
 		{
 			Log.dbg("OnVesselRecoveryRequested {0}", vessel.vesselName);
 			this.ImmediateUpdate(vessel);
+			// Should we check how the current vessel recovery cost will behave on being squashed by a float too?
+			// see https://github.com/net-lisias-ksp/KSP-Recall/issues/60
+			// TODO: WIP.
 		}
 
 		// This is called when the vessel is switched IN, including on launch
