@@ -328,7 +328,7 @@ namespace KSP_Recall { namespace Refunds
 
 				float usedCostFix = Convert.ToSingle(effectiveCostFix);
 				if (effectiveCostFix > this.costFix)
-					Log.warn("Your refunding was squashed by `IPartCostModifier` and was mangled to prevent losses ( see https://github.com/net-lisias-ksp/KSP-Recall/issues/60 ). Ideal value:{0} ; hack used instead:{1}", this.costFix, usedCostFix);
+					Log.warn("Your refunding for {0} was squashed by `IPartCostModifier` and was mangled to prevent losses ( see https://github.com/net-lisias-ksp/KSP-Recall/issues/60 ). Ideal value:{1} ; hack used instead:{2}", this.PartInstanceId, this.costFix, usedCostFix);
 				field.SetValue(pr, usedCostFix);
 			}
 			Log.dbg("After {0} {1} {2} {3}", pr.ToString(), pr.amount, pr.maxAmount, pr.info.unitCost);
