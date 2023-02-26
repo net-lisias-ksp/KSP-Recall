@@ -317,7 +317,7 @@ namespace KSP_Recall { namespace Refunds
 				// See https://github.com/net-lisias-ksp/KSP-Recall/issues/60
 				float squashedCostFix = 0;
 				decimal effectiveCostFix = this.costFix;
-				int i = 10; // 10 interactions max.
+				int i = 11; // 10 interactions max.
 				do
 				{
 					squashedCostFix = Convert.ToSingle(effectiveCostFix);
@@ -325,7 +325,11 @@ namespace KSP_Recall { namespace Refunds
 					--i;
 					Log.dbg("Attempt {0} to minimizing the float squashing effect: effective={1} ; real={2}", i, effectiveCostFix, this.costFix);
 				} while (i > 0 && (effectiveCostFix < this.costFix));
-				field.SetValue(pr, Convert.ToSingle(effectiveCostFix));
+
+				float usedCostFix = Convert.ToSingle(effectiveCostFix);
+				if (effectiveCostFix > this.costFix)
+					Log.warn("Your refunding was squashed by `IPartCostModifier` and was mangled to prevent losses ( see https://github.com/net-lisias-ksp/KSP-Recall/issues/60 ). Ideal value:{0} ; hack used instead:{1}", this.costFix, usedCostFix);
+				field.SetValue(pr, usedCostFix);
 			}
 			Log.dbg("After {0} {1} {2} {3}", pr.ToString(), pr.amount, pr.maxAmount, pr.info.unitCost);
 		}
