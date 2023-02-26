@@ -1,5 +1,10 @@
 # KSP-Recall :: Change Log
 
+* 2023-0226: 0.3.0.12 (LisiasT) for KSP >= 1.4.1
+	+ Reworks `Refunding` (again), this time with a better workaround for the really expensive parts, the preferential targets.
+		- Kudos to [GoAhead](https://forum.kerbalspaceprogram.com/index.php?/profile/179049-goahead/) for the heads up! 
+	+ Reworks issue:
+		- [#60](https://github.com/net-lisias-ksp/KSP-Recall/issues/60) Weird Misbehaviour on Interstellar Technologies
 * 2023-0225: 0.3.0.11 (LisiasT) for KSP >= 1.4.1
 	+ Rework `Refunding` to use `decimal` when handling currency to minimize losses due inaccuracies related to float point math.
 		- Kudos to [GoAhead](https://forum.kerbalspaceprogram.com/index.php?/profile/179049-goahead/) for the heads up! 
