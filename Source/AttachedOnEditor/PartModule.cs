@@ -258,8 +258,8 @@ namespace KSP_Recall { namespace AttachedOnEditor
 
 		private void MergeFrom(ConfigNode node)
 		{
-			Log.dbg("LoadFrom (ConfigNode) {0}", this.PartInstanceId);
-			this.LoadAttachedNodePosFrom(node);
+			Log.dbg("MergeFrom (ConfigNode) {0}", this.PartInstanceId);
+			//this.LoadAttachedNodePosFrom(node);
 			this.LoadAttachedNodeSizeFrom(node);
 			this.LoadAttachedNodeOrientationFrom(node);
 			//this.LoadAttachedNodePosOffsetFrom(node);
