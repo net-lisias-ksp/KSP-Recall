@@ -85,10 +85,18 @@ namespace KSP_Recall { namespace AttachedOnEditor
 			Log.dbg("OnLoad {0} {1}", this.PartInstanceId, null != node);
 			base.OnLoad(node);
 
-			if (this.isMerge() || this.isSubAssembly())
+			if (this.isSubAssembly())
 			{
-				Log.dbg("OnLoad under merge/subassembly.");
-				//return;
+				Log.dbg("OnLoad under subassembly.");
+				// Yep... Loading from subassembly **does not** cause problems on Editor.
+				return;
+			}
+
+			if (this.isMerge())
+			{
+				Log.dbg("OnLoad under merge.");
+				this.MergeFrom(node);
+				return;
 			}
 
 			if (!this.initialised)
@@ -191,12 +199,16 @@ namespace KSP_Recall { namespace AttachedOnEditor
 			if (!this.initialised) return; // hack to prevent the UpgradePipeline to screw us up when loading crafts still without AttachedOnEditor
 			Log.dbg("RestoreCurrentAttachmentPoints for {0}", this.PartInstanceId);
 			for(int i = 0; i < this.originalAttachNodePos.Count; ++i)
-			{
 				this.part.attachNodes[i].position = this.originalAttachNodePos[i];
+
+			for(int i = 0; i < this.originalAttachNodeSize.Count; ++i)
 				this.part.attachNodes[i].size = this.originalAttachNodeSize[i];
+
+			for(int i = 0; i < this.originalAttachNodeOrientation.Count; ++i)
 				this.part.attachNodes[i].orientation = this.originalAttachNodeOrientation[i];
+
+			for(int i = 0; i < this.originalAttachNodeOffset.Count; ++i)
 				this.part.attachNodes[i].offset = this.originalAttachNodeOffset[i];
-			}
 		}
 
 		private void RestoreCurrentAttachments()
@@ -244,40 +256,61 @@ namespace KSP_Recall { namespace AttachedOnEditor
 			return false;
 		}
 
+		private void MergeFrom(ConfigNode node)
+		{
+			Log.dbg("LoadFrom (ConfigNode) {0}", this.PartInstanceId);
+			this.LoadAttachedNodePosFrom(node);
+			this.LoadAttachedNodeSizeFrom(node);
+			this.LoadAttachedNodeOrientationFrom(node);
+			//this.LoadAttachedNodePosOffsetFrom(node);
+		}
+
 		private void LoadFrom(ConfigNode node)
 		{
 			Log.dbg("LoadFrom (ConfigNode) {0}", this.PartInstanceId);
+			this.LoadAttachedNodePosFrom(node);
+			this.LoadAttachedNodeSizeFrom(node);
+			this.LoadAttachedNodeOrientationFrom(node);
+			this.LoadAttachedNodePosOffsetFrom(node);
+		}
+
+		private void LoadAttachedNodePosFrom(ConfigNode node)
+		{
+			string[] list = node.GetValues("originalAttachNodePos");
+			for(int i = 0; i < list.Length; ++i)
 			{
-				string[] list = node.GetValues("originalAttachNodePos");
-				for(int i = 0; i < list.Length; ++i)
-				{
-					UnityEngine.Vector3 v = this.parseVector3(list[i]);
-					this.originalAttachNodePos.Insert(i, v);
-				}
+				UnityEngine.Vector3 v = this.parseVector3(list[i]);
+				this.originalAttachNodePos.Insert(i, v);
 			}
+		}
+
+		private void LoadAttachedNodeSizeFrom(ConfigNode node)
+		{
+			string[] list = node.GetValues("originalAttachNodeSize");
+			for(int i = 0; i < list.Length; ++i)
 			{
-				string[] list = node.GetValues("originalAttachNodeSize");
-				for(int i = 0; i < list.Length; ++i)
-				{
-					int v = int.Parse(list[i]);
-					this.originalAttachNodeSize.Insert(i, v);
-				}
+				int v = int.Parse(list[i]);
+				this.originalAttachNodeSize.Insert(i, v);
 			}
+		}
+
+		private void LoadAttachedNodeOrientationFrom(ConfigNode node)
+		{
+			string[] list = node.GetValues("originalAttachNodeOrientation");
+			for(int i = 0; i < list.Length; ++i)
 			{
-				string[] list = node.GetValues("originalAttachNodeOrientation");
-				for(int i = 0; i < list.Length; ++i)
-				{
-					UnityEngine.Vector3 v = this.parseVector3(list[i]);
-					this.originalAttachNodeOrientation.Insert(i, v);
-				}
+				UnityEngine.Vector3 v = this.parseVector3(list[i]);
+				this.originalAttachNodeOrientation.Insert(i, v);
 			}
+		}
+
+		private void LoadAttachedNodePosOffsetFrom(ConfigNode node)
+		{
+			string[] list = node.GetValues("originalAttachNodeOffset");
+			for(int i = 0; i < list.Length; ++i)
 			{
-				string[] list = node.GetValues("originalAttachNodeOffset");
-				for(int i = 0; i < list.Length; ++i)
-				{
-					UnityEngine.Vector3 v = this.parseVector3(list[i]);
-					this.originalAttachNodeOffset.Insert(i, v);
-				}
+				UnityEngine.Vector3 v = this.parseVector3(list[i]);
+				this.originalAttachNodeOffset.Insert(i, v);
 			}
 		}
 
@@ -293,12 +326,16 @@ namespace KSP_Recall { namespace AttachedOnEditor
 		{
 			Log.dbg("SaveTo (ConfigNode) {0}", this.PartInstanceId);
 			for(int i = 0; i < this.originalAttachNodePos.Count; ++i)
-			{
 				node.AddValue("originalAttachNodePos", this.originalAttachNodePos[i].ToString());
+
+			for(int i = 0; i < this.originalAttachNodeSize.Count; ++i)
 				node.AddValue("originalAttachNodeSize", this.originalAttachNodeSize[i].ToString());
+
+			for(int i = 0; i < this.originalAttachNodeOrientation.Count; ++i)
 				node.AddValue("originalAttachNodeOrientation", this.originalAttachNodeOrientation[i].ToString());
+
+			for(int i = 0; i < this.originalAttachNodeOffset.Count; ++i)
 				node.AddValue("originalAttachNodeOffset", this.originalAttachNodeOffset[i].ToString());
-			}
 		}
 
 		[ConditionalAttribute("DEBUG")]
