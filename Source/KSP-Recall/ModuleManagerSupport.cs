@@ -34,8 +34,12 @@ namespace KSP_Recall
 			if (checkForDriftless())		tags.Add("KSPRECALL-DRIFTLESS");
 			if (checkForAttached())			tags.Add("KSPRECALL-ATTACHED");
 			if (checkForChillingOut())		tags.Add("KSPRECALL-CHILLINGOUT");
+
+			if (checkForRefunding() || checkForStealBack())
+											tags.Add("KSPRECALL-FUNDSKEEPER");
 			if (checkForRefunding())		tags.Add("KSPRECALL-REFUNDING");
-			if (checkForAttachedOnEditor())	tags.Add("KSPRECALL-ATTACHED-ON-EDITOR");
+			if (checkForStealBack())		tags.Add("KSPRECALL-STEALBACKFUNDS");
+
 			if (checkForProceduralPartsAttachmentNodes())
 											tags.Add("KSPRECALL-PROCEDURALPARTS-AN");
 
@@ -89,5 +93,9 @@ namespace KSP_Recall
 				&& KSPe.Util.SystemTools.Assembly.Finder.ExistsByName("Scale")
 				;
 		}
+
+		// Every KSP release is prone to this problem at this moment.
+		private static bool checkForStealBack() => true;
+
 	}
 }

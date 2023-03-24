@@ -52,10 +52,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="PartModule.cs" />
     <Compile Include="FlightHelper.cs" />
     <Compile Include="EditorHelper.cs" />
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="PartModules\FundsKeeper.cs" />
+    <Compile Include="PartModules\Refunding.cs" />
+    <Compile Include="PartModules\Abstract.cs" />
+    <Compile Include="PartModules\StealBackMyFunds.cs" />
+    <Compile Include="PartCostHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\KSP-Recall\KSP-Recall.csproj">
@@ -63,6 +67,9 @@
       <Name>KSP-Recall</Name>
       <Private>False</Private>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="PartModules\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

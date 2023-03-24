@@ -23,8 +23,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace KSP_Recall { namespace Refunds 
-
+namespace KSP_Recall.Refunds 
 {
 	[KSPAddon(KSPAddon.Startup.Flight, false)]
 	public class FlightHelper : MonoBehaviour
@@ -57,8 +56,9 @@ namespace KSP_Recall { namespace Refunds
 		internal void Awake()
 		{
 			Log.dbg("Awake on {0}", HighLogic.LoadedScene);
-			if (Globals.Instance.Refunding)
+			if (Globals.Instance.FundsKeeper)
 			{
+				Log.dbg("Registering callbacks...");
 				//GameEvents.OnFundsChanged.Add(OnFundsChanged);
 				//GameEvents.onGameSceneSwitchRequested.Add(OnSceneSwitchRequested);
 				//GameEvents.onNewVesselCreated.Add(OnNewVesselCreated);
@@ -78,8 +78,9 @@ namespace KSP_Recall { namespace Refunds
 		internal void OnDestroy()
 		{
 			Log.dbg("OnDestroy");
-			if (Globals.Instance.Refunding)
+			if (Globals.Instance.FundsKeeper)
 			{
+				Log.dbg("Unregistering callbacks...");
 				//GameEvents.onVesselGoOffRails.Add(OnVesselGoOffRails);
 				GameEvents.onVesselGoOnRails.Remove(OnVesselGoOnRails);
 				//GameEvents.onVesselSwitchingToUnloaded.Remove(OnVesselSwitching);
@@ -95,7 +96,7 @@ namespace KSP_Recall { namespace Refunds
 				//GameEvents.OnFundsChanged.Remove(OnFundsChanged);
 			}
 
-			// note to myself - its of little use to calculate the resources laterly after the OnSave event is called on the part.
+			// note to myself - its of little use to calculate the resources lately after the OnSave event is called on the part.
 			// TODO: Find a way to induce KSP to save the parts gain after the resource is reapplied, this will ensure
 			// recovering costs on any situation. See NotifyResourcesChanged on PartModule.
 			// Right now things are working on a fickle equilibrium. I don't like this. :(
@@ -170,9 +171,6 @@ namespace KSP_Recall { namespace Refunds
 		{
 			Log.dbg("OnVesselRecoveryRequested {0}", vessel.vesselName);
 			this.ImmediateUpdate(vessel);
-			// Should we check how the current vessel recovery cost will behave on being squashed by a float too?
-			// see https://github.com/net-lisias-ksp/KSP-Recall/issues/60
-			// TODO: WIP.
 		}
 
 		// This is called when the vessel is switched IN, including on launch
@@ -222,6 +220,8 @@ namespace KSP_Recall { namespace Refunds
 
 		private void ImmediateUpdateAllAndClear()
 		{
+			Log.dbg("ImmediateUpdateAllAndClear");
+
 			Vessel[] a;
 			lock (this.SpawnnedVessels) // Prevents race conditions in case we have concurrency on KSP on spawning vessels...
 			{
@@ -236,30 +236,41 @@ namespace KSP_Recall { namespace Refunds
 
 		private void ImmediateUpdate(Vessel vessel)
 		{
-			foreach (Part p in vessel.Parts) if (p.Modules.Contains<Refunding>())
-				p.Modules.GetModule<Refunding>().SynchronousFullUpdate();
-		}
+			Log.dbg("ImmediateUpdate {0}", vessel.vesselName);
 
-		private void AsyncUpdate(Vessel vessel)
-		{
-			foreach (Part p in vessel.Parts) if (p.Modules.Contains<Refunding>())
-				p.Modules.GetModule<Refunding>().AsynchronousUpdate();
+			foreach (Part p in vessel.Parts)
+			{
+				if (p.Modules.Contains<FundsKeeper>())		p.Modules.GetModule<FundsKeeper>().SynchronousFullUpdate();
+				if (p.Modules.Contains<Refunding>())		p.Modules.GetModule<Refunding>().SynchronousFullUpdate();
+				if (p.Modules.Contains<StealBackMyFunds>())	p.Modules.GetModule<StealBackMyFunds>().SynchronousFullUpdate();
+			}
 		}
 
 		// The delay allows the vessel's cost to be billed before the Refund is calculated
 		// Preventing overbilling on launch.
 		private void DelayedUpdate(Vessel vessel)
 		{
-			foreach (Part p in vessel.Parts) if (p.Modules.Contains<Refunding>())
-				p.Modules.GetModule<Refunding>().AsynchronousUpdate(50);
+			Log.dbg("DelayedUpdate {0}", vessel.vesselName);
+
+			foreach (Part p in vessel.Parts)
+			{
+				if (p.Modules.Contains<FundsKeeper>())		p.Modules.GetModule<FundsKeeper>().AsynchronousUpdate(5);
+				if (p.Modules.Contains<Refunding>())		p.Modules.GetModule<Refunding>().AsynchronousUpdate(10);
+				if (p.Modules.Contains<StealBackMyFunds>())	p.Modules.GetModule<StealBackMyFunds>().AsynchronousUpdate(15);
+			}
 		}
 
 		private void RemoveResourceWhenNeeded(Vessel vessel)
 		{
-			foreach (Part p in vessel.Parts) if (p.Modules.Contains<Refunding>())
-				p.Modules.GetModule<Refunding>().RemoveResourceWhenNeeded();
+			Log.dbg("RemoveResourceWhenNeeded {0}", vessel.vesselName);
+
+			foreach (Part p in vessel.Parts)
+			{
+				if (p.Modules.Contains<Refunding>())		p.Modules.GetModule<Refunding>().RemoveResourceWhenNeeded();
+				if (p.Modules.Contains<StealBackMyFunds>())	p.Modules.GetModule<StealBackMyFunds>().RemoveResourceWhenNeeded();
+			}
 		}
 
-		private static KSPe.Util.Log.Logger Log = KSPe.Util.Log.Logger.CreateForType<FlightHelper>("KSP-Recall", "Refunding-FlightHelper", 0);
+		private static KSPe.Util.Log.Logger Log = KSPe.Util.Log.Logger.CreateForType<FlightHelper>("KSP-Recall", "Refunding.FlightHelper", 0);
 	}
-} }
+}

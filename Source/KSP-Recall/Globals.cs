@@ -33,9 +33,12 @@ namespace KSP_Recall
 		public readonly bool Attached;
 		public readonly bool ChillingOut;
 		public readonly bool Driftless;
-		public readonly bool Refunding;
 		public readonly bool Resourceful;
 		public readonly bool AttachedOnEditor;
+
+		public readonly bool Refunding;
+		public readonly bool StealBackMyFunds;
+		public bool FundsKeeper => this.Refunding || this.StealBackMyFunds;
 
 		public readonly bool ProceduralPartsAttachmentNodes;
 
@@ -64,6 +67,9 @@ namespace KSP_Recall
 
 					try					{ this.AttachedOnEditor = cn.GetValue<bool>("AttachedOnEditor"); }
 					catch (Exception)	{ this.AttachedOnEditor = false; }
+
+					try					{ this.StealBackMyFunds = cn.GetValue<bool>("StealBackMyFunds"); }
+					catch (Exception)	{ this.StealBackMyFunds = false; }
 				}
 				{
 					ConfigNodeWithSteroids cn = ConfigNodeWithSteroids.from(urlc.config.GetNode("INTERVENTIONS"));
@@ -72,7 +78,7 @@ namespace KSP_Recall
 					catch (Exception)	{ this.ProceduralPartsAttachmentNodes = false; }
 				}
 			}
-			catch (Exception)
+			catch (Exception e)
 			{
 				this.Attached = false;
 				this.ChillingOut = false;
@@ -80,7 +86,9 @@ namespace KSP_Recall
 				this.Refunding = false;
 				this.Resourceful = false;
 				this.AttachedOnEditor = false;
+				this.StealBackMyFunds = false;
 				this.ProceduralPartsAttachmentNodes = false;
+				Log.error(e, this);
 			}
 		}
 	}

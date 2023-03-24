@@ -19,12 +19,9 @@
 	along with KSP-Recall. If not, see <https://www.gnu.org/licenses/>.
 
 */
-using System;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace KSP_Recall { namespace Refunds 
-
+namespace KSP_Recall.Refunds 
 {
 	[KSPAddon(KSPAddon.Startup.EditorAny, false)]
 	public class EditorHelper : MonoBehaviour
@@ -34,13 +31,21 @@ namespace KSP_Recall { namespace Refunds
 		private void Awake()
 		{
 			Log.dbg("Awake on {0}", HighLogic.LoadedScene);
-			if (Globals.Instance.Refunding) GameEvents.onEditorShipModified.Add(OnEditorShipModified);
+			if (Globals.Instance.FundsKeeper)
+			{
+				Log.dbg("Registering callbacks...");
+				GameEvents.onEditorShipModified.Add(OnEditorShipModified);
+			}
 		}
 
 		private void OnDestroy()
 		{
 			Log.dbg("OnDestroy");
-			if (Globals.Instance.Refunding) GameEvents.onEditorShipModified.Remove(OnEditorShipModified);
+			if (Globals.Instance.FundsKeeper)
+			{
+				Log.dbg("Unregistering callbacks...");
+				GameEvents.onEditorShipModified.Remove(OnEditorShipModified);
+			}
 		}
 
 		#endregion
@@ -50,12 +55,13 @@ namespace KSP_Recall { namespace Refunds
 		private void OnEditorShipModified(ShipConstruct data)
 		{
 			Log.dbg("OnEditorShipModified {0}", data.shipName);
-			foreach (Part p in data.Parts) if (p.Modules.Contains<Refunding>())
-				p.Modules.GetModule<Refunding>().AsynchronousUpdate();
+
+			foreach (Part p in data.Parts) if (p.Modules.Contains<FundsKeeper>())
+				p.Modules.GetModule<FundsKeeper>().AsynchronousUpdate();
 		}
 
 		#endregion
 
-		private static KSPe.Util.Log.Logger Log = KSPe.Util.Log.Logger.CreateForType<EditorHelper>("KSP-Recall", "Refunding-EditorHelper", 0);
+		private static KSPe.Util.Log.Logger Log = KSPe.Util.Log.Logger.CreateForType<EditorHelper>("KSP-Recall", "Refunding.EditorHelper", 0);
 	}
-} }
+}

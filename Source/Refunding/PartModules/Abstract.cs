@@ -22,27 +22,32 @@
 using System;
 using System.Reflection;
 
-namespace KSP_Recall { namespace Refunds 
+namespace KSP_Recall.Refunds 
 {
-	public class Refunding : PartModule, IPartCostModifier
+	public abstract class Abstract : PartModule, IPartCostModifier
 	{
-		internal const string RESOURCENAME = "RefundingForKSP111x";
+		// ModuleCartoPart is used by Stock Stackable parts, and these parts cannot have a State (i.e., anything that would change after spawning).
+		// And this include Resources.
 		internal const string MODULECARGOPART = "ModuleCargoPart";
+		internal const float THRESHOLD = 0.01f;
 
-		#region KSP UI
+		protected readonly string ResouceName;
+		protected readonly bool UseResource;
 
-		[KSPField(isPersistant = true, guiActive = false, guiActiveEditor = true, guiName = "KSP-Recall::Refunding")]
-		[UI_Toggle(disabledText = "Disabled", enabledText = "Enabled", scene = UI_Scene.Editor)]
-		public bool active = false;
+		internal Abstract(bool useResource, string resourceName, KSPe.Util.Log.Logger log)
+		{
+			this.ResouceName = resourceName;
+			this.UseResource = useResource;
+			this.Log = log;
+		}
 
-		[KSPField(isPersistant = true, guiActive = false, guiActiveEditor = false)]
-		public string OriginalCost = "0";
-
-		#endregion
+		protected abstract bool IsActive { get; }
+		protected abstract float CostFix { get; }
+		protected abstract PartResourceDefinition PRD { get; }
+		internal PartCostHelper partCost { get; private set; }
 
 		private Part _prefab = null;
 		private Part prefab { get => _prefab ?? (_prefab = this.part.partInfo.partPrefab); set => _prefab = value; }
-		internal decimal costFix = 0;
 		private int delayTicks = 0;
 		private PartResource pr;	// Buffer to store the synthetical Part Resource (avoiding overloading the GC, see Issue #21 on GitHub.
 
@@ -58,14 +63,13 @@ namespace KSP_Recall { namespace Refunds
 			// Keep this disabled until someone need the recalculated costs, to avoiding being incorrectly charged on Launch
 			// (we are charged after the Craft it's initialised on launch)
 			this.enabled = false;
-
-			this.active = Globals.Instance.Refunding;
 		}
 
 		public override void OnStart(StartState state)
 		{
-			Log.dbg("OnStart {0} {1} {2}", this.PartInstanceId, state, this.active);
+			Log.dbg("OnStart {0} {1} {2}", this.PartInstanceId, state, this.IsActive);
 			base.OnStart(state);
+			this.partCost = new PartCostHelper(this.part, this.Log);
 		}
 
 		public override void OnCopy(PartModule fromModule)
@@ -78,8 +82,7 @@ namespace KSP_Recall { namespace Refunds
 		{
 			Log.dbg("OnLoad {0} {1}", this.PartInstanceId, null != node);
 			base.OnLoad(node);
-			if (null == this.part.partInfo)
-				this.prefab = this.part;
+			if (null == this.part.partInfo) this.prefab = this.part;
 
 			// The code below should not be executed on game loading, as we don't have a real Part
 			// on memory to work on.
@@ -90,7 +93,7 @@ namespace KSP_Recall { namespace Refunds
 			//
 			this.ResetResource();
 
-			if (!this.active)
+			if (!(this.IsActive && this.UseResource))
 			{
 				// Additionally, clean up Parts those Refunding was inactivated by the user.
 				this.RemoveResourceIfAvailable();
@@ -118,7 +121,7 @@ namespace KSP_Recall { namespace Refunds
 
 		private void FixedUpdate()
 		{
-			if (!this.active) return;
+			if (!this.IsActive) return;
 			if (0 != --this.delayTicks) return;
 			Log.dbg("FixedUpdate {0}", this.PartInstanceId);
 
@@ -128,7 +131,7 @@ namespace KSP_Recall { namespace Refunds
 					this.SynchronousFullUpdate();
 					break;
 				case GameScenes.EDITOR:
-					this.CalculateOriginalCost();
+					this.Calculate();
 					break;
 				default:
 					break;
@@ -144,6 +147,9 @@ namespace KSP_Recall { namespace Refunds
 		}
 
 		#endregion
+
+		protected abstract void Calculate();
+		protected abstract void Recalculate();
 
 		#region Part Events Handlers
 
@@ -163,16 +169,21 @@ namespace KSP_Recall { namespace Refunds
 			//
 			// The net result is that only Stock (and anyone else borking on this thing) will not be counter-acted
 			// but this. :)
-			return null == this.part.Resources.Get(RESOURCENAME)
-					? 0f		// If the refunding resource is not present, there's no need for the hack
-					: Convert.ToSingle(-this.costFix)
+			return !this.IsActive ? 0f
+					// If the refunding resource is not present, there's no need for the hack
+					: null == this.part.Resources.Get(this.ResouceName)	? 0f
+
+					: this.UseResource
+					? -this.CostFix
+
+					// If we are not using the Resource Hack, then we behave as normal citizens.
+					: this.CostFix
 				;
+
 		}
 
 		ModifierChangeWhen IPartCostModifier.GetModuleCostChangeWhen()
-		{
-			return ModifierChangeWhen.CONSTANTLY;
-		}
+			=> ModifierChangeWhen.CONSTANTLY;
 
 #if false
 		// This apparently is not needed, and we need to delay this thing anyway to avoiding initialising before
@@ -192,107 +203,35 @@ namespace KSP_Recall { namespace Refunds
 		internal void AsynchronousUpdate(int delayTicks = 1)
 		{
 			this.delayTicks = delayTicks;
-			this.enabled = this.active;
+			this.enabled = this.IsActive;
 		}
 
 		// Should be called before iminent situations (as flight termination) where you *NEED* the thing updated before something "terminal" happens.
 		// (screw the CPU, we need the data NOW).
 		internal void SynchronousFullUpdate()
 		{
-			if (!this.active) return; // Just in case someone call it directly
+			if (!this.IsActive) return; // Just in case someone call it directly
 
 			this.Recalculate();
-			this.UpdateResource();
-			this.NotifyResourcesChanged();
-		}
-
-		private void Recalculate()
-		{
-			Log.dbg("Recalculate {0}", this.PartInstanceId);
-			if (!this.active)
-			{
-				this.costFix = 0;
-				return;
+			if (this.UseResource)
+			{ 
+				this.UpdateResource();
+				this.NotifyResourcesChanged();
 			}
-			decimal originalCost = decimal.TryParse(this.OriginalCost, out originalCost) ? originalCost : 0;
-			decimal resourceCosts = Convert.ToDecimal(this.CalculateResourcesCost());
-			decimal wrongCost = originalCost - resourceCosts;
-			decimal rightCost = originalCost + this.CalculateModulesCost();
-
-			this.costFix = -wrongCost + rightCost;
-
-			if (this.part.Modules.Contains<KerbalEVA>() && this.part.Modules.Contains("ModuleInventoryPart"))
-			{	// Now overcomes the **Stock** double refunding on Resources from Parts inside a ModuleInventoryPart
-				// See https://github.com/net-lisias-ksp/KSP-Recall/issues/16#issuecomment-820346879
-				IPartCostModifier pcm = this.part.Modules["ModuleInventoryPart"] as IPartCostModifier;
-				decimal fix = Convert.ToDecimal(pcm.GetModuleCost(0, ModifierStagingSituation.CURRENT));
-				Log.dbg("This part is a Kerbal with ModuleInventoryPart. Deducting {0}", fix);
-				this.costFix = -fix;
-			}
-			else // TODO: Check if there's not a situation where Kerbals would be carrying resources themselves...
-				this.costFix -= resourceCosts;
-
-			Log.dbg("Recalculate Results originalCost: {0}; resourceCosts:{1:0.0}; wrongCost:{2:0.0}; rightCost:{3:0.0}; fix:{4:0.0} ; ", this.OriginalCost, resourceCosts, wrongCost, rightCost, this.costFix);
-		}
-
-		private void CalculateOriginalCost()
-		{
-			decimal r = Convert.ToDecimal(this.part.partInfo.cost);
-			r += this.CalculateResourcesCost();
-			r += this.CalculateModulesCost();
-			this.OriginalCost = r.ToString();
-		}
-
-		private decimal CalculateResourcesCost()
-		{
-			decimal r = 0;
-			foreach (PartResource pr in this.part.Resources) if (RESOURCENAME != pr.resourceName)
-				r += this.CalculateResourceCost(pr);
-			return r;
-		}
-
-		private decimal CalculateResourceCost(PartResource pr)
-		{
-			decimal cost = (null != pr.info ? Convert.ToDecimal(pr.amount) * Convert.ToDecimal(pr.info.unitCost) : 0M); // Why some resources have no info? o.O
-			// Why this.part.vessel is NULL at this point? :/
-			//Log.dbg("CalculateResourcesCost({0},{1},{2}) => {3}", this.VesselName, this.part.partInfo.partName, pr.resourceName, cost);
-			// Answer: because the part was detached from a vessel, being moved from a storage to another!
-			Log.dbg("CalculateResourcesCost({0},{1}) => {2}", this.part.partInfo.name, pr.resourceName, cost);
-			return cost;
-		}
-
-		private decimal CalculateResourceCost(ProtoPartResourceSnapshot pr)
-		{
-			decimal r = Convert.ToDecimal(pr.amount) * Convert.ToDecimal(pr.definition.unitCost);
-			Log.dbg("CalculateResourcesCost({0},Proto:{1}) => {2}", this.part.partInfo.name, pr.resourceName, r);
-			return r;
-		}
-
-		private decimal CalculateModulesCost()
-		{
-			decimal r = 0;
-			foreach (PartModule pm in this.part.Modules) if (pm is IPartCostModifier && this.GetType() != pm.GetType() && !"ModuleInventoryPart".Equals(pm.GetType().Name))
-			{
-				r += this.CalculateModuleCost(pm);
-			}
-			return r;
-		}
-
-		private decimal CalculateModuleCost(PartModule pm)
-		{
-			decimal r = Convert.ToDecimal(((IPartCostModifier)pm).GetModuleCost(0, ModifierStagingSituation.CURRENT));
-
-			// That could had been a good idea - if it had worked.
-			// But it was denying the refund of complex parts with dry cost and resources togheter, so...
-			// if ("ModuleInventoryPart".Equals(pm.moduleName)) r *= -1; // Fix the OverRedunding from Stock
-
-			Log.dbg("CalculateModulesCost({0},{1}) => {2}", this.part.partInfo.name, pm.moduleName, r);
-			return r;
 		}
 
 		private void UpdateResource()
 		{
 			Log.dbg("UpdateResource {0}:{1:X}", this.part.partInfo.name, this.part.GetInstanceID());
+
+			// No need to create the meta-resource if no fix is needed!
+			if (Math.Abs(this.CostFix) < THRESHOLD)
+			{ 
+				Log.dbg("CostFix below the threshold ({0}). Removing the meta-resource and aborting.", this.CostFix);
+				this.RemoveResourceIfAvailable();
+				return;
+			}
+
 			if (this.RemoveResourceWhenNeeded()) // Giving up on handling Stackables for now. The Rails stunt didn't worked as expected...
 				return;
 
@@ -312,31 +251,14 @@ namespace KSP_Recall { namespace Refunds
 			// This effectivelly "steals back" the Funds lost by the KSP's current stunt (using the prefab's cost on recovering costs)
 			// See https://github.com/net-lisias-ksp/KSP-Recall/issues/12
 			field = typeof(PartResource).GetField("amount", BindingFlags.Instance | BindingFlags.Public);
-			{
-				// Mitigates the squashing effect caused by the iPartCostModifier being a float.
-				// See https://github.com/net-lisias-ksp/KSP-Recall/issues/60
-				float squashedCostFix = 0;
-				decimal effectiveCostFix = this.costFix;
-				int i = 11; // 10 interactions max.
-				do
-				{
-					squashedCostFix = Convert.ToSingle(effectiveCostFix);
-					effectiveCostFix += (effectiveCostFix - Convert.ToDecimal(squashedCostFix));
-					--i;
-					Log.dbg("Attempt {0} to minimizing the float squashing effect: effective={1} ; real={2}", i, effectiveCostFix, this.costFix);
-				} while (i > 0 && (effectiveCostFix < this.costFix));
+			field.SetValue(pr, this.CostFix);
 
-				float usedCostFix = Convert.ToSingle(effectiveCostFix);
-				if (effectiveCostFix > this.costFix)
-					Log.warn("Your refunding for {0} was squashed by `IPartCostModifier` and was mangled to prevent losses ( see https://github.com/net-lisias-ksp/KSP-Recall/issues/60 ). Ideal value:{1} ; hack used instead:{2}", this.PartInstanceId, this.costFix, usedCostFix);
-				field.SetValue(pr, usedCostFix);
-			}
 			Log.dbg("After {0} {1} {2} {3}", pr.ToString(), pr.amount, pr.maxAmount, pr.info.unitCost);
 		}
 
 		private void ResetResource()
 		{
-			Log.dbg("Resetting {0} on part {1}", RESOURCENAME, this.PartInstanceId);
+			Log.dbg("Resetting {0} on part {1}", this.ResouceName, this.PartInstanceId);
 			if (null == this.pr) return;
 
 			FieldInfo field = typeof(PartResource).GetField("maxAmount", BindingFlags.Instance | BindingFlags.Public);
@@ -346,10 +268,10 @@ namespace KSP_Recall { namespace Refunds
 
 		private void RemoveResourceIfAvailable()
 		{
-			Log.dbg("Removing {0} from part {1}", RESOURCENAME, this.PartInstanceId);
+			Log.dbg("Removing {0} from part {1}", this.ResouceName, this.PartInstanceId);
 
 			if (null == this.part.Resources) return;	// Oukey, this is a bug on KSP ou just an anti-feature? :-(
-			PartResource pr = this.part.Resources.Get(RESOURCENAME);
+			PartResource pr = this.part.Resources.Get(this.ResouceName);
 			if (null != pr) this.part.Resources.Remove(pr);
 		}
 
@@ -359,7 +281,7 @@ namespace KSP_Recall { namespace Refunds
 			bool r;
 			if (r = this.IsStackable())
 			{
-				Log.dbg("Part {0} is Stackable. Removed Refunding support!", this.PartInstanceId);
+				Log.dbg("Part {0} is Stackable. Removed {1} support!", this.PartInstanceId, this.GetType().Name);
 				this.RemoveResourceIfAvailable();
 			}
 			return r;
@@ -371,7 +293,7 @@ namespace KSP_Recall { namespace Refunds
 
 			if (r) { // Parts with resources are not stackable.
 				int count = 0;
-				foreach (PartResource pr in this.part.Resources) if (!RESOURCENAME.Equals(pr.resourceName))
+				foreach (PartResource pr in this.part.Resources) if (!this.ResouceName.Equals(pr.resourceName))
 					++count;
 				r &= (0 == count);
 			}
@@ -395,14 +317,9 @@ namespace KSP_Recall { namespace Refunds
 		}
 
 #if true
-		// This crappy escuse of a code is neeed due https://github.com/net-lisias-ksp/KSP-Recall/issues/23
-		private static PartResourceDefinition PRD;
-		private PartResource RestoreResource()
+		protected PartResource RestoreResource()
 		{
 			// THIS SHOULD NOT BE CALLED when this.active is false, or it may inject a Refunding resource when none is desired.
-
-			if (null == PRD)
-				PRD = PartResourceLibrary.Instance.GetDefinition(RESOURCENAME);
 
 			if (null == this.pr)
 			{
@@ -419,13 +336,13 @@ namespace KSP_Recall { namespace Refunds
 				}
 			}
 
-			PartResource pr = this.part.Resources.Get(RESOURCENAME);
+			PartResource pr = this.part.Resources.Get(this.ResouceName);
 			if (null == pr)
 			{
 				// This gets rid of that pesky log entries like this one:
 				//	[LOG 00:02:31.256] [PartSet]: Failed to add Resource 1566956177 to Simulation PartSet:60079 as corresponding Part Mk0 Liquid Fuel Fuselage-4274492751 SimulationResource was not found.
 				this.part.Resources.dict.Add(PRD.name.GetHashCode(), this.pr);
-				pr = this.part.Resources.Get(RESOURCENAME);
+				pr = this.part.Resources.Get(this.ResouceName);
 			}
 
 			this.ResetResource();
@@ -433,7 +350,7 @@ namespace KSP_Recall { namespace Refunds
 			return pr;
 		}
 #else
-		private void RestoreResource()
+		protected void RestoreResource()
 		{
 			Log.dbg("RestoreResource {0}", this.PartInstanceId);
 			PartResource pr = this.part.Resources.Get(RESOURCENAME);
@@ -442,7 +359,7 @@ namespace KSP_Recall { namespace Refunds
 			Log.dbg("After {0} {1} {2} {3}", pr.ToString(), pr.amount, pr.maxAmount, pr.info.unitCost);
 		}
 
-		private PartResourceDefinition CreateCustomResourceDef(decimal unitCost)
+		private PartResourceDefinition CreateCustomResourceDef(float unitCost)
 		{
 			PartResourceDefinition prd = PartResourceLibrary.Instance.GetDefinition(RESOURCENAME);
 			Log.dbg("ConfigNode Source: {0}", prd.Config.ToString());
@@ -455,14 +372,14 @@ namespace KSP_Recall { namespace Refunds
 			return r;
 		}
 #endif
-		private void NotifyResourcesChanged()
+		protected void NotifyResourcesChanged()
 		{
 			// Place holder. Find a way to induce KSP to save the part again.
 		}
 
-		private string PartInstanceId => string.Format("{0}-{1}:{2:X}", this.VesselName, this.part.name, this.part.GetInstanceID());
-		private string VesselName => null == this.part.vessel ? "<NO VESSEL>" : this.part.vessel.vesselName ;
+		protected string PartInstanceId => string.Format("{0}-{1}:{2:X}", this.VesselName, this.part.name, this.part.GetInstanceID());
+		protected string VesselName => null == this.part.vessel ? "<NO VESSEL>" : this.part.vessel.vesselName ;
 
-		private static readonly KSPe.Util.Log.Logger Log = KSPe.Util.Log.Logger.CreateForType<Refunding>("KSP-Recall", "Refunding", 0);
+		protected readonly KSPe.Util.Log.Logger Log;
 	}
-} }
+}
