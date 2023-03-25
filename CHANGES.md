@@ -1,66 +1,10 @@
 # KSP-Recall :: Changes
 
-* 2023-0226: 0.3.0.12 (LisiasT) for KSP >= 1.4.1
-	+ Reworks `Refunding` (again), this time with a better workaround for the really expensive parts, the preferential targets.
-		- Kudos to [GoAhead](https://forum.kerbalspaceprogram.com/index.php?/profile/179049-goahead/) for the heads up! 
-	+ Reworks issue:
-		- [#60](https://github.com/net-lisias-ksp/KSP-Recall/issues/60) Weird Misbehaviour on Interstellar Technologies
-* 2023-0225: 0.3.0.11 (LisiasT) for KSP >= 1.4.1
-	+ Rework `Refunding` to use `decimal` when handling currency to minimize losses due inaccuracies related to float point math.
-		- Kudos to [GoAhead](https://forum.kerbalspaceprogram.com/index.php?/profile/179049-goahead/) for the heads up! 
-	+ Closes issue:
-		- [#60](https://github.com/net-lisias-ksp/KSP-Recall/issues/60) Weird Misbehaviour on Interstellar Technologies
-* 2023-0201: 0.3.0.10 (LisiasT) for KSP >= 1.4.1
-	+ Shoves back `Resourceful` and `AttachedFromEditor` into B9PS's SAS after some carnage in the field
-* 2023-0128: 0.3.0.9 (LisiasT) for KSP >= 1.4.1
-	+ Preventing `Resourceful` and `AttachedFromEditor` from being patched into parts using B9PartSwitch, as they don't need them.
-	+ Updates `KSPe.Light` with more bugfixes
-* 2023-0115: 0.3.0.8 (LisiasT) for KSP >= 1.4.1
-	+ Updates the thing to KSP 1.12.5
-	+ Updates `KSPe.Light` with bugfixes and support for 1.12.5
-* 2022-1126: 0.3.0.7 (LisiasT) for KSP >= 1.4.1
-	+ Fixing a naïve approach on checking the `pwd`.
-		- Thanks to Fellow Kerbonaut [TurtleMountain](https://forum.kerbalspaceprogram.com/index.php?/profile/223946-turtlemountain/) for the [report](https://forum.kerbalspaceprogram.com/index.php?/topic/192048-143/&do=findComment&comment=4202553) and help on the [diagnose](https://forum.kerbalspaceprogram.com/index.php?/topic/192048-143/&do=findComment&comment=4202776)!
-		- Also thanks to [HebaruSan](https://forum.kerbalspaceprogram.com/index.php?/profile/156657-hebarusan/) for the brainstorming while investigating the matter
-		- And my apologies to the CKAN guys for the [trouble](https://forum.kerbalspaceprogram.com/index.php?/topic/192048-143/&do=findComment&comment=4202777).
-* 2022-1123: 0.3.0.6 (LisiasT) for KSP >= 1.4.1
-	+ Better diagnosing messages.
-* 2022-1123: 0.3.0.5 (LisiasT) for KSP >= 1.4.1
-	+ Adds a check for the `pwd` problem that started to happen when people tried to get rid of the PD-Launcher in an unfortunate way. 
-		- Check [this](https://forum.kerbalspaceprogram.com/index.php?/topic/210419-get-rid-of-the-stupid-launcher-nobody-likes-them-and-they-do-nothing-but-ruin-the-gaming-experience/) for the whole history.
-		- Additional links (**do not** try them, they cause this problem!)
-			- [Forum](https://forum.kerbalspaceprogram.com/index.php?/topic/210409-how-to-bypass-the-new-launcher-added-in-update-1124-steam/) 
-			- [Reddit](https://www.reddit.com/r/KerbalSpaceProgram/comments/ym04gx/solution_for_broken_mods_caused_by_the_launcher/)
-	+ Better diagnosing logs.
-	+ Updates Module Manager Watch Dog to the latest (1.1.0.3 at this time)
-	+ Updates to the latest KSPe.Light. (2.4.2.4 at this time)
-* 2022-1122: 0.3.0.4 (LisiasT) for KSP >= 1.4.1
-	+ ***DITCHED***
-* 2022-0908: 0.3.0.3 (LisiasT) for KSP >= 1.4.1
-	+ Updating the Sanity Check to prevent an annoying "Proceed with caution" warning.
-* 2022-0904: 0.3.0.2 (LisiasT) for KSP >= 1.4.1
-	+ After some weeks of denying, it was **finally** realised that `AttachedOnEditor` is needed downto KSP 1.4.3 - on the very first `ModulePartVariant` implementation.
-		- What a crap of a code they published, damn!
- 	+ Fixes a small brain fart of mine on the [INSTALL.md](https://github.com/net-lisias-ksp/KSP-Recall/blob/master/INSTALL.md) file.
-	+ Updates KSPe.Light to the latest release (2.4.2.1 at this time)
+* 2023-0325: 0.4.0.0 (LisiasT) for KSP >= 1.4.1
+	+ Reworks `Refunding` (yet again), splitting the `PartModule` into two, the second one (`StealBackMyFunds`) dedicated to the Funds on `float` problem.
+	+ Reworks the `AttachedOnEditor`, fixing an annoying "gap" when merging crafts (that didn't happens on SubAssemblies!)
+	+ Updates Module Manager Watch Dog to the latest.
 	+ Closes issues:
-		- [#55](https://github.com/net-lisias-ksp/KSP-Recall/issues/55) The KSP Editor is screwing things since 1.4.3
-		- [#50](https://github.com/net-lisias-ksp/KSP-Recall/issues/50) Not sure how to install 0.3.0.0
-			- Thanks to [@tomtheisen](https://github.com/tomtheisen) for the heads up!
-* 2022-0630: 0.3.0.1 (LisiasT) for KSP >= 1.4.1
-	+ Fixes a **huge** brain fart of mine from 0.2.2.4 #facePalm
-	+ Closes issues:
-		- [#52](https://github.com/net-lisias-ksp/KSP-Recall/issues/52) REPORT: Diagnosing the GoAHead Issue
-		- [#49](https://github.com/net-lisias-ksp/KSP-Recall/issues/49) ArgumentOutOfRangeException causes saving to break and makes my save file unplayable
-* 2022-0626: 0.3.0.0 (LisiasT) for KSP >= 1.4.1
-	+ Prevents a race condition with Making History on Main Menu on heavily loaded rigs. 
-	+ Updates ModuleManagerWatchDog to 1.1.0.1
-	+ Updates KSPe.Light.Recall to 2.4.1.16 due the [Proton fix](https://github.com/net-lisias-ksp/KSPe/issues/31).
-	+ Closes issues:
-		- [#45](https://github.com/net-lisias-ksp/KSP-Recall/issues/45) Move the Sanity Checks) out of the Main Menu startup
-* 2022-0514: 0.2.2.4 (LisiasT) for KSP >= 1.4.1
-	+ Closes issues:
-		- [#41](https://github.com/net-lisias-ksp/KSP-Recall/issues/41) Investigate a possible (bad) iteraction with Procedural Parts (RO) V2.3.0
-		- [#40](https://github.com/net-lisias-ksp/KSP-Recall/issues/40) Unhappy interaction with Deep Freeze?
-		- [#37](https://github.com/net-lisias-ksp/KSP-Recall/issues/37) Check about a missing use-case on AttachedOnEditor
-		- [#21](https://github.com/net-lisias-ksp/KSP-Recall/issues/21) Update KSPe.Light for KSPe
+		- [#62](https://github.com/net-lisias-ksp/KSP-Recall/issues/62) Find a way to survive KSPCF's ~~Stupidity~~ *Less Than Smartness*
+		- [#61](https://github.com/net-lisias-ksp/KSP-Recall/issues/61) AttachedOnEditor is being screwed up when Merging crafts
+		- [#28](https://github.com/net-lisias-ksp/KSP-Recall/issues/28) Refresh the ModuleManagerWatchDog DLL

@@ -7,11 +7,6 @@ Aims to fix Stock misbehaviours the most seamlessly as possible, trying hard to 
 
 ## In a Hurry
 
-* [Discussions](https://github.com/net-lisias-ksp/KSP-Recall/discussions)
-* [Issue Tracker](https://github.com/net-lisias-ksp/KSP-Recall/issues)
-* [Latest Release](https://github.com/net-lisias-ksp/KSP-Recall/releases)
-	+ [Binaries](https://github.com/net-lisias-ksp/KSP-Recall/tree/Archive)
-* [Source](https://github.com/net-lisias-ksp/KSP-Recall)
 * Documentation	
 	+ [Homepage](http://ksp.lisias.net/add-ons/KSP-Recall) on L Aerospace KSP Division
 	+ [Project's README](https://github.com/net-lisias-ksp/KSP-Recall/blob/master/README.md)
@@ -20,9 +15,17 @@ Aims to fix Stock misbehaviours the most seamlessly as possible, trying hard to 
 	+ [Known Issues](./KNOWN_ISSUES.md)
 	+ [TODO](./TODO.md) list
 * Official Distribution Sites:
-	+ [Homepage](http://ksp.lisias.net/add-ons/KSP-Recall) on L Aerospace
-	+ [Source and Binaries](https://github.com/net-lisias-ksp/KSP-Recall) on GitHub.
-	+ [KSP's Forum Thread](https://forum.kerbalspaceprogram.com/index.php?/topic/192048-*)
+	+ [CurseForge](https://www.curseforge.com/kerbal/ksp-mods/ksp-recall)
+	+ [SpaceDock](https://spacedock.info/mod/2434/KSP-Recall)
+	+ [Latest Release](https://github.com/net-lisias-ksp/KSP-Recall/releases)
+		- [Binaries](https://github.com/net-lisias-ksp/KSP-Recall/tree/Archive)
+* Support
+	+ [Homepage](http://ksp.lisias.net/add-ons/KSP-Recall/Support/) on L Aerospace KSP Division
+	+ [Reddit](https://www.reddit.com/r/KSP_Recall/)
+	+ [Forum](https://forum.kerbalspaceprogram.com/index.php?/topic/192048-*)
+	+ [Discussions](https://github.com/net-lisias-ksp/KSP-Recall/discussions)
+* [Source](https://github.com/net-lisias-ksp/KSP-Recall)
+	+ [Issue Tracker](https://github.com/net-lisias-ksp/KSP-Recall/issues)
 
 
 ## Description
