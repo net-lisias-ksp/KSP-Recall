@@ -91,8 +91,9 @@ namespace KSP_Recall.Refunds
 			} 
 
 			this.costFix = Convert.ToSingle(this.fk.CurrentCost) - realCostFix;
-			if (this.costFix < Abstract.THRESHOLD) this.costFix = 0;
-			if (this.costFix > 0)
+			if (Math.Abs(this.costFix) < Abstract.THRESHOLD)
+				this.costFix = 0;
+			else
 				Log.warn("Your refunding for {0} was squashed by `IPartCostModifier` and was mangled to prevent losses ( see https://github.com/net-lisias-ksp/KSP-Recall/issues/60 ). Ideal value:{1} ; hack used instead:{2}", this.PartInstanceId, this.fk.CurrentCost, realCostFix);
 		}
 	}
