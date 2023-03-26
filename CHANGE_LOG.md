@@ -1,5 +1,13 @@
 # KSP-Recall :: Change Log
 
+* 2023-0325: 0.4.0.0 (LisiasT) for KSP >= 1.4.1
+	+ Reworks `Refunding` (yet again), splitting the `PartModule` into two, the second one (`StealBackMyFunds`) dedicated to the Funds on `float` problem.
+	+ Reworks the `AttachedOnEditor`, fixing an annoying "gap" when merging crafts (that didn't happens on SubAssemblies!)
+	+ Updates Module Manager Watch Dog to the latest.
+	+ Closes issues:
+		- [#62](https://github.com/net-lisias-ksp/KSP-Recall/issues/62) Find a way to survive KSPCF's ~~Stupidity~~ *Less Than Smartness*
+		- [#61](https://github.com/net-lisias-ksp/KSP-Recall/issues/61) AttachedOnEditor is being screwed up when Merging crafts
+		- [#28](https://github.com/net-lisias-ksp/KSP-Recall/issues/28) Refresh the ModuleManagerWatchDog DLL
 * 2023-0226: 0.3.0.12 (LisiasT) for KSP >= 1.4.1
 	+ Reworks `Refunding` (again), this time with a better workaround for the really expensive parts, the preferential targets.
 		- Kudos to [GoAhead](https://forum.kerbalspaceprogram.com/index.php?/profile/179049-goahead/) for the heads up! 
