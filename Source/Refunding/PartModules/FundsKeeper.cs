@@ -68,6 +68,9 @@ namespace KSP_Recall.Refunds
 			Log.dbg("OnStart {0} {1}", this.PartInstanceId, state);
 			base.OnStart(state);
 			this.partCost = new PartCostHelper(this.part, Log);
+
+			// Whoops... Ongoing savegame that never had FundsKeeper before. Let's try to salvage things!
+			if ("0" == this.OriginalCost) this.OriginalCostSalvaged = this.partCost.CalculateCurrentCost().ToString();
 		}
 
 		public override void OnCopy(PartModule fromModule)
@@ -157,6 +160,7 @@ namespace KSP_Recall.Refunds
 		private void Salvage()
 		{
 			this.OriginalCost = this.OriginalCostSalvaged;
+			this.OriginalCostSalvaged = null;
 
 			// The following values **are wrong**, as we are fetching whatever the part have at the moment, and not at launch.
 			// But it's better than nothing. There's no way to guess how the part was configured at launch, and we need some values here!
