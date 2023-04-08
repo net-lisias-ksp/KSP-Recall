@@ -1,5 +1,11 @@
 # KSP-Recall :: Changes
 
+* 2023-0408: 0.4.0.1 (LisiasT) for KSP >= 1.4.1
+	+ Fixes a nasty mishap of mine that gone undetected due another yet more nasty mishap of Module Manager (Forum).
+	+ Closes issues:
+		- [#65](https://github.com/net-lisias-ksp/KSP-Recall/issues/65) Yet a new batch of displacement problems on KSP
+	+ Relates to Discussion:
+		- [#64](https://github.com/net-lisias-ksp/KSP-Recall/issues/65) Yet a new batch of displacement problems on KSP
 * 2023-0325: 0.4.0.0 (LisiasT) for KSP >= 1.4.1
 	+ Reworks `Refunding` (yet again), splitting the `PartModule` into two, the second one (`StealBackMyFunds`) dedicated to the Funds on `float` problem.
 	+ Reworks the `AttachedOnEditor`, fixing an annoying "gap" when merging crafts (that didn't happens on SubAssemblies!)
