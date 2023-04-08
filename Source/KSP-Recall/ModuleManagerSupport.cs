@@ -90,8 +90,8 @@ namespace KSP_Recall
 
 		private static bool checkForProceduralPartsAttachmentNodes()
 		{
-			return KSPe.Util.SystemTools.Assembly.Finder.ExistsByName("ProceduralParts")
-				&& KSPe.Util.SystemTools.Assembly.Finder.ExistsByName("Scale")
+			return KSPe.Util.SystemTools.Assembly.Exists.ByName("ProceduralParts")
+				&& KSPe.Util.SystemTools.Assembly.Exists.ByName("Scale")
 				;
 		}
 

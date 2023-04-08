@@ -59,7 +59,7 @@ namespace KSP_Recall
 			try
 			{
 				// No need to do this check if KSPe is installed!
-				if (!KSPe.Util.SystemTools.Assembly.Finder.ExistsByName("KSPe"))
+				if (!KSPe.Util.SystemTools.Assembly.Exists.ByName("KSPe"))
 				{
 					Log.detail("KSPe is not installed. Checking `pwd`.");
 					this.checkPwd();
