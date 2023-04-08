@@ -33,6 +33,10 @@ namespace KSP_Recall { namespace AttachedOnEditor
 		[UI_Toggle(disabledText = "Disabled", enabledText = "Enabled", scene = UI_Scene.Editor)]
 		public bool active = false;
 
+		// TODO: remove it in a few months.
+		// https://github.com/net-lisias-ksp/KSP-Recall/issues/65
+		private bool userReallyDeactivatedIt = false;
+
 		#endregion
 
 
@@ -85,6 +89,16 @@ namespace KSP_Recall { namespace AttachedOnEditor
 			Log.dbg("OnLoad {0} {1}", this.PartInstanceId, null != node);
 			base.OnLoad(node);
 
+			// Workaround to salvage the huge mishap I did on 0.4.0.0.
+			// See:
+			//		https://github.com/net-lisias-ksp/KSP-Recall/discussions/65
+			//		https://github.com/net-lisias-ksp/KSP-Recall/discussions/64
+			// TODO: Remove this after some months.
+			{
+				node.TryGetValue("userReallyDeactivatedIt", ref this.userReallyDeactivatedIt);
+				this.active = Globals.Instance.AttachedOnEditor && !this.userReallyDeactivatedIt;
+			}
+
 			if (this.isSubAssembly())
 			{
 				Log.dbg("OnLoad under subassembly.");
@@ -115,6 +129,11 @@ namespace KSP_Recall { namespace AttachedOnEditor
 			if (HighLogic.LoadedSceneIsEditor)
 				this.PreserveAttachments();		// Updates the values, in case anyone else had changed it!
 												// But only on Editor, otherwise we would screw up crafts under stress on Flight!!!
+
+			// Delete this after a few months
+			// https://github.com/net-lisias-ksp/KSP-Recall/issues/65
+			node.SetValue("userReallyDeactivatedIt", !this.active, true);
+
 			this.SaveTo(node);
 		}
 
