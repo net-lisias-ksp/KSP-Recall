@@ -34,6 +34,7 @@ namespace KSP_Recall
 			if (checkForDriftless())		tags.Add("KSPRECALL-DRIFTLESS");
 			if (checkForAttached())			tags.Add("KSPRECALL-ATTACHED");
 			if (checkForChillingOut())		tags.Add("KSPRECALL-CHILLINGOUT");
+			if (checkForAttachedOnEditor())	tags.Add("KSPRECALL-ATTACHED-ON-EDITOR");
 
 			if (checkForRefunding() || checkForStealBack())
 											tags.Add("KSPRECALL-FUNDSKEEPER");
