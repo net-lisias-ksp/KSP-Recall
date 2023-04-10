@@ -147,6 +147,21 @@ namespace KSP_Recall { namespace AttachedOnEditor
 		#endregion
 
 
+		#region Part Events Handlers
+
+		[KSPEvent(guiActive = false, active = true)]
+		void OnPartAttachmentNodesChanged(BaseEventDetails data)
+		{
+			int instanceId = data.Get<int>("InstanceID");
+			if (this.part.GetInstanceID() != instanceId) return;
+
+			Log.dbg("OnPartAttachmentNodesChanged for InstanceId {0:X}", instanceId);
+			this.PreserveCurrentAttachmentNodes();
+		}
+
+		#endregion
+
+
 		#region Unity Life Cycle
 
 		private void Update()
