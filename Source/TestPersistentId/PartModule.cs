@@ -32,6 +32,13 @@ namespace KSP_Recall.Test.PersistentId
 
 		#region KSP Life Cycle
 
+		public override void OnInitialize()
+		{
+			Log.dbg("OnInitialize {0}:{1:X}", this.name, this.part.GetInstanceID());
+			base.OnAwake();
+			this.doLog("OnInitialize");
+		}
+
 		public override void OnAwake()
 		{
 			Log.dbg("OnAwake {0}:{1:X}", this.name, this.part.GetInstanceID());
