@@ -88,7 +88,7 @@ namespace KSP_Recall.Test.PersistentId
 
 		private void doLog(string situation)
 		{
-			Log.info("Part {0}:{1:X} has persistentId={2} at {3}", this.name, this.part.GetInstanceID(), this.part.persistentId, situation);
+			Log.info("Part {0}:{1:X} has persistentId={2} at {3}. The ClassID is {4} and the CraftId (cid) is {5}.", this.name, this.part.GetInstanceID(), this.part.persistentId, situation, this.part.ClassID, this.part.craftID);
 		}
 
 		private static readonly KSPe.Util.Log.Logger Log = KSPe.Util.Log.Logger.CreateForType<TestPersistentId>("KSP-Recall", "Test.PersistentId", 0);
