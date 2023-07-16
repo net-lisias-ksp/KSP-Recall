@@ -1,5 +1,8 @@
 # KSP-Recall :: Change Log
 
+* 2023-0716: 0.4.0.2 (LisiasT) for KSP >= 1.4.1
+	+ Implements a missing use case from TweakScale, `OnPartAttachmentNodesChanged`.
+	+ Updates MMWD to 1.1.1.1
 * 2023-0408: 0.4.0.1 (LisiasT) for KSP >= 1.4.1
 	+ Fixes a nasty mishap of mine that gone undetected due another yet more nasty mishap of Module Manager (Forum).
 	+ Closes issues:
