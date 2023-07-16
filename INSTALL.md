@@ -35,11 +35,11 @@ The following file layout must be present after installation:
 			KSP-Recall.version
 		[ModuleManagerWatchDog]
 			...
+		666_ModuleManagerWatchDog.dll
 		ModuleManager.dll
-		ModuleManagerWatchDog.dll
 		...
 	KSP.log
-	PastDatabase.cfg
+	PartDatabase.cfg
 	...
 ```
 
