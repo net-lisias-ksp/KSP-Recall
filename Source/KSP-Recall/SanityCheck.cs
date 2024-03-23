@@ -45,8 +45,10 @@ namespace KSP_Recall
 		private const string DRIFTLESS_MODULE_NAME = "Driftless";
 		private const string ATTACHED_MODULE_NAME = "Attached";
 		private const string CHILLINGOUT_MODULE_NAME = "ChillingOut";
-		private const string REFUNDING_MODULE_NAME = "RefundingForKSP111x";
 		private const string ATTACHEDONEDITOR_MODULE_NAME = "AttachedOnEditor";
+		private const string FUNDSKEEPER_MODULE_NAME = "FundsKeeper";
+		private const string REFUNDING_MODULE_NAME = "Refunding";
+		private const string STEALBACKMYFUNDS_MODULE_NAME = "StealBackMyFunds";
 
 		internal static bool isConcluded = false;
 		internal static int showstoppers_count = 0;
@@ -123,8 +125,10 @@ namespace KSP_Recall
 			int parts_with_driftless_count = 0;
 			int parts_with_attached_count = 0;
 			int parts_with_chillingout_count = 0;
-			int parts_with_refunding_count = 0;
 			int parts_with_attachedoneditor_count = 0;
+			int parts_with_fundskeeper_count = 0;
+			int parts_with_refunding_count = 0;
+			int parts_with_stealbackmyfunds_count = 0;
 
 			foreach (AvailablePart p in PartLoader.LoadedPartsList)
 			{
@@ -134,8 +138,10 @@ namespace KSP_Recall
 					bool containsDriftless = false;
 					bool containsAttached = false;
 					bool containsChillingOut = false;
-					bool containsRefunding = false;
 					bool containsAttachedOnEditor = false;
+					bool containsFundsKeeper = false;
+					bool containsRefunding = false;
+					bool containsStealBackMyFunds = false;
 
 					prefab = p.partPrefab; // Reaching the prefab here in the case another Mod recreates it from zero. If such hypothecical mod recreates the whole part, we're doomed no matter what.
 					try 
@@ -144,8 +150,10 @@ namespace KSP_Recall
 						containsDriftless = prefab.Modules.Contains(DRIFTLESS_MODULE_NAME);
 						containsAttached = prefab.Modules.Contains(ATTACHED_MODULE_NAME);
 						containsChillingOut = prefab.Modules.Contains(CHILLINGOUT_MODULE_NAME);
-						containsRefunding = prefab.Modules.Contains(REFUNDING_MODULE_NAME);
 						containsAttachedOnEditor = prefab.Modules.Contains(ATTACHEDONEDITOR_MODULE_NAME);
+						containsRefunding = prefab.Modules.Contains(REFUNDING_MODULE_NAME);
+						containsFundsKeeper = prefab.Modules.Contains(FUNDSKEEPER_MODULE_NAME);
+						containsStealBackMyFunds = prefab.Modules.Contains(STEALBACKMYFUNDS_MODULE_NAME);
 						++total_count;
 					}
 					catch (Exception e)
@@ -187,6 +195,20 @@ namespace KSP_Recall
 						}
 						else ++parts_with_chillingout_count;
 
+						if (containsAttachedOnEditor) if (null != (due = this.checkForAttachedOnEditor(prefab)))
+						{
+							Log.info("Removing {0} support for {1} ({2}) due {3}.", ATTACHEDONEDITOR_MODULE_NAME, p.name, p.title, due);
+							prefab.RemoveModule(prefab.Modules[ATTACHEDONEDITOR_MODULE_NAME]);
+						}
+						else ++parts_with_attachedoneditor_count;
+
+						if (containsFundsKeeper) if (null != (due = this.checkForFundsKeeper(prefab)))
+						{
+							Log.info("Removing {0} support for {1} ({2}) due {3}.", FUNDSKEEPER_MODULE_NAME, p.name, p.title, due);
+							prefab.RemoveModule(prefab.Modules[FUNDSKEEPER_MODULE_NAME]);
+						}
+						else ++parts_with_fundskeeper_count;
+
 						if (containsRefunding) if (null != (due = this.checkForRefunding(prefab)))
 						{
 							Log.info("Removing {0} support for {1} ({2}) due {3}.", REFUNDING_MODULE_NAME, p.name, p.title, due);
@@ -194,12 +216,12 @@ namespace KSP_Recall
 						}
 						else ++parts_with_refunding_count;
 
-						if (containsAttachedOnEditor) if (null != (due = this.checkForAttachedOnEditor(prefab)))
+						if (containsStealBackMyFunds) if (null != (due = this.checkForStealBackMyFunds(prefab)))
 						{
-							Log.info("Removing {0} support for {1} ({2}) due {3}.", ATTACHEDONEDITOR_MODULE_NAME, p.name, p.title, due);
-							prefab.RemoveModule(prefab.Modules[ATTACHEDONEDITOR_MODULE_NAME]);
+							Log.info("Removing {0} support for {1} ({2}) due {3}.", STEALBACKMYFUNDS_MODULE_NAME, p.name, p.title, due);
+							prefab.RemoveModule(prefab.Modules[STEALBACKMYFUNDS_MODULE_NAME]);
 						}
-						else ++parts_with_attachedoneditor_count;
+						else ++parts_with_stealbackmyfunds_count;
 					}
 					catch (Exception e)
 					{
@@ -217,14 +239,16 @@ namespace KSP_Recall
 #endif
 			}
 
-			Log.info("SanityCheck Concluded : {0} parts found ; {1} parts using {2} ; {3} parts using {4} ; {5} parts using {6} ; {7} parts using {8} ; {9} parts using {10}, {11} parts using {12}, {13} show stoppers detected ."
+			Log.info("SanityCheck Concluded : {0} parts found ; {1} parts using {2} ; {3} parts using {4} ; {5} parts using {6} ; {7} parts using {8} ; {9} parts using {10}, {11} parts using {12}, {13} parts using {14}, {15} parts using {16}, {17} show stoppers detected ."
 				, total_count
 				, parts_with_resourceful_count, RESOURCEFUL_MODULE_NAME
 				, parts_with_driftless_count, DRIFTLESS_MODULE_NAME
 				, parts_with_attached_count, ATTACHED_MODULE_NAME
 				, parts_with_chillingout_count, CHILLINGOUT_MODULE_NAME
-				, parts_with_refunding_count, REFUNDING_MODULE_NAME
 				, parts_with_attachedoneditor_count, ATTACHEDONEDITOR_MODULE_NAME
+				, parts_with_fundskeeper_count, FUNDSKEEPER_MODULE_NAME
+				, parts_with_refunding_count, REFUNDING_MODULE_NAME
+				, parts_with_stealbackmyfunds_count, STEALBACKMYFUNDS_MODULE_NAME
 				, showstoppers_count);
 			SanityCheck.isConcluded = true;
 		}
@@ -294,6 +318,25 @@ namespace KSP_Recall
 			return this.checkForCommonUnsupportedParts(p);
 		}
 
+		private string checkForAttachedOnEditor(Part p)
+		{
+			Log.dbg("Checking {0} Sanity for {1} at {2}", ATTACHEDONEDITOR_MODULE_NAME, p.name, p.partInfo.partUrl ?? "<NO URL>");
+
+			if ( KSPe.Util.KSP.Version.Current < KSPe.Util.KSP.Version.FindByVersion(1,4,3) )
+			{
+				if (Globals.Instance.AttachedOnEditor) Log.warn(MSG_INSTALLATION_FORCED, ATTACHEDONEDITOR_MODULE_NAME);
+				else return MSG_PART_DOES_NOT_NEED ;
+			}
+
+			return this.checkForCommonUnsupportedParts(p);
+		}
+
+		private string checkForFundsKeeper(Part p)
+		{
+			Log.dbg("Checking {0} Sanity for {1} at {2}", FUNDSKEEPER_MODULE_NAME, p.name, p.partInfo.partUrl ?? "<NO URL>");
+			return this.checkForCommonUnsupportedParts(p);
+		}
+
 		private string checkForRefunding(Part p)
 		{
 			Log.dbg("Checking {0} Sanity for {1} at {2}", REFUNDING_MODULE_NAME, p.name, p.partInfo.partUrl ?? "<NO URL>");
@@ -309,16 +352,9 @@ namespace KSP_Recall
 			return this.checkForCommonUnsupportedParts(p);
 		}
 
-		private string checkForAttachedOnEditor(Part p)
+		private string checkForStealBackMyFunds(Part p)
 		{
-			Log.dbg("Checking {0} Sanity for {1} at {2}", ATTACHEDONEDITOR_MODULE_NAME, p.name, p.partInfo.partUrl ?? "<NO URL>");
-
-			if ( KSPe.Util.KSP.Version.Current < KSPe.Util.KSP.Version.FindByVersion(1,4,3) )
-			{
-				if (Globals.Instance.AttachedOnEditor) Log.warn(MSG_INSTALLATION_FORCED, ATTACHEDONEDITOR_MODULE_NAME);
-				else return MSG_PART_DOES_NOT_NEED ;
-			}
-
+			Log.dbg("Checking {0} Sanity for {1} at {2}", STEALBACKMYFUNDS_MODULE_NAME, p.name, p.partInfo.partUrl ?? "<NO URL>");
 			return this.checkForCommonUnsupportedParts(p);
 		}
 
