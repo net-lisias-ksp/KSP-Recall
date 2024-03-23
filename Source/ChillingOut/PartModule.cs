@@ -55,6 +55,10 @@ namespace KSP_Recall { namespace ChillingOut
 				this.spawnTime = System.DateTime.Now.Ticks;
 				Log.dbg("Spawned at {0}", this.spawnTime);
 			}
+			{
+				BaseField bf = this.Fields["active"];
+				bf.guiActive = bf.guiActiveEditor = Globals.Instance.DebugMode;
+			}
 		}
 
 		public override void OnCopy(PartModule fromModule)

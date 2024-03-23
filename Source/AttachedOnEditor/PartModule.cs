@@ -142,6 +142,10 @@ namespace KSP_Recall { namespace AttachedOnEditor
 			Log.dbg("OnStart {0} {1} {2}", this.PartInstanceId, state, this.active);
 			if (this.active && HighLogic.LoadedSceneIsEditor) this.RestoreAttachments();
 			base.OnStart(state);
+			{
+				BaseField bf = this.Fields["active"];
+				bf.guiActive = bf.guiActiveEditor = Globals.Instance.DebugMode;
+			}
 		}
 
 		#endregion

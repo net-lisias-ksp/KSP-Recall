@@ -42,6 +42,8 @@ namespace KSP_Recall
 
 		public readonly bool ProceduralPartsAttachmentNodes;
 
+		public bool DebugMode => KSPe.Globals<Globals>.DebugMode;
+
 		private Globals()
 		{
 			try

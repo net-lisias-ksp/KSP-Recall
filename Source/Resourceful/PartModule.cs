@@ -48,6 +48,10 @@ namespace KSP_Recall { namespace Resourcefull
 		{
 			Log.dbg("OnStart {0}:{1:X} {2} {3}", this.name, this.part.GetInstanceID(), state, this.active);
 			base.OnStart(state);
+			{
+				BaseField bf = this.Fields["active"];
+				bf.guiActive = bf.guiActiveEditor = Globals.Instance.DebugMode;
+			}
 		}
 
 		public override void OnCopy(PartModule fromModule)
