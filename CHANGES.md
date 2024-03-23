@@ -1,5 +1,9 @@
 # KSP-Recall :: Changes
 
+* 2023-0323: 0.4.0.3 (LisiasT) for KSP >= 1.4.1
+	+ Closes issues:
+		- [#72](https://github.com/net-lisias-ksp/KSP-Recall/issues/72) Fix the Sanity Check report
+		- [#68](https://github.com/net-lisias-ksp/KSP-Recall/issues/68) Add an option to to not show the KSP-Recall entries on the PAW
 * 2023-0716: 0.4.0.2 (LisiasT) for KSP >= 1.4.1
 	+ Implements a missing use case from TweakScale, `OnPartAttachmentNodesChanged`.
 	+ Updates MMWD to 1.1.1.1
