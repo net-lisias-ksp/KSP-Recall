@@ -65,7 +65,7 @@ namespace KSP_Recall.Refunds
 			this.fk = this.part.Modules.GetModule<FundsKeeper>();
 			{
 				BaseField bf = this.Fields["active"];
-				bf.guiActive = bf.guiActiveEditor = Globals.Instance.DebugMode;
+				bf.guiActive = bf.guiActiveEditor = Globals.Instance.PawEntries;
 			}
 		}
 

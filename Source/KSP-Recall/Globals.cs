@@ -42,13 +42,18 @@ namespace KSP_Recall
 
 		public readonly bool ProceduralPartsAttachmentNodes;
 
-		public bool DebugMode => KSPe.Globals<Globals>.DebugMode;
+		public readonly bool PawEntries;
 
 		private Globals()
 		{
 			try
 			{
 				UrlDir.UrlConfig urlc = GameDatabase.Instance.GetConfigs("KSP-Recall")[0];
+				{ 
+					ConfigNodeWithSteroids cn = ConfigNodeWithSteroids.from(urlc.config);
+					try					{ this.PawEntries = cn.GetValue<bool>("PawEntries"); }
+					catch (Exception)	{ this.PawEntries = true; }
+				}
 				{
 					ConfigNodeWithSteroids cn = ConfigNodeWithSteroids.from(urlc.config.GetNode("INSTALLED"));
 

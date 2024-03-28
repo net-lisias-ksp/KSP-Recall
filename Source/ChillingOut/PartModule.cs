@@ -57,7 +57,7 @@ namespace KSP_Recall { namespace ChillingOut
 			}
 			{
 				BaseField bf = this.Fields["active"];
-				bf.guiActive = bf.guiActiveEditor = Globals.Instance.DebugMode;
+				bf.guiActive = bf.guiActiveEditor = Globals.Instance.PawEntries;
 			}
 		}
 
