@@ -1,5 +1,9 @@
 # KSP-Recall :: Change Log
 
+* 2023-0328: 0.4.0.4 (LisiasT) for KSP >= 1.4.1
+	+ Restores the presence of the PAW's entries, setting them to be shown by default from now on. A patch can turn them off. 
+	+ Closes issues:
+		- [#74](https://github.com/net-lisias-ksp/KSP-Recall/issues/74) Restore the KSP-Recall buttons on the PAW
 * 2023-0323: 0.4.0.3 (LisiasT) for KSP >= 1.4.1
 	+ Closes issues:
 		- [#72](https://github.com/net-lisias-ksp/KSP-Recall/issues/72) Fix the Sanity Check report
