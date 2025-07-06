@@ -116,7 +116,7 @@ namespace KSP_Recall.Refunds
 		// It's terribly important to clear this on every scene change (so the 3 distincts KSPAddOns above)
 		// as only vessels Changed In or Spawned on the current scene are subject to be recalculated.
 		// Starting from scratch on every supported scene is a quick & dirty way to guarantee that.
-		private readonly List<Vessel> SpawnnedVessels = new List<Vessel>();
+		private readonly HashSet<Vessel> SpawnnedVessels = new HashSet<Vessel>();
 
 		// This is not being called when the vessel is spawned from the Editor. :/
 		private void OnNewVesselCreated(Vessel vessel)
