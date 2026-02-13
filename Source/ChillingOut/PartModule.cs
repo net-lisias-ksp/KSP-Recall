@@ -123,12 +123,11 @@ namespace KSP_Recall { namespace ChillingOut
 			TimeSpan ts = new TimeSpan(DateTime.Now.Ticks - this.spawnTime);
 			if (ts.TotalMilliseconds > DELTA) this.enabled = false; // We are not needed anymore
 
-			double t = this.GetTemperature();
 			this.part.temperature = 
 				this.part.skinTemperature =
 				this.part.skinUnexposedTemperature =
 				this.part.skinUnexposedExternalTemp =
-					t;
+					this.vessel.externalTemperature;
 			Log.dbg("FixedUpdated for {0}:{1:X}", this.name, this.part.GetInstanceID());
 		}
 
@@ -147,20 +146,6 @@ namespace KSP_Recall { namespace ChillingOut
 
 		private void deinit()
 		{
-		}
-
-		public double GetTemperature()
-		{
-			Vector3d position = this.part.vessel.GetWorldPos3D(); // I hope this is right?
-			CelestialBody body = this.part.vessel.mainBody; // I hope this is right?
-
-			// Brute force, half baked, local temperature calculation.
-			double zeroAltitude = body.position.magnitude - body.Radius;
-			double currentAltitude = position.magnitude - zeroAltitude;
-
-			if (body.atmosphere && (currentAltitude < body.atmosphereDepth))
-				return body.GetTemperature(currentAltitude);
-			return PhysicsGlobals.SpaceTemperature;
 		}
 
 		private static readonly KSPe.Util.Log.Logger Log = KSPe.Util.Log.Logger.CreateForType<ChillingOut>("KSP-Recall", "ChillingOut", 0);
